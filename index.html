@@ -1,0 +1,614 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Chaajao Technologies — Analytics Dashboard</title>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/xlsx/0.18.5/xlsx.full.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/4.4.0/chart.umd.min.js"></script>
+<link href="https://fonts.googleapis.com/css2?family=Bebas+Neue&family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+<style>
+:root{
+  --red:#D32F2F; --red2:#B71C1C; --red-glow:rgba(211,47,47,.12);
+  --bg:#0D0D10; --bg2:#13131A; --bg3:#1A1A24; --bg4:#20202C;
+  --border:rgba(255,255,255,.08); --text:#F0F0F0; --text2:#9090A8; --muted:#55556A;
+  --green:#22C55E; --red-text:#EF4444; --amber:#F59E0B;
+  --sidebar:250px;
+}
+*{margin:0;padding:0;box-sizing:border-box;}
+body{font-family:'Inter',sans-serif;background:var(--bg);color:var(--text);display:flex;height:100vh;overflow:hidden;}
+
+/* SIDEBAR */
+#sidebar{width:var(--sidebar);background:var(--bg2);border-right:1px solid var(--border);display:flex;flex-direction:column;flex-shrink:0;height:100vh;overflow:hidden;}
+.sb-logo{padding:22px 20px 16px;border-bottom:1px solid var(--border);}
+.sb-logo-box{width:40px;height:40px;background:var(--red);border-radius:10px;display:flex;align-items:center;justify-content:center;font-family:'Bebas Neue',sans-serif;font-size:20px;color:#fff;box-shadow:0 4px 16px rgba(211,47,47,.4);margin-bottom:10px;}
+.sb-name{font-family:'Bebas Neue',sans-serif;font-size:18px;letter-spacing:1.5px;}
+.sb-sub{font-size:10px;color:var(--muted);letter-spacing:.5px;text-transform:uppercase;margin-top:2px;}
+.sb-nav{flex:1;padding:8px 0;overflow-y:auto;}
+.sb-lbl{font-size:9px;font-weight:700;letter-spacing:2px;text-transform:uppercase;color:var(--muted);padding:12px 20px 5px;}
+.sb-item{display:flex;align-items:center;gap:9px;padding:9px 20px;cursor:pointer;font-size:13px;font-weight:500;color:var(--text2);border-left:3px solid transparent;transition:all .15s;user-select:none;text-decoration:none;}
+.sb-item:hover{color:var(--text);background:var(--bg3);}
+.sb-item.active{color:#FF7070;border-left-color:var(--red);background:var(--red-glow);}
+.sb-item .ico{font-size:14px;width:18px;text-align:center;}
+.sb-foot{padding:12px 20px;border-top:1px solid var(--border);}
+.sb-foot-info{font-size:11px;color:var(--muted);}
+.sb-foot-badge{display:inline-block;margin-top:5px;background:var(--red-glow);border:1px solid rgba(211,47,47,.25);color:#FF7070;font-size:10px;font-weight:700;padding:2px 10px;border-radius:20px;}
+
+/* MAIN */
+#main{flex:1;display:flex;flex-direction:column;height:100vh;overflow:hidden;}
+
+/* TOPBAR */
+#topbar{height:58px;background:var(--bg2);border-bottom:1px solid var(--border);display:flex;align-items:center;justify-content:space-between;padding:0 26px;flex-shrink:0;}
+.tb-title{font-family:'Bebas Neue',sans-serif;font-size:23px;letter-spacing:1.5px;}
+.tb-sub{font-size:11px;color:var(--muted);margin-top:1px;}
+.tb-right{display:flex;align-items:center;gap:8px;}
+.btn{display:inline-flex;align-items:center;gap:6px;padding:7px 15px;border-radius:7px;font-size:12px;font-family:'Inter',sans-serif;font-weight:600;cursor:pointer;border:none;transition:all .15s;}
+.btn-ghost{background:var(--bg3);color:var(--text2);border:1px solid var(--border);}
+.btn-ghost:hover{color:var(--text);background:var(--bg4);}
+.btn-red{background:var(--red);color:#fff;box-shadow:0 2px 10px rgba(211,47,47,.3);}
+.btn-red:hover{background:var(--red2);}
+.period-badge{font-size:11px;color:var(--muted);background:var(--bg3);border:1px solid var(--border);border-radius:6px;padding:5px 12px;}
+
+/* SCROLL AREA */
+#scroll-area{flex:1;overflow-y:auto;padding:22px 26px;display:flex;flex-direction:column;gap:26px;}
+
+/* UPLOAD */
+#upload-section{display:flex;align-items:center;justify-content:center;min-height:380px;}
+.upload-box{background:var(--bg2);border:2px dashed rgba(255,255,255,.1);border-radius:16px;padding:52px 70px;text-align:center;cursor:pointer;transition:all .2s;max-width:500px;width:100%;}
+.upload-box:hover,.upload-box.dragover{border-color:var(--red);background:var(--red-glow);}
+.upload-ico{font-size:46px;display:block;margin-bottom:14px;}
+.upload-box h2{font-family:'Bebas Neue',sans-serif;font-size:26px;letter-spacing:1px;margin-bottom:8px;}
+.upload-box p{font-size:13px;color:var(--text2);line-height:1.6;margin-bottom:20px;}
+#file-input{display:none;}
+
+/* SECTION */
+.dash-sec{display:flex;flex-direction:column;gap:14px;}
+.sec-hd{display:flex;align-items:center;justify-content:space-between;}
+.sec-title{font-family:'Bebas Neue',sans-serif;font-size:21px;letter-spacing:1px;display:flex;align-items:center;gap:10px;}
+.sec-title::before{content:'';width:4px;height:18px;background:var(--red);border-radius:2px;display:block;}
+.sec-tag{font-size:10px;font-weight:700;letter-spacing:.8px;text-transform:uppercase;padding:3px 10px;border-radius:20px;background:var(--red-glow);border:1px solid rgba(211,47,47,.25);color:#FF7070;}
+
+/* KPI CARDS */
+.kpi-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(155px,1fr));gap:11px;}
+.kpi-card{background:var(--bg2);border:1px solid var(--border);border-radius:11px;padding:15px 17px;position:relative;overflow:hidden;transition:border-color .15s;}
+.kpi-card:hover{border-color:rgba(211,47,47,.3);}
+.kpi-pdot{position:absolute;top:12px;right:12px;width:7px;height:7px;border-radius:50%;}
+.kpi-plat{font-size:10px;font-weight:700;letter-spacing:1px;text-transform:uppercase;color:var(--muted);margin-bottom:7px;display:flex;align-items:center;gap:5px;}
+.kpi-val{font-family:'Bebas Neue',sans-serif;font-size:32px;letter-spacing:.5px;line-height:1;color:var(--text);margin-bottom:5px;}
+.kpi-chg{font-size:12px;font-weight:600;display:flex;align-items:center;gap:4px;}
+.up{color:var(--green);} .dn{color:var(--red-text);} .neu{color:var(--muted);}
+
+/* TOTAL BANNER */
+.total-banner{background:linear-gradient(135deg,rgba(211,47,47,.14) 0%,rgba(211,47,47,.03) 100%);border:1px solid rgba(211,47,47,.22);border-radius:11px;padding:16px 22px;display:flex;align-items:center;justify-content:space-around;flex-wrap:wrap;gap:14px;}
+.tot-item{text-align:center;}
+.tot-lbl{font-size:9.5px;font-weight:700;letter-spacing:1px;text-transform:uppercase;color:var(--muted);margin-bottom:4px;}
+.tot-num{font-family:'Bebas Neue',sans-serif;font-size:28px;letter-spacing:1px;color:#FF7070;}
+.tot-chg{font-size:11px;font-weight:600;margin-top:2px;}
+
+/* CLEAN COMPARISON TABLE */
+.tbl-wrap{background:var(--bg2);border:1px solid var(--border);border-radius:12px;overflow:hidden;}
+.ctbl{width:100%;border-collapse:collapse;}
+.ctbl thead tr{background:var(--red);}
+.ctbl thead th{padding:12px 16px;font-size:11.5px;font-weight:700;letter-spacing:.4px;color:#fff;text-align:center;white-space:nowrap;}
+.ctbl thead th:first-child{text-align:left;}
+.ctbl tbody tr{border-bottom:1px solid rgba(255,255,255,.05);transition:background .12s;}
+.ctbl tbody tr:last-child{border-bottom:none;}
+.ctbl tbody tr:hover{background:var(--bg3);}
+.ctbl tbody tr.grand-total{background:rgba(211,47,47,.07);border-top:2px solid rgba(211,47,47,.28);}
+.ctbl td{padding:11px 16px;font-size:13px;color:var(--text2);text-align:center;vertical-align:middle;}
+.ctbl td.plat-col{text-align:left;}
+.plat-cell{display:flex;align-items:center;gap:9px;}
+.plat-dot{width:9px;height:9px;border-radius:50%;flex-shrink:0;}
+.plat-name{font-weight:600;color:var(--text);font-size:13px;}
+.num-cell{font-weight:600;color:var(--text);font-size:13px;}
+.chg-col{background:rgba(255,255,255,.02);min-width:100px;}
+.chg-val{font-size:12px;font-weight:700;}
+.chg-pct{font-size:10.5px;opacity:.75;margin-left:3px;}
+
+/* MONTHLY TABLE — numbers small with diff below */
+.month-num{font-weight:600;color:var(--text);font-size:13px;}
+.month-diff{font-size:10.5px;font-weight:700;display:block;margin-top:1px;}
+
+/* CHARTS */
+.chart-row{display:grid;grid-template-columns:1.7fr 1fr;gap:13px;}
+.chart-card{background:var(--bg2);border:1px solid var(--border);border-radius:11px;padding:19px 20px;}
+.chart-hd{display:flex;align-items:flex-start;justify-content:space-between;margin-bottom:14px;}
+.chart-title{font-size:13px;font-weight:700;color:var(--text);}
+.chart-sub{font-size:11px;color:var(--muted);margin-top:2px;}
+.chart-box{position:relative;height:215px;}
+.chart-sel{background:var(--bg3);border:1px solid var(--border);color:var(--text);font-family:'Inter',sans-serif;font-size:11px;font-weight:600;border-radius:6px;padding:4px 8px;cursor:pointer;outline:none;}
+.chart-sel option{background:var(--bg3);}
+
+/* MEETING */
+.meeting-card{background:linear-gradient(135deg,var(--bg2) 0%,rgba(211,47,47,.05) 100%);border:1px solid rgba(211,47,47,.18);border-radius:12px;padding:20px 24px;}
+.mtg-top{display:flex;align-items:center;gap:12px;margin-bottom:16px;}
+.mtg-icon{width:38px;height:38px;background:var(--red);border-radius:9px;display:flex;align-items:center;justify-content:center;font-size:17px;box-shadow:0 3px 12px rgba(211,47,47,.35);}
+.mtg-title{font-family:'Bebas Neue',sans-serif;font-size:19px;letter-spacing:1px;}
+.mtg-sub{font-size:11px;color:var(--muted);}
+.mtg-pts{display:grid;grid-template-columns:repeat(auto-fill,minmax(270px,1fr));gap:9px;}
+.mp{background:var(--bg3);border:1px solid var(--border);border-radius:8px;padding:11px 14px;display:flex;align-items:flex-start;gap:9px;}
+.mp-ico{font-size:15px;flex-shrink:0;margin-top:1px;}
+.mp-txt{font-size:12.5px;color:var(--text2);line-height:1.55;}
+.mp-txt b{color:var(--text);}
+
+/* PRINT */
+@media print{
+  body{background:#fff!important;color:#111!important;height:auto!important;overflow:visible!important;}
+  #sidebar{display:none!important;}
+  #main{height:auto!important;overflow:visible!important;}
+  #topbar .btn{display:none!important;}
+  #scroll-area{overflow:visible!important;height:auto!important;padding:14px!important;}
+  #upload-section{display:none!important;}
+  .tbl-wrap,.chart-card,.kpi-card,.meeting-card,.total-banner,.dash-sec{background:#f8f9fa!important;border:1px solid #ddd!important;}
+  .ctbl thead tr{background:var(--red)!important;-webkit-print-color-adjust:exact;print-color-adjust:exact;}
+  .ctbl td,.ctbl th,.kpi-val,.num-cell,.plat-name,.month-num{color:#111!important;}
+  .up{color:#16a34a!important;}.dn{color:#dc2626!important;}
+  .tb-sub,.sec-tag,.sb-foot-badge{color:#555!important;}
+  .dash-sec{break-inside:avoid;}
+}
+
+/* TOAST */
+#toast{position:fixed;bottom:18px;right:18px;background:var(--bg3);border:1px solid var(--border);border-radius:8px;padding:10px 16px;font-size:13px;color:var(--text);display:none;align-items:center;gap:8px;z-index:999;box-shadow:0 8px 28px rgba(0,0,0,.5);}
+</style>
+</head>
+<body>
+
+<!-- SIDEBAR -->
+<div id="sidebar">
+  <div class="sb-logo">
+    <div class="sb-logo-box">CT</div>
+    <div class="sb-name">CHAAJAO</div>
+    <div class="sb-sub">Technologies</div>
+  </div>
+  <div class="sb-nav">
+    <div class="sb-lbl">Reports</div>
+    <a class="sb-item active" onclick="navTo(this,'totals')"><span class="ico">📊</span> Total Overview</a>
+    <a class="sb-item" onclick="navTo(this,'weekly')"><span class="ico">📅</span> Weekly Comparison</a>
+    <a class="sb-item" onclick="navTo(this,'monthly')"><span class="ico">📆</span> Monthly Analysis</a>
+    <a class="sb-item" onclick="navTo(this,'trends')"><span class="ico">📈</span> Growth Trends</a>
+    <a class="sb-item" onclick="navTo(this,'meeting')"><span class="ico">🗣️</span> Meeting Summary</a>
+    <div class="sb-lbl">Actions</div>
+    <a class="sb-item" onclick="document.getElementById('file-input').click()"><span class="ico">📂</span> Upload New File</a>
+    <a class="sb-item" onclick="window.print()"><span class="ico">🖨️</span> Print / Save PDF</a>
+  </div>
+  <div class="sb-foot">
+    <div class="sb-foot-info" id="sb-info">No data loaded</div>
+    <div class="sb-foot-badge" id="sb-date">Upload file to start</div>
+  </div>
+</div>
+
+<!-- MAIN -->
+<div id="main">
+  <div id="topbar">
+    <div>
+      <div class="tb-title">Social Media Analytics Dashboard</div>
+      <div class="tb-sub" id="tb-sub">Chaajao Technologies — Upload your Excel file to begin</div>
+    </div>
+    <div class="tb-right">
+      <span class="period-badge" id="period-badge" style="display:none"></span>
+      <button class="btn btn-ghost" onclick="document.getElementById('file-input').click()">📂 Upload Excel</button>
+      <button class="btn btn-red" onclick="window.print()" id="print-btn" style="display:none">🖨️ Print / PDF</button>
+    </div>
+  </div>
+
+  <div id="scroll-area">
+
+    <!-- UPLOAD -->
+    <div id="upload-section">
+      <div class="upload-box" id="drop-zone"
+        onclick="document.getElementById('file-input').click()"
+        ondragover="event.preventDefault();this.classList.add('dragover')"
+        ondragleave="this.classList.remove('dragover')"
+        ondrop="onDrop(event)">
+        <span class="upload-ico">📊</span>
+        <h2>Upload Your Excel File</h2>
+        <p>Drag & drop your <strong>Social_Media_Analytics_Dashboard.xlsx</strong> here, or click to browse. Dashboard generates instantly.</p>
+        <button class="btn btn-red" style="pointer-events:none;margin:0 auto;">📂 Browse File</button>
+      </div>
+      <input type="file" id="file-input" accept=".xlsx,.xls,.csv" onchange="onFileInput(event)">
+    </div>
+
+    <!-- SEC 1: TOTALS -->
+    <div id="sec-totals" class="dash-sec" style="display:none">
+      <div class="sec-hd">
+        <div class="sec-title">Total Overview</div>
+        <span class="sec-tag" id="snapshot-tag">Latest Snapshot</span>
+      </div>
+      <div class="total-banner" id="total-banner"></div>
+      <div class="kpi-grid" id="kpi-grid"></div>
+    </div>
+
+    <!-- SEC 2: WEEKLY -->
+    <div id="sec-weekly" class="dash-sec" style="display:none">
+      <div class="sec-hd">
+        <div class="sec-title">Weekly Breakdown</div>
+        <span class="sec-tag">Last 3 Weeks</span>
+      </div>
+      <div class="tbl-wrap">
+        <table class="ctbl">
+          <thead><tr id="weekly-head"></tr></thead>
+          <tbody id="weekly-body"></tbody>
+        </table>
+      </div>
+    </div>
+
+    <!-- SEC 3: MONTHLY -->
+    <div id="sec-monthly" class="dash-sec" style="display:none">
+      <div class="sec-hd">
+        <div class="sec-title">Monthly Analysis</div>
+        <span class="sec-tag">Month-over-Month</span>
+      </div>
+      <div class="tbl-wrap">
+        <table class="ctbl">
+          <thead>
+            <tr>
+              <th>Month</th>
+              <th>LinkedIn</th>
+              <th>YouTube</th>
+              <th>FB Follows</th>
+              <th>Instagram</th>
+              <th>TikTok</th>
+              <th>WhatsApp</th>
+              <th>WA MDCAT</th>
+              <th>WA ECAT</th>
+              <th>WA BCAT</th>
+              <th>Total Change</th>
+            </tr>
+          </thead>
+          <tbody id="monthly-body"></tbody>
+        </table>
+      </div>
+    </div>
+
+    <!-- SEC 4: TRENDS -->
+    <div id="sec-trends" class="dash-sec" style="display:none">
+      <div class="sec-hd">
+        <div class="sec-title">Growth Trends</div>
+        <span class="sec-tag">All Time</span>
+      </div>
+      <div class="chart-row">
+        <div class="chart-card">
+          <div class="chart-hd">
+            <div><div class="chart-title">Platform Growth Over Time</div><div class="chart-sub">Weekly history</div></div>
+            <select class="chart-sel" id="trend-sel" onchange="updateTrend()">
+              <option value="youtube">YouTube</option>
+              <option value="linkedin">LinkedIn</option>
+              <option value="facebook_follows">FB Follows</option>
+              <option value="instagram">Instagram</option>
+              <option value="tiktok">TikTok</option>
+              <option value="whatsapp">WhatsApp</option>
+            </select>
+          </div>
+          <div class="chart-box"><canvas id="trendChart"></canvas></div>
+        </div>
+        <div class="chart-card">
+          <div class="chart-hd"><div><div class="chart-title">Platform Distribution</div><div class="chart-sub">Latest numbers</div></div></div>
+          <div class="chart-box"><canvas id="donutChart"></canvas></div>
+        </div>
+      </div>
+      <div class="chart-card" style="margin-top:0">
+        <div class="chart-hd"><div><div class="chart-title">Week-over-Week Net Growth</div><div class="chart-sub">New followers per week — last 10 weeks</div></div></div>
+        <div class="chart-box"><canvas id="wowChart"></canvas></div>
+      </div>
+    </div>
+
+    <!-- SEC 5: MEETING -->
+    <div id="sec-meeting" class="dash-sec" style="display:none">
+      <div class="sec-hd">
+        <div class="sec-title">Meeting Summary</div>
+        <span class="sec-tag">Auto Generated</span>
+      </div>
+      <div class="meeting-card">
+        <div class="mtg-top">
+          <div class="mtg-icon">🗣️</div>
+          <div>
+            <div class="mtg-title">Weekly Report — <span id="mtg-date"></span></div>
+            <div class="mtg-sub">Key talking points for your weekly team meeting</div>
+          </div>
+        </div>
+        <div class="mtg-pts" id="mtg-pts"></div>
+      </div>
+    </div>
+
+  </div><!-- /scroll-area -->
+</div><!-- /main -->
+
+<div id="toast">✅ <span id="toast-msg"></span></div>
+
+<script>
+// ─── CONSTANTS ───────────────────────────────────────
+const PLATS=[
+  {key:'linkedin',        label:'LinkedIn',          icon:'💼',color:'#0A66C2'},
+  {key:'youtube',         label:'YouTube',           icon:'▶️',color:'#FF0000'},
+  {key:'facebook_likes',  label:'FB Likes',          icon:'👍',color:'#1877F2'},
+  {key:'facebook_follows',label:'FB Follows',        icon:'📘',color:'#4267B2'},
+  {key:'instagram',       label:'Instagram',         icon:'📸',color:'#E1306C'},
+  {key:'tiktok',          label:'TikTok',            icon:'🎵',color:'#69C9D0'},
+  {key:'whatsapp',        label:'WhatsApp',          icon:'💬',color:'#25D366'},
+  {key:'wa_mdcat',        label:'WA MDCAT',          icon:'🩺',color:'#34D399'},
+  {key:'wa_ecat',         label:'WA ECAT',           icon:'⚙️',color:'#60A5FA'},
+  {key:'wa_bcat',         label:'WA BCAT',           icon:'📐',color:'#A78BFA'},
+];
+
+let D=[], cTrend=null, cDonut=null, cWow=null;
+
+// ─── FILE ────────────────────────────────────────────
+function onDrop(e){
+  e.preventDefault(); document.getElementById('drop-zone').classList.remove('dragover');
+  if(e.dataTransfer.files[0]) loadFile(e.dataTransfer.files[0]);
+}
+function onFileInput(e){ if(e.target.files[0]) loadFile(e.target.files[0]); }
+function loadFile(file){
+  const rd=new FileReader();
+  rd.onload=ev=>{
+    try{
+      const wb=XLSX.read(ev.target.result,{type:'array',cellDates:true});
+      const sn=wb.SheetNames.find(n=>/week|engag/i.test(n))||wb.SheetNames[0];
+      parseRows(XLSX.utils.sheet_to_json(wb.Sheets[sn],{header:1,defval:null}));
+      if(!D.length){showToast('❌ No data found. Check Excel sheet format.');return;}
+      renderAll();
+      showToast('✅ Loaded '+D.length+' weeks — '+file.name);
+    }catch(err){showToast('❌ '+err.message);}
+  };
+  rd.readAsArrayBuffer(file);
+}
+function parseRows(raw){
+  D=[];
+  for(let r of raw){
+    if(!r||!(r[0] instanceof Date)||r[0].getFullYear()<2020) continue;
+    const v=x=>{
+      if(x===null||x===undefined||x==='-'||x==='') return null;
+      const n=parseFloat(String(x).replace(/[^0-9.-]/g,''));
+      return isNaN(n)?null:n;
+    };
+    D.push({date:r[0],linkedin:v(r[1]),youtube:v(r[2]),facebook_likes:v(r[3]),facebook_follows:v(r[4]),instagram:v(r[5]),tiktok:v(r[6]),whatsapp:v(r[7]),wa_mdcat:v(r[8]),wa_ecat:v(r[9]),wa_bcat:v(r[10])});
+  }
+  D.sort((a,b)=>a.date-b.date);
+}
+
+// ─── HELPERS ─────────────────────────────────────────
+const fd=d=>d.toLocaleDateString('en-GB',{day:'2-digit',month:'short',year:'numeric'});
+const fds=d=>d.toLocaleDateString('en-GB',{day:'2-digit',month:'short'});
+const fn=n=>n===null||n===undefined?'—':Number(n).toLocaleString();
+function fchg(d,showPct,base){
+  if(d===null) return `<span class="chg-val neu">—</span>`;
+  const cls=d>0?'up':d<0?'dn':'neu';
+  const arr=d>0?'▲':d<0?'▼':'';
+  const pct=showPct&&base?` <span class="chg-pct">(${d>0?'+':''}${((d/base)*100).toFixed(1)}%)</span>`:'';
+  return `<span class="chg-val ${cls}">${arr} ${Math.abs(d).toLocaleString()}${pct}</span>`;
+}
+const pc=key=>PLATS.find(p=>p.key===key)?.color||'#888';
+
+// ─── RENDER ALL ───────────────────────────────────────
+function renderAll(){
+  document.getElementById('upload-section').style.display='none';
+  document.getElementById('print-btn').style.display='flex';
+  const pb=document.getElementById('period-badge');
+  pb.textContent='📅 '+fd(D[0].date)+' – '+fd(D[D.length-1].date);
+  pb.style.display='block';
+  document.getElementById('tb-sub').textContent='Chaajao Technologies — '+D.length+' weeks of data';
+  document.getElementById('sb-info').textContent=D.length+' weeks loaded';
+  document.getElementById('sb-date').textContent='Latest: '+fds(D[D.length-1].date);
+  ['sec-totals','sec-weekly','sec-monthly','sec-trends','sec-meeting'].forEach(id=>document.getElementById(id).style.display='flex');
+  renderTotals(); renderWeekly(); renderMonthly(); renderCharts(); renderMeeting();
+}
+
+// ─── SEC 1: TOTALS ────────────────────────────────────
+function renderTotals(){
+  const L=D[D.length-1], P=D.length>1?D[D.length-2]:null;
+  document.getElementById('snapshot-tag').textContent='📍 '+fd(L.date);
+
+  const sumKeys=['youtube','linkedin','facebook_follows','instagram','tiktok','whatsapp','wa_mdcat','wa_ecat','wa_bcat'];
+  const total=sumKeys.reduce((s,k)=>s+(L[k]||0),0);
+  const totalP=P?sumKeys.reduce((s,k)=>s+(P[k]||0),0):null;
+  const tD=totalP!==null?total-totalP:null;
+
+  const bi=[
+    {lbl:'TOTAL REACH',val:total.toLocaleString(),chg:tD},
+    {lbl:'YOUTUBE',val:fn(L.youtube),chg:P?L.youtube-P.youtube:null},
+    {lbl:'FACEBOOK',val:fn(L.facebook_follows),chg:P&&L.facebook_follows&&P.facebook_follows?L.facebook_follows-P.facebook_follows:null},
+    {lbl:'INSTAGRAM',val:fn(L.instagram),chg:P&&L.instagram&&P.instagram?L.instagram-P.instagram:null},
+    {lbl:'TIKTOK',val:fn(L.tiktok),chg:P&&L.tiktok&&P.tiktok?L.tiktok-P.tiktok:null},
+    {lbl:'LINKEDIN',val:fn(L.linkedin),chg:P&&L.linkedin&&P.linkedin?L.linkedin-P.linkedin:null},
+  ];
+  document.getElementById('total-banner').innerHTML=bi.map(b=>`
+    <div class="tot-item">
+      <div class="tot-lbl">${b.lbl}</div>
+      <div class="tot-num">${b.val}</div>
+      ${b.chg!==null?`<div class="tot-chg ${b.chg>0?'up':b.chg<0?'dn':'neu'}">${b.chg>0?'▲ +':'▼ '}${Math.abs(b.chg).toLocaleString()} this week</div>`:''}
+    </div>`).join('');
+
+  document.getElementById('kpi-grid').innerHTML=PLATS.map(p=>{
+    const cur=L[p.key], prv=P?P[p.key]:null;
+    const d=cur!==null&&prv!==null?cur-prv:null;
+    const cls=d===null?'neu':d>0?'up':d<0?'dn':'neu';
+    const pct=d!==null&&prv?((d/prv)*100).toFixed(1)+'%':null;
+    return `<div class="kpi-card">
+      <div class="kpi-pdot" style="background:${p.color}"></div>
+      <div class="kpi-plat"><span>${p.icon}</span>${p.label}</div>
+      <div class="kpi-val">${cur!==null?fn(cur):'—'}</div>
+      <div class="kpi-chg ${cls}">
+        ${d===null?'No change data':(d>0?'▲ +':'▼ ')+Math.abs(d).toLocaleString()+' this week'}
+        ${pct?`<span style="font-size:10px;opacity:.75">(${d>=0?'+':''}${pct})</span>`:''}
+      </div>
+    </div>`;
+  }).join('');
+}
+
+// ─── SEC 2: WEEKLY TABLE ─────────────────────────────
+function renderWeekly(){
+  const raw=D.slice(-3);
+  const weeks=[null,null,null];
+  for(let i=0;i<raw.length;i++) weeks[3-raw.length+i]=raw[i];
+
+  const labels=['2 Weeks Ago','Last Week','This Week'];
+  const wHead=document.getElementById('weekly-head');
+  const wBody=document.getElementById('weekly-body');
+
+  wHead.innerHTML='<th>Platform</th>'+
+    weeks.map((w,i)=>w?`<th>${labels[i]}<br><span style="font-weight:400;font-size:10px;opacity:.75">${fds(w.date)}</span></th>`:`<th style="opacity:.4">${labels[i]}</th>`).join('')+
+    '<th>Change ↑↓</th>';
+
+  const rows=[
+    {key:'linkedin',label:'LinkedIn',icon:'💼',color:'#0A66C2'},
+    {key:'youtube',label:'YouTube',icon:'▶️',color:'#FF0000'},
+    {key:'facebook_likes',label:'Facebook Likes',icon:'👍',color:'#1877F2'},
+    {key:'facebook_follows',label:'Facebook Follows',icon:'📘',color:'#4267B2'},
+    {key:'instagram',label:'Instagram',icon:'📸',color:'#E1306C'},
+    {key:'tiktok',label:'TikTok',icon:'🎵',color:'#69C9D0'},
+    {key:'whatsapp',label:'WhatsApp Channel',icon:'💬',color:'#25D366'},
+    {key:'wa_mdcat',label:'WA (MDCAT)',icon:'🩺',color:'#34D399'},
+    {key:'wa_ecat',label:'WA (ECAT)',icon:'⚙️',color:'#60A5FA'},
+    {key:'wa_bcat',label:'WA (BCAT)',icon:'📐',color:'#A78BFA'},
+  ];
+
+  const w0=weeks[0],w1=weeks[1],w2=weeks[2];
+  wBody.innerHTML=rows.map(r=>{
+    const v0=w0?w0[r.key]:null, v1=w1?w1[r.key]:null, v2=w2?w2[r.key]:null;
+    const chg=v2!==null&&v1!==null?v2-v1:null;
+    return `<tr>
+      <td class="plat-col"><div class="plat-cell"><div class="plat-dot" style="background:${r.color}"></div><span class="plat-name">${r.icon} ${r.label}</span></div></td>
+      <td class="num-cell">${v0!==null?fn(v0):'—'}</td>
+      <td class="num-cell">${v1!==null?fn(v1):'—'}</td>
+      <td class="num-cell">${v2!==null?fn(v2):'—'}</td>
+      <td class="chg-col">${fchg(chg,true,v1)}</td>
+    </tr>`;
+  }).join('');
+
+  // Total row
+  const keys=['linkedin','youtube','facebook_follows','instagram','tiktok','whatsapp','wa_mdcat','wa_ecat','wa_bcat'];
+  const t0=w0?keys.reduce((s,k)=>s+(w0[k]||0),0):null;
+  const t1=w1?keys.reduce((s,k)=>s+(w1[k]||0),0):null;
+  const t2=w2?keys.reduce((s,k)=>s+(w2[k]||0),0):null;
+  const tc=t2!==null&&t1!==null?t2-t1:null;
+  wBody.innerHTML+=`<tr class="grand-total">
+    <td class="plat-col"><span class="plat-name">📊 TOTAL REACH</span></td>
+    <td class="num-cell"><strong>${t0!==null?t0.toLocaleString():'—'}</strong></td>
+    <td class="num-cell"><strong>${t1!==null?t1.toLocaleString():'—'}</strong></td>
+    <td class="num-cell"><strong>${t2!==null?t2.toLocaleString():'—'}</strong></td>
+    <td class="chg-col"><strong>${fchg(tc,true,t1)}</strong></td>
+  </tr>`;
+}
+
+// ─── SEC 3: MONTHLY ───────────────────────────────────
+function renderMonthly(){
+  const byM={};
+  D.forEach(d=>{
+    const k=`${d.date.getFullYear()}-${String(d.date.getMonth()+1).padStart(2,'0')}`;
+    byM[k]=d;
+  });
+  const months=Object.keys(byM).sort().reverse();
+  const keys=['linkedin','youtube','facebook_follows','instagram','tiktok','whatsapp','wa_mdcat','wa_ecat','wa_bcat'];
+
+  document.getElementById('monthly-body').innerHTML=months.map((m,i)=>{
+    const cur=byM[m], prev=i<months.length-1?byM[months[i+1]]:null;
+    const cell=k=>{
+      const c=cur[k], p=prev?prev[k]:null;
+      const d=c!==null&&p!==null?c-p:null;
+      const cls=d===null?'neu':d>0?'up':d<0?'dn':'neu';
+      const diff=d!==null?`<span class="month-diff ${cls}">${d>0?'▲ +':'▼ '}${Math.abs(d).toLocaleString()}</span>`:'';
+      return `<td><span class="month-num">${c!==null?c.toLocaleString():'—'}</span>${diff}</td>`;
+    };
+    const total=keys.reduce((s,k)=>s+(cur[k]||0),0);
+    const totalP=prev?keys.reduce((s,k)=>s+(prev[k]||0),0):null;
+    const tc=totalP!==null?total-totalP:null;
+    const tcCls=tc===null?'neu':tc>0?'up':tc<0?'dn':'neu';
+    const mLabel=new Date(m+'-02').toLocaleDateString('en-GB',{month:'long',year:'numeric'});
+    return `<tr>
+      <td class="plat-col"><span class="plat-name">${mLabel}</span></td>
+      ${cell('linkedin')}${cell('youtube')}${cell('facebook_follows')}${cell('instagram')}${cell('tiktok')}${cell('whatsapp')}${cell('wa_mdcat')}${cell('wa_ecat')}${cell('wa_bcat')}
+      <td><span class="chg-val ${tcCls}">${tc!==null?(tc>0?'▲ +':'▼ ')+Math.abs(tc).toLocaleString():'—'}</span></td>
+    </tr>`;
+  }).join('');
+}
+
+// ─── SEC 4: CHARTS ────────────────────────────────────
+function renderCharts(){ updateTrend(); buildDonut(); buildWow(); }
+
+const baseOpts={
+  responsive:true,maintainAspectRatio:false,
+  plugins:{legend:{display:false},tooltip:{backgroundColor:'#1A1A24',titleColor:'#F0F0F0',bodyColor:'#9090A8',borderColor:'rgba(255,255,255,.08)',borderWidth:1}},
+  scales:{x:{ticks:{color:'#55556A',font:{size:10},maxTicksLimit:12},grid:{color:'rgba(255,255,255,.04)'}},y:{ticks:{color:'#55556A',font:{size:10}},grid:{color:'rgba(255,255,255,.04)'}}}
+};
+
+function updateTrend(){
+  const k=document.getElementById('trend-sel').value;
+  const fd2=D.filter(d=>d[k]!==null);
+  const color=pc(k);
+  if(cTrend) cTrend.destroy();
+  const ctx=document.getElementById('trendChart').getContext('2d');
+  const g=ctx.createLinearGradient(0,0,0,215);
+  g.addColorStop(0,color+'55');g.addColorStop(1,color+'00');
+  cTrend=new Chart(ctx,{type:'line',data:{labels:fd2.map(d=>fds(d.date)),datasets:[{data:fd2.map(d=>d[k]),borderColor:color,backgroundColor:g,borderWidth:2.5,pointRadius:1.5,pointHoverRadius:5,fill:true,tension:.4}]},options:baseOpts});
+}
+
+function buildDonut(){
+  const L=D[D.length-1];
+  const ks=['youtube','facebook_follows','instagram','linkedin','tiktok','whatsapp'];
+  if(cDonut) cDonut.destroy();
+  const ctx=document.getElementById('donutChart').getContext('2d');
+  cDonut=new Chart(ctx,{type:'doughnut',
+    data:{labels:ks.map(k=>PLATS.find(p=>p.key===k)?.label||k),datasets:[{data:ks.map(k=>L[k]||0),backgroundColor:ks.map(k=>pc(k)),borderWidth:2,borderColor:'#13131A',hoverOffset:8}]},
+    options:{responsive:true,maintainAspectRatio:false,cutout:'64%',plugins:{
+      legend:{position:'right',labels:{color:'#9090A8',font:{size:10},padding:9,boxWidth:9}},
+      tooltip:{backgroundColor:'#1A1A24',titleColor:'#F0F0F0',bodyColor:'#9090A8',borderColor:'rgba(255,255,255,.08)',borderWidth:1,callbacks:{label:c=>' '+c.label+': '+c.raw.toLocaleString()}}
+    }}
+  });
+}
+
+function buildWow(){
+  const last=D.slice(-11);
+  const lbls=last.slice(1).map(d=>fds(d.date));
+  const mk=k=>last.slice(1).map((d,i)=>(d[k]!==null&&last[i][k]!==null)?d[k]-last[i][k]:0);
+  if(cWow) cWow.destroy();
+  const ctx=document.getElementById('wowChart').getContext('2d');
+  cWow=new Chart(ctx,{type:'bar',
+    data:{labels:lbls,datasets:[
+      {label:'YouTube',data:mk('youtube'),backgroundColor:'#FF000088',borderRadius:4},
+      {label:'Instagram',data:mk('instagram'),backgroundColor:'#E1306C88',borderRadius:4},
+      {label:'TikTok',data:mk('tiktok'),backgroundColor:'#69C9D088',borderRadius:4},
+      {label:'Facebook',data:mk('facebook_follows'),backgroundColor:'#4267B288',borderRadius:4},
+    ]},
+    options:{...baseOpts,plugins:{legend:{display:true,labels:{color:'#9090A8',font:{size:11},boxWidth:10,padding:11}},tooltip:baseOpts.plugins.tooltip}}
+  });
+}
+
+// ─── SEC 5: MEETING ───────────────────────────────────
+function renderMeeting(){
+  const L=D[D.length-1], P=D.length>1?D[D.length-2]:null, P4=D.length>4?D[D.length-5]:null;
+  document.getElementById('mtg-date').textContent=fd(L.date);
+  const df=(a,b)=>a!==null&&b!==null?a-b:null;
+  const sp=(v,b)=>v!==null?`<span class="${v>0?'up':'dn'}" style="font-size:12px">${v>0?'▲ +':'▼ '}${Math.abs(v).toLocaleString()}${b?` (${v>0?'+':''}${((v/b)*100).toFixed(1)}%)`:''}</span>`:'';
+
+  const keys=['linkedin','youtube','facebook_follows','instagram','tiktok','whatsapp'];
+  const total=keys.reduce((s,k)=>s+(L[k]||0),0);
+  const totalP=P?keys.reduce((s,k)=>s+(P[k]||0),0):null;
+
+  const pts=[
+    {ico:'▶️',txt:`<b>YouTube:</b> ${fn(L.youtube)} subscribers ${sp(df(L.youtube,P?.youtube),P?.youtube)}${P4?` | vs 4 weeks: ${sp(df(L.youtube,P4?.youtube),P4?.youtube)}`:''}`},
+    {ico:'📘',txt:`<b>Facebook Follows:</b> ${fn(L.facebook_follows)} ${sp(df(L.facebook_follows,P?.facebook_follows),P?.facebook_follows)}`},
+    {ico:'📸',txt:`<b>Instagram:</b> ${fn(L.instagram)} followers ${sp(df(L.instagram,P?.instagram),P?.instagram)}`},
+    {ico:'🎵',txt:`<b>TikTok:</b> ${fn(L.tiktok)} followers ${sp(df(L.tiktok,P?.tiktok),P?.tiktok)}${L.tiktok>=1000?' 🎉 Past 1K milestone!':''}`},
+    {ico:'💼',txt:`<b>LinkedIn:</b> ${fn(L.linkedin)} followers ${sp(df(L.linkedin,P?.linkedin),P?.linkedin)}`},
+    {ico:'💬',txt:`<b>WhatsApp Channel:</b> ${fn(L.whatsapp)} ${sp(df(L.whatsapp,P?.whatsapp),P?.whatsapp)}<br>MDCAT: ${fn(L.wa_mdcat)} | ECAT: ${fn(L.wa_ecat)} | BCAT: ${fn(L.wa_bcat)}`},
+    {ico:'📊',txt:`<b>Total Audience:</b> ${total.toLocaleString()} across all platforms ${totalP!==null?sp(total-totalP,totalP):''}`},
+  ];
+  document.getElementById('mtg-pts').innerHTML=pts.map(p=>`<div class="mp"><div class="mp-ico">${p.ico}</div><div class="mp-txt">${p.txt}</div></div>`).join('');
+}
+
+// ─── NAVIGATION ──────────────────────────────────────
+function navTo(el,sec){
+  const t=document.getElementById('sec-'+sec), a=document.getElementById('scroll-area');
+  if(t&&a) a.scrollTo({top:t.getBoundingClientRect().top-a.getBoundingClientRect().top+a.scrollTop-16,behavior:'smooth'});
+  document.querySelectorAll('.sb-item').forEach(i=>i.classList.remove('active'));
+  el.classList.add('active');
+}
+function showToast(msg){
+  const t=document.getElementById('toast');
+  document.getElementById('toast-msg').textContent=msg;
+  t.style.display='flex';
+  setTimeout(()=>t.style.display='none',3500);
+}
+</script>
+</body>
+</html>
