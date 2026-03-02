@@ -532,6 +532,7 @@ function loadFile(file){
 let gsRefreshTimer = null;
 let gsSheetId = null;
 let gsGid = '0';
+let gsSheetName = 'Weekly Engagment'; // default target sheet name
 
 function extractSheetId(url){
   // Extract spreadsheet ID from various Google Sheets URL formats
@@ -568,18 +569,18 @@ async function connectSheet(){
 async function fetchGoogleSheet(){
   if(!gsSheetId) return;
 
-  // Google Sheets public JSON feed — no API key, no CORS issues
-  // gviz/tq endpoint works for any "Anyone with link" public sheet
-  const jsonUrl = `https://docs.google.com/spreadsheets/d/${gsSheetId}/gviz/tq?tqx=out:json&gid=${gsGid}`;
+  // Use range A4:K500 to skip title row (1), empty row (2), header row (3)
+  // sheet name encoded for URL — try common sheet names
+  const sheetParam = gsSheetName ? `&sheet=${encodeURIComponent(gsSheetName)}` : '';
+  const jsonUrl = `https://docs.google.com/spreadsheets/d/${gsSheetId}/gviz/tq?tqx=out:json&gid=${gsGid}${sheetParam}&range=A4:K500`;
 
   try{
     const res = await fetch(jsonUrl);
     if(!res.ok) throw new Error('Could not reach Google Sheets (HTTP ' + res.status + ')');
     const text = await res.text();
 
-    // Response is wrapped: google.visualization.Query.setResponse({...});
     const jsonStr = text.match(/google\.visualization\.Query\.setResponse\(([\s\S]*)\)/);
-    if(!jsonStr) throw new Error('Unexpected response from Google Sheets. Is the sheet public?');
+    if(!jsonStr) throw new Error('Unexpected response. Is the sheet public?');
 
     const json = JSON.parse(jsonStr[1]);
     if(json.status === 'error') throw new Error(json.errors?.[0]?.message || 'Google Sheets error');
@@ -587,10 +588,9 @@ async function fetchGoogleSheet(){
     parseGvizResponse(json);
 
     if(!D.length){
-      // Show what the first row actually looked like to help debug
       const firstRow = json.table?.rows?.[0]?.c;
       const sample = firstRow ? JSON.stringify(firstRow.slice(0,3)) : 'empty';
-      setGsStatus(`⚠️ No valid rows found. First row data: ${sample} — Make sure Column A has dates and numbers are in columns B–K.`, 'orange');
+      setGsStatus(`⚠️ No valid rows found. First row data: ${sample}`, 'orange');
       return;
     }
 
@@ -610,7 +610,8 @@ async function fetchGoogleSheet(){
 
 async function silentRefresh(){
   if(!gsSheetId) return;
-  const jsonUrl = `https://docs.google.com/spreadsheets/d/${gsSheetId}/gviz/tq?tqx=out:json&gid=${gsGid}`;
+  const sheetParam = gsSheetName ? `&sheet=${encodeURIComponent(gsSheetName)}` : '';
+  const jsonUrl = `https://docs.google.com/spreadsheets/d/${gsSheetId}/gviz/tq?tqx=out:json&gid=${gsGid}${sheetParam}&range=A4:K500`;
   try{
     const res = await fetch(jsonUrl);
     if(!res.ok) return;
@@ -624,7 +625,7 @@ async function silentRefresh(){
     renderAll();
     const now = new Date().toLocaleTimeString('en-GB', {hour:'2-digit', minute:'2-digit'});
     setGsStatus(`✅ Connected — ${D.length} entries. Last synced: ${now}. Auto-refreshes every 5 min.`, '#0F9D58');
-  } catch(e){ /* silent */ }
+  } catch(e){}
 }
 
 function parseGvizResponse(json){
@@ -692,7 +693,9 @@ function parseGvizResponse(json){
     const v = cell => {
       if(!cell || cell.v === null || cell.v === undefined) return null;
       if(typeof cell.v === 'number') return cell.v;
-      const n = parseFloat(String(cell.v).replace(/[^0-9.-]/g,''));
+      const s = String(cell.v).trim();
+      if(s === '-' || s === '' || s.toLowerCase() === 'n/a') return null;
+      const n = parseFloat(s.replace(/[^0-9.-]/g,''));
       return isNaN(n) ? null : n;
     };
 
