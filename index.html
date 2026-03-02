@@ -286,6 +286,8 @@ body{font-family:'DM Sans',sans-serif;background:var(--bg);color:var(--text);dis
     <div class="sb-lbl">Actions</div>
     <a class="sb-item" onclick="document.getElementById('file-input').click()">
       <span class="ico"><svg viewBox="0 0 24 24"><use href="#icon-upload"/></svg></span> Upload New File</a>
+    <a class="sb-item" onclick="manualRefresh()">
+      <span class="ico"><svg viewBox="0 0 24 24"><path d="M17.65 6.35A7.958 7.958 0 0 0 12 4c-4.42 0-7.99 3.58-7.99 8s3.57 8 7.99 8c3.73 0 6.84-2.55 7.73-6h-2.08A5.99 5.99 0 0 1 12 18c-3.31 0-6-2.69-6-6s2.69-6 6-6c1.66 0 3.14.69 4.22 1.78L13 11h7V4l-2.35 2.35z" fill="currentColor"/></svg></span> Refresh Data</a>
     <a class="sb-item" onclick="window.print()">
       <span class="ico"><svg viewBox="0 0 24 24"><use href="#icon-print"/></svg></span> Print / Save PDF</a>
   </div>
@@ -306,6 +308,8 @@ body{font-family:'DM Sans',sans-serif;background:var(--bg);color:var(--text);dis
       <span class="period-badge" id="period-badge" style="display:none"></span>
       <button class="btn btn-ghost" onclick="document.getElementById('file-input').click()">
         <svg width="13" height="13" viewBox="0 0 24 24" fill="currentColor"><use href="#icon-upload"/></svg> Upload Excel</button>
+      <button class="btn btn-ghost" id="change-src-btn" style="display:none" onclick="changeSource()">
+        <svg width="13" height="13" viewBox="0 0 24 24" fill="currentColor"><path d="M17.65 6.35A7.958 7.958 0 0 0 12 4c-4.42 0-7.99 3.58-7.99 8s3.57 8 7.99 8c3.73 0 6.84-2.55 7.73-6h-2.08A5.99 5.99 0 0 1 12 18c-3.31 0-6-2.69-6-6s2.69-6 6-6c1.66 0 3.14.69 4.22 1.78L13 11h7V4l-2.35 2.35z"/></svg> Change Source</button>
       <button class="btn btn-mag" onclick="window.print()" id="print-btn" style="display:none">
         <svg width="13" height="13" viewBox="0 0 24 24" fill="currentColor"><use href="#icon-print"/></svg> Print / PDF</button>
     </div>
@@ -327,19 +331,46 @@ body{font-family:'DM Sans',sans-serif;background:var(--bg);color:var(--text);dis
 
     <!-- UPLOAD -->
     <div id="upload-section">
-      <div class="upload-box" id="drop-zone"
-        onclick="document.getElementById('file-input').click()"
-        ondragover="event.preventDefault();this.classList.add('dragover')"
-        ondragleave="this.classList.remove('dragover')"
-        ondrop="onDrop(event)">
-        <div class="upload-ico-wrap">
-          <svg viewBox="0 0 24 24"><use href="#icon-upload"/></svg>
+      <div style="width:100%;max-width:560px;display:flex;flex-direction:column;gap:14px;">
+        <!-- GOOGLE SHEETS -->
+        <div class="upload-box" style="padding:28px 32px;cursor:default;">
+          <div class="upload-ico-wrap" style="background:rgba(15,157,88,.1);">
+            <svg viewBox="0 0 24 24" style="fill:#0F9D58;width:28px;height:28px;"><path d="M19 3H5c-1.1 0-2 .9-2 2v14c0 1.1.9 2 2 2h14c1.1 0 2-.9 2-2V5c0-1.1-.9-2-2-2zm-7 3c1.93 0 3.5 1.57 3.5 3.5S13.93 13 12 13s-3.5-1.57-3.5-3.5S10.07 6 12 6zm7 13H5v-.23c0-.62.28-1.2.76-1.58C7.47 15.82 9.64 15 12 15s4.53.82 6.24 2.19c.48.38.76.97.76 1.58V19z"/></svg>
+          </div>
+          <h2 style="font-size:20px;margin-bottom:6px;">Connect Google Sheet</h2>
+          <p style="margin-bottom:14px;font-size:12.5px;">Sheet must be <strong>"Anyone with link can view"</strong>. Auto-refreshes every 5 minutes.</p>
+          <div style="display:flex;gap:8px;align-items:center;">
+            <input id="gs-url" type="text" placeholder="https://docs.google.com/spreadsheets/d/..."
+              style="flex:1;padding:9px 13px;border-radius:8px;border:1px solid var(--border);background:var(--bg2);color:var(--text);font-family:'DM Sans',sans-serif;font-size:12.5px;outline:none;"
+              onkeydown="if(event.key==='Enter') connectSheet()">
+            <button class="btn btn-mag" onclick="connectSheet()">
+              <svg width="13" height="13" viewBox="0 0 24 24" fill="currentColor"><path d="M17 7l-1.41 1.41L18.17 11H8v2h10.17l-2.58 2.58L17 17l5-5zM4 5h8V3H4c-1.1 0-2 .9-2 2v14c0 1.1.9 2 2 2h8v-2H4V5z"/></svg>
+              Connect
+            </button>
+          </div>
+          <div id="gs-status" style="margin-top:10px;font-size:11.5px;color:var(--muted);min-height:16px;"></div>
         </div>
-        <h2>Upload Your Excel File</h2>
-        <p>Drag & drop your <strong>Social_Media_Analytics_Dashboard.xlsx</strong> here, or click to browse. Dashboard generates instantly.</p>
-        <button class="btn btn-mag" style="pointer-events:none;margin:0 auto;">Browse File</button>
+        <!-- DIVIDER -->
+        <div style="display:flex;align-items:center;gap:10px;">
+          <div style="flex:1;height:1px;background:var(--border);"></div>
+          <span style="font-size:11px;color:var(--muted);font-weight:600;letter-spacing:1px;">OR UPLOAD FILE</span>
+          <div style="flex:1;height:1px;background:var(--border);"></div>
+        </div>
+        <!-- FILE UPLOAD -->
+        <div class="upload-box" id="drop-zone" style="padding:22px 32px;"
+          onclick="document.getElementById('file-input').click()"
+          ondragover="event.preventDefault();this.classList.add('dragover')"
+          ondragleave="this.classList.remove('dragover')"
+          ondrop="onDrop(event)">
+          <div class="upload-ico-wrap">
+            <svg viewBox="0 0 24 24"><use href="#icon-upload"/></svg>
+          </div>
+          <h2 style="font-size:18px;margin-bottom:6px;">Upload Excel File</h2>
+          <p style="margin-bottom:14px;font-size:12px;">Drag & drop your <strong>.xlsx</strong> file here, or click to browse.</p>
+          <button class="btn btn-ghost" style="pointer-events:none;margin:0 auto;font-size:12px;">Browse File</button>
+        </div>
+        <input type="file" id="file-input" accept=".xlsx,.xls,.csv" onchange="onFileInput(event)">
       </div>
-      <input type="file" id="file-input" accept=".xlsx,.xls,.csv" onchange="onFileInput(event)">
     </div>
 
     <!-- SEC 1: TOTAL OVERVIEW -->
@@ -497,6 +528,161 @@ function loadFile(file){
   rd.readAsArrayBuffer(file);
 }
 
+// ── GOOGLE SHEETS INTEGRATION ────────────────────────
+let gsRefreshTimer = null;
+let gsSheetId = null;
+let gsGid = '0';
+
+function extractSheetId(url){
+  // Extract spreadsheet ID from various Google Sheets URL formats
+  const m = url.match(/\/spreadsheets\/d\/([a-zA-Z0-9-_]+)/);
+  return m ? m[1] : null;
+}
+
+function extractGid(url){
+  // Extract sheet tab GID (gid=XXXXXX)
+  const m = url.match(/[#&?]gid=([0-9]+)/);
+  return m ? m[1] : '0';
+}
+
+function setGsStatus(msg, color='var(--muted)'){
+  const el = document.getElementById('gs-status');
+  el.innerHTML = msg;
+  el.style.color = color;
+}
+
+async function connectSheet(){
+  const url = document.getElementById('gs-url').value.trim();
+  if(!url){ setGsStatus('Please paste a Google Sheets URL.', 'var(--red-text)'); return; }
+
+  const id = extractSheetId(url);
+  if(!id){ setGsStatus('Invalid URL — make sure it\'s a Google Sheets link.', 'var(--red-text)'); return; }
+
+  gsSheetId = id;
+  gsGid = extractGid(url);
+
+  setGsStatus('⏳ Connecting to Google Sheet...', 'var(--muted)');
+  await fetchGoogleSheet();
+}
+
+async function fetchGoogleSheet(){
+  if(!gsSheetId) return;
+
+  // Use Google Sheets CSV export endpoint — works with public sheets, no API key needed
+  const csvUrl = `https://docs.google.com/spreadsheets/d/${gsSheetId}/export?format=csv&gid=${gsGid}`;
+
+  try{
+    const res = await fetch(csvUrl);
+    if(!res.ok) throw new Error('HTTP ' + res.status + ' — make sure sheet is public (Anyone with link can view)');
+    const text = await res.text();
+    parseCsvForGSheets(text);
+
+    if(!D.length){
+      setGsStatus('⚠️ Connected but no valid data rows found. Check column order.', 'orange');
+      return;
+    }
+
+    renderAll();
+    const now = new Date().toLocaleTimeString('en-GB', {hour:'2-digit', minute:'2-digit'});
+    setGsStatus(`✅ Connected — ${D.length} entries loaded. Last synced: ${now}. Auto-refreshes every 5 min.`, '#0F9D58');
+
+    // Save URL to localStorage for persistence
+    try{ localStorage.setItem('ct_gs_url', document.getElementById('gs-url').value.trim()); }catch(e){}
+
+    // Schedule auto-refresh every 5 minutes
+    if(gsRefreshTimer) clearInterval(gsRefreshTimer);
+    gsRefreshTimer = setInterval(silentRefresh, 5 * 60 * 1000);
+
+  } catch(err){
+    setGsStatus('❌ ' + err.message, 'var(--red-text)');
+  }
+}
+
+async function silentRefresh(){
+  if(!gsSheetId) return;
+  const csvUrl = `https://docs.google.com/spreadsheets/d/${gsSheetId}/export?format=csv&gid=${gsGid}`;
+  try{
+    const res = await fetch(csvUrl);
+    if(!res.ok) return;
+    const text = await res.text();
+    parseCsvForGSheets(text);
+    if(!D.length) return;
+    renderAll();
+    const now = new Date().toLocaleTimeString('en-GB', {hour:'2-digit', minute:'2-digit'});
+    setGsStatus(`✅ Connected — ${D.length} entries. Last synced: ${now}. Auto-refreshes every 5 min.`, '#0F9D58');
+  } catch(e){ /* silent fail */ }
+}
+
+function parseCsvForGSheets(csvText){
+  // Parse CSV into rows
+  const lines = csvText.split('\n');
+  const raw = lines.map(line => {
+    // Handle quoted fields
+    const cells = [];
+    let cur = '', inQ = false;
+    for(let i = 0; i < line.length; i++){
+      const c = line[i];
+      if(c==='"'){ inQ=!inQ; }
+      else if(c===','&&!inQ){ cells.push(cur.trim()); cur=''; }
+      else { cur+=c; }
+    }
+    cells.push(cur.trim());
+    return cells;
+  });
+
+  D = [];
+  for(const r of raw){
+    if(!r || !r[0]) continue;
+    // Try to parse first column as a date
+    const dateStr = r[0].replace(/"/g,'').trim();
+    let dt = null;
+
+    // Try various date formats
+    // DD/MM/YYYY, DD-MM-YYYY, YYYY-MM-DD, MM/DD/YYYY, "15 Jan 2025", etc.
+    const attempts = [
+      dateStr,
+      // DD/MM/YYYY → YYYY-MM-DD
+      dateStr.replace(/^(\d{1,2})[\/\-](\d{1,2})[\/\-](\d{4})$/, '$3-$2-$1'),
+      // MM/DD/YYYY → YYYY-MM-DD
+      dateStr.replace(/^(\d{1,2})[\/\-](\d{1,2})[\/\-](\d{4})$/, '$3-$1-$2'),
+    ];
+    for(const a of attempts){
+      const d = new Date(a);
+      if(!isNaN(d.getTime()) && d.getFullYear() >= 2020){ dt = d; break; }
+    }
+    if(!dt) continue;
+
+    const v = x => {
+      if(x===undefined||x===null||x===''||x==='-') return null;
+      const clean = String(x).replace(/"/g,'').replace(/[^0-9.-]/g,'');
+      const n = parseFloat(clean);
+      return isNaN(n) ? null : n;
+    };
+
+    D.push({
+      date:dt,
+      linkedin:v(r[1]), youtube:v(r[2]),
+      facebook_likes:v(r[3]), facebook_follows:v(r[4]),
+      instagram:v(r[5]), tiktok:v(r[6]), whatsapp:v(r[7]),
+      wa_mdcat:v(r[8]), wa_ecat:v(r[9]), wa_bcat:v(r[10]),
+    });
+  }
+  // Sort by date ascending
+  D.sort((a,b)=>a.date-b.date);
+}
+
+// ── RESTORE SAVED SHEET ON LOAD ──────────────────────
+window.addEventListener('load', ()=>{
+  try{
+    const saved = localStorage.getItem('ct_gs_url');
+    if(saved){
+      document.getElementById('gs-url').value = saved;
+      setGsStatus('⏳ Reconnecting to saved sheet...', 'var(--muted)');
+      setTimeout(connectSheet, 500);
+    }
+  }catch(e){}
+});
+
 function parseRows(raw){
   D = [];
   for(let r of raw){
@@ -535,6 +721,7 @@ const platColor = key => PLATS.find(p=>p.key===key)?.color || '#888';
 function renderAll(){
   document.getElementById('upload-section').style.display = 'none';
   document.getElementById('print-btn').style.display = 'flex';
+  document.getElementById('change-src-btn').style.display = 'flex';
 
   const last = D[D.length-1];
   const pb = document.getElementById('period-badge');
@@ -809,6 +996,24 @@ function renderMeeting(){
   ).join('');
 }
 
+// ── CHANGE SOURCE ────────────────────────────────────
+function changeSource(){
+  // Clear auto-refresh
+  if(gsRefreshTimer){ clearInterval(gsRefreshTimer); gsRefreshTimer=null; }
+  gsSheetId=null; gsGid='0';
+  D=[];
+  // Hide dashboard sections, show upload
+  ['sec-totals','sec-weekly','sec-monthly','sec-trends','sec-meeting'].forEach(id=>
+    document.getElementById(id).style.display='none'
+  );
+  document.getElementById('upload-section').style.display='flex';
+  document.getElementById('print-btn').style.display='none';
+  document.getElementById('change-src-btn').style.display='none';
+  document.getElementById('period-badge').style.display='none';
+  document.getElementById('gs-status').innerHTML='';
+  document.getElementById('tb-sub').textContent='Chaajao Technologies — Upload your Excel file to begin';
+}
+
 // ── NAVIGATION ───────────────────────────────────────
 function navTo(el, sec){
   const target=document.getElementById('sec-'+sec);
@@ -819,6 +1024,16 @@ function navTo(el, sec){
   }
   document.querySelectorAll('.sb-item').forEach(i=>i.classList.remove('active'));
   el.classList.add('active');
+}
+
+// ── MANUAL REFRESH ───────────────────────────────────
+async function manualRefresh(){
+  if(gsSheetId){
+    setGsStatus('⏳ Refreshing...', 'var(--muted)');
+    await fetchGoogleSheet();
+  } else {
+    showToast('No Google Sheet connected. Paste a URL first.');
+  }
 }
 
 // ── TOAST ────────────────────────────────────────────
