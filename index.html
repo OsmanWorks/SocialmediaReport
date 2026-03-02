@@ -568,17 +568,26 @@ async function connectSheet(){
 async function fetchGoogleSheet(){
   if(!gsSheetId) return;
 
-  // Use Google Sheets CSV export endpoint — works with public sheets, no API key needed
-  const csvUrl = `https://docs.google.com/spreadsheets/d/${gsSheetId}/export?format=csv&gid=${gsGid}`;
+  // Google Sheets public JSON feed — no API key, no CORS issues
+  // gviz/tq endpoint works for any "Anyone with link" public sheet
+  const jsonUrl = `https://docs.google.com/spreadsheets/d/${gsSheetId}/gviz/tq?tqx=out:json&gid=${gsGid}`;
 
   try{
-    const res = await fetch(csvUrl);
-    if(!res.ok) throw new Error('HTTP ' + res.status + ' — make sure sheet is public (Anyone with link can view)');
+    const res = await fetch(jsonUrl);
+    if(!res.ok) throw new Error('Could not reach Google Sheets (HTTP ' + res.status + ')');
     const text = await res.text();
-    parseCsvForGSheets(text);
+
+    // Response is wrapped: google.visualization.Query.setResponse({...});
+    const jsonStr = text.match(/google\.visualization\.Query\.setResponse\(([\s\S]*)\)/);
+    if(!jsonStr) throw new Error('Unexpected response from Google Sheets. Is the sheet public?');
+
+    const json = JSON.parse(jsonStr[1]);
+    if(json.status === 'error') throw new Error(json.errors?.[0]?.message || 'Google Sheets error');
+
+    parseGvizResponse(json);
 
     if(!D.length){
-      setGsStatus('⚠️ Connected but no valid data rows found. Check column order.', 'orange');
+      setGsStatus('⚠️ Connected but no valid data rows found. Check that Column A has dates (DD/MM/YYYY) and data starts from row 2.', 'orange');
       return;
     }
 
@@ -586,10 +595,8 @@ async function fetchGoogleSheet(){
     const now = new Date().toLocaleTimeString('en-GB', {hour:'2-digit', minute:'2-digit'});
     setGsStatus(`✅ Connected — ${D.length} entries loaded. Last synced: ${now}. Auto-refreshes every 5 min.`, '#0F9D58');
 
-    // Save URL to localStorage for persistence
     try{ localStorage.setItem('ct_gs_url', document.getElementById('gs-url').value.trim()); }catch(e){}
 
-    // Schedule auto-refresh every 5 minutes
     if(gsRefreshTimer) clearInterval(gsRefreshTimer);
     gsRefreshTimer = setInterval(silentRefresh, 5 * 60 * 1000);
 
@@ -600,75 +607,78 @@ async function fetchGoogleSheet(){
 
 async function silentRefresh(){
   if(!gsSheetId) return;
-  const csvUrl = `https://docs.google.com/spreadsheets/d/${gsSheetId}/export?format=csv&gid=${gsGid}`;
+  const jsonUrl = `https://docs.google.com/spreadsheets/d/${gsSheetId}/gviz/tq?tqx=out:json&gid=${gsGid}`;
   try{
-    const res = await fetch(csvUrl);
+    const res = await fetch(jsonUrl);
     if(!res.ok) return;
     const text = await res.text();
-    parseCsvForGSheets(text);
+    const jsonStr = text.match(/google\.visualization\.Query\.setResponse\(([\s\S]*)\)/);
+    if(!jsonStr) return;
+    const json = JSON.parse(jsonStr[1]);
+    if(json.status === 'error') return;
+    parseGvizResponse(json);
     if(!D.length) return;
     renderAll();
     const now = new Date().toLocaleTimeString('en-GB', {hour:'2-digit', minute:'2-digit'});
     setGsStatus(`✅ Connected — ${D.length} entries. Last synced: ${now}. Auto-refreshes every 5 min.`, '#0F9D58');
-  } catch(e){ /* silent fail */ }
+  } catch(e){ /* silent */ }
 }
 
-function parseCsvForGSheets(csvText){
-  // Parse CSV into rows
-  const lines = csvText.split('\n');
-  const raw = lines.map(line => {
-    // Handle quoted fields
-    const cells = [];
-    let cur = '', inQ = false;
-    for(let i = 0; i < line.length; i++){
-      const c = line[i];
-      if(c==='"'){ inQ=!inQ; }
-      else if(c===','&&!inQ){ cells.push(cur.trim()); cur=''; }
-      else { cur+=c; }
-    }
-    cells.push(cur.trim());
-    return cells;
-  });
-
+function parseGvizResponse(json){
+  // Google Visualization API returns rows with typed cell values
+  const rows = json.table?.rows || [];
   D = [];
-  for(const r of raw){
-    if(!r || !r[0]) continue;
-    // Try to parse first column as a date
-    const dateStr = r[0].replace(/"/g,'').trim();
+
+  for(const row of rows){
+    const c = row.c || [];
+    if(!c || !c[0] || c[0].v === null) continue;
+
+    // Column A: date — gviz returns Date objects as "Date(YYYY,M,D)" strings or actual date
     let dt = null;
-
-    // Try various date formats
-    // DD/MM/YYYY, DD-MM-YYYY, YYYY-MM-DD, MM/DD/YYYY, "15 Jan 2025", etc.
-    const attempts = [
-      dateStr,
-      // DD/MM/YYYY → YYYY-MM-DD
-      dateStr.replace(/^(\d{1,2})[\/\-](\d{1,2})[\/\-](\d{4})$/, '$3-$2-$1'),
-      // MM/DD/YYYY → YYYY-MM-DD
-      dateStr.replace(/^(\d{1,2})[\/\-](\d{1,2})[\/\-](\d{4})$/, '$3-$1-$2'),
-    ];
-    for(const a of attempts){
-      const d = new Date(a);
-      if(!isNaN(d.getTime()) && d.getFullYear() >= 2020){ dt = d; break; }
+    const rawDate = c[0].v;
+    if(typeof rawDate === 'string'){
+      // "Date(2025,0,15)" → month is 0-indexed
+      const dm = rawDate.match(/Date\((\d+),(\d+),(\d+)\)/);
+      if(dm) dt = new Date(+dm[1], +dm[2], +dm[3]);
+      else {
+        // Try plain string formats: DD/MM/YYYY, YYYY-MM-DD, etc.
+        const s = rawDate.trim();
+        const fmts = [
+          s,
+          s.replace(/^(\d{1,2})[\/\-](\d{1,2})[\/\-](\d{4})$/, '$3-$2-$1'),
+        ];
+        for(const f of fmts){
+          const d = new Date(f);
+          if(!isNaN(d.getTime()) && d.getFullYear() >= 2020){ dt = d; break; }
+        }
+      }
+    } else if(rawDate instanceof Date){
+      dt = rawDate;
     }
-    if(!dt) continue;
 
-    const v = x => {
-      if(x===undefined||x===null||x===''||x==='-') return null;
-      const clean = String(x).replace(/"/g,'').replace(/[^0-9.-]/g,'');
-      const n = parseFloat(clean);
+    if(!dt || dt.getFullYear() < 2020) continue;
+
+    const v = cell => {
+      if(!cell || cell.v === null || cell.v === undefined) return null;
+      const n = parseFloat(String(cell.v).replace(/[^0-9.-]/g,''));
       return isNaN(n) ? null : n;
     };
 
     D.push({
-      date:dt,
-      linkedin:v(r[1]), youtube:v(r[2]),
-      facebook_likes:v(r[3]), facebook_follows:v(r[4]),
-      instagram:v(r[5]), tiktok:v(r[6]), whatsapp:v(r[7]),
-      wa_mdcat:v(r[8]), wa_ecat:v(r[9]), wa_bcat:v(r[10]),
+      date: dt,
+      linkedin:        v(c[1]),
+      youtube:         v(c[2]),
+      facebook_likes:  v(c[3]),
+      facebook_follows:v(c[4]),
+      instagram:       v(c[5]),
+      tiktok:          v(c[6]),
+      whatsapp:        v(c[7]),
+      wa_mdcat:        v(c[8]),
+      wa_ecat:         v(c[9]),
+      wa_bcat:         v(c[10]),
     });
   }
-  // Sort by date ascending
-  D.sort((a,b)=>a.date-b.date);
+  D.sort((a,b) => a.date - b.date);
 }
 
 // ── RESTORE SAVED SHEET ON LOAD ──────────────────────
