@@ -587,7 +587,10 @@ async function fetchGoogleSheet(){
     parseGvizResponse(json);
 
     if(!D.length){
-      setGsStatus('⚠️ Connected but no valid data rows found. Check that Column A has dates (DD/MM/YYYY) and data starts from row 2.', 'orange');
+      // Show what the first row actually looked like to help debug
+      const firstRow = json.table?.rows?.[0]?.c;
+      const sample = firstRow ? JSON.stringify(firstRow.slice(0,3)) : 'empty';
+      setGsStatus(`⚠️ No valid rows found. First row data: ${sample} — Make sure Column A has dates and numbers are in columns B–K.`, 'orange');
       return;
     }
 
@@ -625,47 +628,76 @@ async function silentRefresh(){
 }
 
 function parseGvizResponse(json){
-  // Google Visualization API returns rows with typed cell values
   const rows = json.table?.rows || [];
+  const cols = json.table?.cols || [];
   D = [];
 
   for(const row of rows){
     const c = row.c || [];
-    if(!c || !c[0] || c[0].v === null) continue;
+    if(!c || !c[0]) continue;
 
-    // Column A: date — gviz returns Date objects as "Date(YYYY,M,D)" strings or actual date
+    const raw0 = c[0];
+    if(!raw0 || raw0.v === null || raw0.v === undefined) continue;
+
+    // ── Parse date from Column A ──────────────────────
+    // GViz can return dates in multiple ways:
+    // 1. Already a "Date(YYYY,M,D)" string  → typed date column
+    // 2. A plain string like "15/01/2025", "2025-01-15", "15 Jan 2025" → text column
+    // 3. A number (Excel serial date) → numeric column
+    // We also check .f (formatted value) which often has the human-readable date
+
     let dt = null;
-    const rawDate = c[0].v;
-    if(typeof rawDate === 'string'){
-      // "Date(2025,0,15)" → month is 0-indexed
-      const dm = rawDate.match(/Date\((\d+),(\d+),(\d+)\)/);
-      if(dm) dt = new Date(+dm[1], +dm[2], +dm[3]);
-      else {
-        // Try plain string formats: DD/MM/YYYY, YYYY-MM-DD, etc.
-        const s = rawDate.trim();
-        const fmts = [
-          s,
-          s.replace(/^(\d{1,2})[\/\-](\d{1,2})[\/\-](\d{4})$/, '$3-$2-$1'),
-        ];
-        for(const f of fmts){
-          const d = new Date(f);
-          if(!isNaN(d.getTime()) && d.getFullYear() >= 2020){ dt = d; break; }
-        }
-      }
-    } else if(rawDate instanceof Date){
-      dt = rawDate;
+
+    const tryStr = s => {
+      if(!s) return null;
+      s = String(s).trim();
+      // Skip obvious header/label rows
+      if(/date|week|month|platform|linkedin|youtube/i.test(s)) return null;
+
+      // "Date(2025,0,15)" — gviz typed date, month is 0-indexed
+      let m = s.match(/^Date\((\d{4}),(\d{1,2}),(\d{1,2})\)$/);
+      if(m) return new Date(+m[1], +m[2], +m[3]);
+
+      // DD/MM/YYYY or DD-MM-YYYY
+      m = s.match(/^(\d{1,2})[\/\-\.](\d{1,2})[\/\-\.](\d{4})$/);
+      if(m){ const d=new Date(+m[3],+m[2]-1,+m[1]); if(!isNaN(d))return d; }
+
+      // YYYY-MM-DD or YYYY/MM/DD
+      m = s.match(/^(\d{4})[\/\-](\d{1,2})[\/\-](\d{1,2})$/);
+      if(m){ const d=new Date(+m[1],+m[2]-1,+m[3]); if(!isNaN(d))return d; }
+
+      // MM/DD/YYYY
+      m = s.match(/^(\d{1,2})\/(\d{1,2})\/(\d{4})$/);
+      if(m){ const d=new Date(+m[3],+m[1]-1,+m[2]); if(!isNaN(d))return d; }
+
+      // "15 Jan 2025" or "Jan 15, 2025"
+      const d2 = new Date(s);
+      if(!isNaN(d2.getTime()) && d2.getFullYear()>=2020) return d2;
+
+      return null;
+    };
+
+    // Try .v first, then .f (formatted display value)
+    dt = tryStr(raw0.v) || tryStr(raw0.f);
+
+    // If .v is a number, try Excel serial date
+    if(!dt && typeof raw0.v === 'number'){
+      // Excel serial: days since 1899-12-30
+      const d = new Date(Math.round((raw0.v - 25569) * 86400 * 1000));
+      if(!isNaN(d.getTime()) && d.getFullYear() >= 2020) dt = d;
     }
 
     if(!dt || dt.getFullYear() < 2020) continue;
 
     const v = cell => {
       if(!cell || cell.v === null || cell.v === undefined) return null;
+      if(typeof cell.v === 'number') return cell.v;
       const n = parseFloat(String(cell.v).replace(/[^0-9.-]/g,''));
       return isNaN(n) ? null : n;
     };
 
     D.push({
-      date: dt,
+      date:            dt,
       linkedin:        v(c[1]),
       youtube:         v(c[2]),
       facebook_likes:  v(c[3]),
@@ -678,6 +710,7 @@ function parseGvizResponse(json){
       wa_bcat:         v(c[10]),
     });
   }
+
   D.sort((a,b) => a.date - b.date);
 }
 
