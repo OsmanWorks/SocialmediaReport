@@ -12,14 +12,14 @@
   --red:#D32F2F; --red2:#B71C1C; --red-glow:rgba(211,47,47,.12);
   --bg:#0D0D10; --bg2:#13131A; --bg3:#1A1A24; --bg4:#20202C;
   --border:rgba(255,255,255,.08); --text:#F0F0F0; --text2:#9090A8; --muted:#55556A;
-  --green:#22C55E; --red-text:#EF4444; --amber:#F59E0B;
+  --green:#22C55E; --red-text:#EF4444;
   --sidebar:250px;
 }
 *{margin:0;padding:0;box-sizing:border-box;}
 body{font-family:'Inter',sans-serif;background:var(--bg);color:var(--text);display:flex;height:100vh;overflow:hidden;}
 
-/* SIDEBAR */
-#sidebar{width:var(--sidebar);background:var(--bg2);border-right:1px solid var(--border);display:flex;flex-direction:column;flex-shrink:0;height:100vh;overflow:hidden;}
+/* ── SIDEBAR ── */
+#sidebar{width:var(--sidebar);background:var(--bg2);border-right:1px solid var(--border);display:flex;flex-direction:column;flex-shrink:0;height:100vh;}
 .sb-logo{padding:22px 20px 16px;border-bottom:1px solid var(--border);}
 .sb-logo-box{width:40px;height:40px;background:var(--red);border-radius:10px;display:flex;align-items:center;justify-content:center;font-family:'Bebas Neue',sans-serif;font-size:20px;color:#fff;box-shadow:0 4px 16px rgba(211,47,47,.4);margin-bottom:10px;}
 .sb-name{font-family:'Bebas Neue',sans-serif;font-size:18px;letter-spacing:1.5px;}
@@ -34,10 +34,10 @@ body{font-family:'Inter',sans-serif;background:var(--bg);color:var(--text);displ
 .sb-foot-info{font-size:11px;color:var(--muted);}
 .sb-foot-badge{display:inline-block;margin-top:5px;background:var(--red-glow);border:1px solid rgba(211,47,47,.25);color:#FF7070;font-size:10px;font-weight:700;padding:2px 10px;border-radius:20px;}
 
-/* MAIN */
+/* ── MAIN ── */
 #main{flex:1;display:flex;flex-direction:column;height:100vh;overflow:hidden;}
 
-/* TOPBAR */
+/* ── TOPBAR ── */
 #topbar{height:58px;background:var(--bg2);border-bottom:1px solid var(--border);display:flex;align-items:center;justify-content:space-between;padding:0 26px;flex-shrink:0;}
 .tb-title{font-family:'Bebas Neue',sans-serif;font-size:23px;letter-spacing:1.5px;}
 .tb-sub{font-size:11px;color:var(--muted);margin-top:1px;}
@@ -49,10 +49,10 @@ body{font-family:'Inter',sans-serif;background:var(--bg);color:var(--text);displ
 .btn-red:hover{background:var(--red2);}
 .period-badge{font-size:11px;color:var(--muted);background:var(--bg3);border:1px solid var(--border);border-radius:6px;padding:5px 12px;}
 
-/* SCROLL AREA */
-#scroll-area{flex:1;overflow-y:auto;padding:22px 26px;display:flex;flex-direction:column;gap:26px;}
+/* ── SCROLL AREA ── */
+#scroll-area{flex:1;overflow-y:auto;padding:22px 26px;display:flex;flex-direction:column;gap:28px;}
 
-/* UPLOAD */
+/* ── UPLOAD ── */
 #upload-section{display:flex;align-items:center;justify-content:center;min-height:380px;}
 .upload-box{background:var(--bg2);border:2px dashed rgba(255,255,255,.1);border-radius:16px;padding:52px 70px;text-align:center;cursor:pointer;transition:all .2s;max-width:500px;width:100%;}
 .upload-box:hover,.upload-box.dragover{border-color:var(--red);background:var(--red-glow);}
@@ -61,31 +61,31 @@ body{font-family:'Inter',sans-serif;background:var(--bg);color:var(--text);displ
 .upload-box p{font-size:13px;color:var(--text2);line-height:1.6;margin-bottom:20px;}
 #file-input{display:none;}
 
-/* SECTION */
+/* ── SECTIONS ── */
 .dash-sec{display:flex;flex-direction:column;gap:14px;}
 .sec-hd{display:flex;align-items:center;justify-content:space-between;}
 .sec-title{font-family:'Bebas Neue',sans-serif;font-size:21px;letter-spacing:1px;display:flex;align-items:center;gap:10px;}
 .sec-title::before{content:'';width:4px;height:18px;background:var(--red);border-radius:2px;display:block;}
 .sec-tag{font-size:10px;font-weight:700;letter-spacing:.8px;text-transform:uppercase;padding:3px 10px;border-radius:20px;background:var(--red-glow);border:1px solid rgba(211,47,47,.25);color:#FF7070;}
 
-/* KPI CARDS */
-.kpi-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(155px,1fr));gap:11px;}
-.kpi-card{background:var(--bg2);border:1px solid var(--border);border-radius:11px;padding:15px 17px;position:relative;overflow:hidden;transition:border-color .15s;}
-.kpi-card:hover{border-color:rgba(211,47,47,.3);}
-.kpi-pdot{position:absolute;top:12px;right:12px;width:7px;height:7px;border-radius:50%;}
-.kpi-plat{font-size:10px;font-weight:700;letter-spacing:1px;text-transform:uppercase;color:var(--muted);margin-bottom:7px;display:flex;align-items:center;gap:5px;}
-.kpi-val{font-family:'Bebas Neue',sans-serif;font-size:32px;letter-spacing:.5px;line-height:1;color:var(--text);margin-bottom:5px;}
-.kpi-chg{font-size:12px;font-weight:600;display:flex;align-items:center;gap:4px;}
+/* ── TOTAL BANNER ── */
+.total-banner{background:linear-gradient(135deg,rgba(211,47,47,.14) 0%,rgba(211,47,47,.03) 100%);border:1px solid rgba(211,47,47,.22);border-radius:11px;padding:18px 24px;display:flex;align-items:center;justify-content:space-around;flex-wrap:wrap;gap:16px;}
+.tot-item{text-align:center;min-width:110px;}
+.tot-lbl{font-size:9.5px;font-weight:700;letter-spacing:1px;text-transform:uppercase;color:var(--muted);margin-bottom:5px;}
+.tot-num{font-family:'Bebas Neue',sans-serif;font-size:30px;letter-spacing:1px;color:#FF7070;}
+.tot-chg{font-size:11px;font-weight:600;margin-top:3px;}
 .up{color:var(--green);} .dn{color:var(--red-text);} .neu{color:var(--muted);}
 
-/* TOTAL BANNER */
-.total-banner{background:linear-gradient(135deg,rgba(211,47,47,.14) 0%,rgba(211,47,47,.03) 100%);border:1px solid rgba(211,47,47,.22);border-radius:11px;padding:16px 22px;display:flex;align-items:center;justify-content:space-around;flex-wrap:wrap;gap:14px;}
-.tot-item{text-align:center;}
-.tot-lbl{font-size:9.5px;font-weight:700;letter-spacing:1px;text-transform:uppercase;color:var(--muted);margin-bottom:4px;}
-.tot-num{font-family:'Bebas Neue',sans-serif;font-size:28px;letter-spacing:1px;color:#FF7070;}
-.tot-chg{font-size:11px;font-weight:600;margin-top:2px;}
+/* ── KPI GRID ── */
+.kpi-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(150px,1fr));gap:11px;}
+.kpi-card{background:var(--bg2);border:1px solid var(--border);border-radius:11px;padding:15px 17px;position:relative;overflow:hidden;transition:border-color .15s;}
+.kpi-card:hover{border-color:rgba(211,47,47,.3);}
+.kpi-dot{position:absolute;top:12px;right:12px;width:7px;height:7px;border-radius:50%;}
+.kpi-plat{font-size:10px;font-weight:700;letter-spacing:1px;text-transform:uppercase;color:var(--muted);margin-bottom:7px;display:flex;align-items:center;gap:5px;}
+.kpi-val{font-family:'Bebas Neue',sans-serif;font-size:32px;letter-spacing:.5px;line-height:1;color:var(--text);margin-bottom:5px;}
+.kpi-chg{font-size:12px;font-weight:600;}
 
-/* CLEAN COMPARISON TABLE */
+/* ── TABLE ── */
 .tbl-wrap{background:var(--bg2);border:1px solid var(--border);border-radius:12px;overflow:hidden;}
 .ctbl{width:100%;border-collapse:collapse;}
 .ctbl thead tr{background:var(--red);}
@@ -95,19 +95,19 @@ body{font-family:'Inter',sans-serif;background:var(--bg);color:var(--text);displ
 .ctbl tbody tr:last-child{border-bottom:none;}
 .ctbl tbody tr:hover{background:var(--bg3);}
 .ctbl tbody tr.grand-total{background:rgba(211,47,47,.07);border-top:2px solid rgba(211,47,47,.28);}
-.ctbl td{padding:11px 16px;font-size:13px;color:var(--text2);text-align:center;vertical-align:middle;}
+.ctbl td{padding:11px 16px;font-size:13px;color:var(--text);text-align:center;vertical-align:middle;}
 .ctbl td.plat-col{text-align:left;}
 .plat-cell{display:flex;align-items:center;gap:9px;}
 .plat-dot{width:9px;height:9px;border-radius:50%;flex-shrink:0;}
 .plat-name{font-weight:600;color:var(--text);font-size:13px;}
-.num-cell{font-weight:600;color:var(--text);font-size:13px;}
-.chg-col{background:rgba(255,255,255,.02);min-width:100px;}
+.num-cell{font-weight:600;font-size:13px;}
+.chg-col{background:rgba(255,255,255,.02);}
 .chg-val{font-size:12px;font-weight:700;}
-.chg-pct{font-size:10.5px;opacity:.75;margin-left:3px;}
+.chg-pct{font-size:10px;opacity:.7;margin-left:2px;}
+/* monthly sub-diff */
+.m-num{font-weight:600;font-size:13px;color:var(--text);}
+.m-diff{font-size:10.5px;font-weight:700;display:block;margin-top:2px;}
 
-/* MONTHLY TABLE — numbers small with diff below */
-.month-num{font-weight:600;color:var(--text);font-size:13px;}
-.month-diff{font-size:10.5px;font-weight:700;display:block;margin-top:1px;}
 
 /* CHARTS */
 .chart-row{display:grid;grid-template-columns:1.7fr 1fr;gap:13px;}
@@ -118,7 +118,6 @@ body{font-family:'Inter',sans-serif;background:var(--bg);color:var(--text);displ
 .chart-box{position:relative;height:215px;}
 .chart-sel{background:var(--bg3);border:1px solid var(--border);color:var(--text);font-family:'Inter',sans-serif;font-size:11px;font-weight:600;border-radius:6px;padding:4px 8px;cursor:pointer;outline:none;}
 .chart-sel option{background:var(--bg3);}
-
 /* MEETING */
 .meeting-card{background:linear-gradient(135deg,var(--bg2) 0%,rgba(211,47,47,.05) 100%);border:1px solid rgba(211,47,47,.18);border-radius:12px;padding:20px 24px;}
 .mtg-top{display:flex;align-items:center;gap:12px;margin-bottom:16px;}
@@ -131,23 +130,62 @@ body{font-family:'Inter',sans-serif;background:var(--bg);color:var(--text);displ
 .mp-txt{font-size:12.5px;color:var(--text2);line-height:1.55;}
 .mp-txt b{color:var(--text);}
 
-/* PRINT */
+/* ── PRINT ── */
 @media print{
-  body{background:#fff!important;color:#111!important;height:auto!important;overflow:visible!important;}
+  @page{size:A4 landscape;margin:10mm 8mm;}
+  body{background:#fff!important;color:#111!important;height:auto!important;overflow:visible!important;display:block!important;}
   #sidebar{display:none!important;}
-  #main{height:auto!important;overflow:visible!important;}
-  #topbar .btn{display:none!important;}
-  #scroll-area{overflow:visible!important;height:auto!important;padding:14px!important;}
+  #main{height:auto!important;overflow:visible!important;display:block!important;}
+  #topbar{display:none!important;}
+  #scroll-area{overflow:visible!important;height:auto!important;padding:0!important;display:block!important;}
   #upload-section{display:none!important;}
-  .tbl-wrap,.chart-card,.kpi-card,.meeting-card,.total-banner,.dash-sec{background:#f8f9fa!important;border:1px solid #ddd!important;}
-  .ctbl thead tr{background:var(--red)!important;-webkit-print-color-adjust:exact;print-color-adjust:exact;}
-  .ctbl td,.ctbl th,.kpi-val,.num-cell,.plat-name,.month-num{color:#111!important;}
-  .up{color:#16a34a!important;}.dn{color:#dc2626!important;}
-  .tb-sub,.sec-tag,.sb-foot-badge{color:#555!important;}
-  .dash-sec{break-inside:avoid;}
+  .print-header{display:flex!important;}
+  /* Hide ALL sections by default, only show 3 */
+  .dash-sec{display:none!important;}
+  #sec-totals{display:block!important;page-break-inside:avoid;margin-bottom:14px!important;}
+  #sec-weekly{display:block!important;page-break-inside:avoid;margin-bottom:14px!important;}
+  #sec-monthly{display:block!important;page-break-inside:avoid;margin-bottom:14px!important;}
+  .sec-hd{margin-bottom:5px!important;}
+  .sec-tag{display:none!important;}
+  .sec-title{color:#111!important;font-size:15px!important;}
+  .sec-title::before{background:#D32F2F!important;-webkit-print-color-adjust:exact;print-color-adjust:exact;}
+  .total-banner{background:#fff3f3!important;border:1px solid #ffcdd2!important;border-radius:3px!important;padding:10px 14px!important;margin-bottom:8px!important;display:flex!important;flex-wrap:wrap!important;-webkit-print-color-adjust:exact;print-color-adjust:exact;}
+  .tot-item{min-width:90px!important;padding:3px 8px!important;}
+  .tot-lbl{color:#555!important;font-size:9px!important;}
+  .tot-num{color:#D32F2F!important;font-size:20px!important;-webkit-print-color-adjust:exact;print-color-adjust:exact;}
+  .tot-chg{font-size:10px!important;}
+  .kpi-grid{display:grid!important;grid-template-columns:repeat(5,1fr)!important;gap:6px!important;}
+  .kpi-card{background:#f9f9f9!important;border:1px solid #ddd!important;border-radius:3px!important;padding:8px 10px!important;}
+  .kpi-dot{-webkit-print-color-adjust:exact;print-color-adjust:exact;}
+  .kpi-plat{color:#555!important;font-size:9px!important;}
+  .kpi-val{color:#111!important;font-size:22px!important;}
+  .kpi-chg{font-size:10px!important;}
+  .tbl-wrap{background:#fff!important;border:1px solid #ccc!important;border-radius:3px!important;overflow:visible!important;}
+  .ctbl thead tr{background:#D32F2F!important;-webkit-print-color-adjust:exact;print-color-adjust:exact;}
+  .ctbl thead th{color:#fff!important;padding:7px 9px!important;font-size:10px!important;}
+  .ctbl td{color:#111!important;padding:7px 9px!important;font-size:11px!important;background:#fff!important;}
+  .ctbl tbody tr{border-bottom:1px solid #eee!important;}
+  .ctbl tbody tr:hover{background:#fff!important;}
+  .ctbl tbody tr.grand-total{background:#fff3f3!important;-webkit-print-color-adjust:exact;print-color-adjust:exact;}
+  .ctbl tbody tr.grand-total td{color:#111!important;}
+  .plat-name{color:#111!important;}
+  .num-cell{color:#111!important;}
+  .m-num{color:#111!important;}
+  .plat-dot{-webkit-print-color-adjust:exact;print-color-adjust:exact;}
+  .up,.chg-val.up,.m-diff.up,.tot-chg.up,.kpi-chg.up{color:#16a34a!important;}
+  .dn,.chg-val.dn,.m-diff.dn,.tot-chg.dn,.kpi-chg.dn{color:#dc2626!important;}
+  .neu,.chg-val.neu,.m-diff.neu,.tot-chg.neu,.kpi-chg.neu{color:#666!important;}
 }
 
-/* TOAST */
+/* ── PRINT HEADER (hidden on screen) ── */
+.print-header{display:none;align-items:center;justify-content:space-between;padding-bottom:12px;border-bottom:2px solid #D32F2F;margin-bottom:16px;}
+.ph-logo{display:flex;align-items:center;gap:12px;}
+.ph-box{width:36px;height:36px;background:#D32F2F;border-radius:8px;display:flex;align-items:center;justify-content:center;font-family:'Bebas Neue',sans-serif;font-size:18px;color:#fff;}
+.ph-name{font-family:'Bebas Neue',sans-serif;font-size:22px;letter-spacing:1.5px;color:#111;}
+.ph-sub{font-size:10px;color:#666;letter-spacing:.5px;text-transform:uppercase;}
+.ph-date{font-size:11px;color:#666;text-align:right;}
+
+/* ── TOAST ── */
 #toast{position:fixed;bottom:18px;right:18px;background:var(--bg3);border:1px solid var(--border);border-radius:8px;padding:10px 16px;font-size:13px;color:var(--text);display:none;align-items:center;gap:8px;z-index:999;box-shadow:0 8px 28px rgba(0,0,0,.5);}
 </style>
 </head>
@@ -162,17 +200,18 @@ body{font-family:'Inter',sans-serif;background:var(--bg);color:var(--text);displ
   </div>
   <div class="sb-nav">
     <div class="sb-lbl">Reports</div>
-    <a class="sb-item active" onclick="navTo(this,'totals')"><span class="ico">📊</span> Total Overview</a>
-    <a class="sb-item" onclick="navTo(this,'weekly')"><span class="ico">📅</span> Weekly Comparison</a>
-    <a class="sb-item" onclick="navTo(this,'monthly')"><span class="ico">📆</span> Monthly Analysis</a>
-    <a class="sb-item" onclick="navTo(this,'trends')"><span class="ico">📈</span> Growth Trends</a>
-    <a class="sb-item" onclick="navTo(this,'meeting')"><span class="ico">🗣️</span> Meeting Summary</a>
+    <a class="sb-item active"  onclick="navTo(this,'totals')">  <span class="ico">📊</span> Total Overview</a>
+    <a class="sb-item"         onclick="navTo(this,'weekly')">  <span class="ico">📅</span> Weekly Comparison</a>
+    <a class="sb-item"         onclick="navTo(this,'monthly')"> <span class="ico">📆</span> Monthly Analysis</a>
     <div class="sb-lbl">Actions</div>
-    <a class="sb-item" onclick="document.getElementById('file-input').click()"><span class="ico">📂</span> Upload New File</a>
-    <a class="sb-item" onclick="window.print()"><span class="ico">🖨️</span> Print / Save PDF</a>
+    <a class="sb-item"         onclick="navTo(this,'trends')"><span class="ico">📈</span> Growth Trends</a>
+    <a class="sb-item"         onclick="navTo(this,'meeting')"><span class="ico">🗣️</span> Meeting Summary</a>
+    <div class="sb-lbl">Actions</div>
+    <a class="sb-item"         onclick="document.getElementById('file-input').click()"><span class="ico">📂</span> Upload New File</a>
+    <a class="sb-item"         onclick="window.print()">        <span class="ico">🖨️</span> Print / Save PDF</a>
   </div>
   <div class="sb-foot">
-    <div class="sb-foot-info" id="sb-info">No data loaded</div>
+    <div class="sb-foot-info"  id="sb-info">No data loaded</div>
     <div class="sb-foot-badge" id="sb-date">Upload file to start</div>
   </div>
 </div>
@@ -187,11 +226,23 @@ body{font-family:'Inter',sans-serif;background:var(--bg);color:var(--text);displ
     <div class="tb-right">
       <span class="period-badge" id="period-badge" style="display:none"></span>
       <button class="btn btn-ghost" onclick="document.getElementById('file-input').click()">📂 Upload Excel</button>
-      <button class="btn btn-red" onclick="window.print()" id="print-btn" style="display:none">🖨️ Print / PDF</button>
+      <button class="btn btn-red"   onclick="window.print()" id="print-btn" style="display:none">🖨️ Print / PDF</button>
     </div>
   </div>
 
   <div id="scroll-area">
+
+    <!-- PRINT-ONLY HEADER -->
+    <div class="print-header" id="print-header">
+      <div class="ph-logo">
+        <div class="ph-box">CT</div>
+        <div>
+          <div class="ph-name">CHAAJAO TECHNOLOGIES</div>
+          <div class="ph-sub">Social Media Analytics Report</div>
+        </div>
+      </div>
+      <div class="ph-date" id="ph-date"></div>
+    </div>
 
     <!-- UPLOAD -->
     <div id="upload-section">
@@ -208,35 +259,37 @@ body{font-family:'Inter',sans-serif;background:var(--bg);color:var(--text);displ
       <input type="file" id="file-input" accept=".xlsx,.xls,.csv" onchange="onFileInput(event)">
     </div>
 
-    <!-- SEC 1: TOTALS -->
+    <!-- ════ SEC 1: TOTAL OVERVIEW ════ -->
     <div id="sec-totals" class="dash-sec" style="display:none">
       <div class="sec-hd">
         <div class="sec-title">Total Overview</div>
         <span class="sec-tag" id="snapshot-tag">Latest Snapshot</span>
       </div>
+      <!-- big numbers banner -->
       <div class="total-banner" id="total-banner"></div>
+      <!-- per-platform KPI cards -->
       <div class="kpi-grid" id="kpi-grid"></div>
     </div>
 
-    <!-- SEC 2: WEEKLY -->
+    <!-- ════ SEC 2: WEEKLY COMPARISON ════ -->
     <div id="sec-weekly" class="dash-sec" style="display:none">
       <div class="sec-hd">
         <div class="sec-title">Weekly Breakdown</div>
-        <span class="sec-tag">Last 3 Weeks</span>
+        <span class="sec-tag">Latest 3 Entries</span>
       </div>
       <div class="tbl-wrap">
         <table class="ctbl">
-          <thead><tr id="weekly-head"></tr></thead>
-          <tbody id="weekly-body"></tbody>
+          <thead><tr id="w-head"></tr></thead>
+          <tbody id="w-body"></tbody>
         </table>
       </div>
     </div>
 
-    <!-- SEC 3: MONTHLY -->
+    <!-- ════ SEC 3: MONTHLY ANALYSIS ════ -->
     <div id="sec-monthly" class="dash-sec" style="display:none">
       <div class="sec-hd">
         <div class="sec-title">Monthly Analysis</div>
-        <span class="sec-tag">Month-over-Month</span>
+        <span class="sec-tag">Last 6 Months</span>
       </div>
       <div class="tbl-wrap">
         <table class="ctbl">
@@ -252,15 +305,16 @@ body{font-family:'Inter',sans-serif;background:var(--bg);color:var(--text);displ
               <th>WA MDCAT</th>
               <th>WA ECAT</th>
               <th>WA BCAT</th>
-              <th>Total Change</th>
+              <th>Net Change</th>
             </tr>
           </thead>
-          <tbody id="monthly-body"></tbody>
+          <tbody id="m-body"></tbody>
         </table>
       </div>
     </div>
 
-    <!-- SEC 4: TRENDS -->
+
+    <!-- SEC 4: TRENDS (screen only) -->
     <div id="sec-trends" class="dash-sec" style="display:none">
       <div class="sec-hd">
         <div class="sec-title">Growth Trends</div>
@@ -292,7 +346,7 @@ body{font-family:'Inter',sans-serif;background:var(--bg);color:var(--text);displ
       </div>
     </div>
 
-    <!-- SEC 5: MEETING -->
+    <!-- SEC 5: MEETING (screen only) -->
     <div id="sec-meeting" class="dash-sec" style="display:none">
       <div class="sec-hd">
         <div class="sec-title">Meeting Summary</div>
@@ -316,246 +370,330 @@ body{font-family:'Inter',sans-serif;background:var(--bg);color:var(--text);displ
 <div id="toast">✅ <span id="toast-msg"></span></div>
 
 <script>
-// ─── CONSTANTS ───────────────────────────────────────
-const PLATS=[
-  {key:'linkedin',        label:'LinkedIn',          icon:'💼',color:'#0A66C2'},
-  {key:'youtube',         label:'YouTube',           icon:'▶️',color:'#FF0000'},
-  {key:'facebook_likes',  label:'FB Likes',          icon:'👍',color:'#1877F2'},
-  {key:'facebook_follows',label:'FB Follows',        icon:'📘',color:'#4267B2'},
-  {key:'instagram',       label:'Instagram',         icon:'📸',color:'#E1306C'},
-  {key:'tiktok',          label:'TikTok',            icon:'🎵',color:'#69C9D0'},
-  {key:'whatsapp',        label:'WhatsApp',          icon:'💬',color:'#25D366'},
-  {key:'wa_mdcat',        label:'WA MDCAT',          icon:'🩺',color:'#34D399'},
-  {key:'wa_ecat',         label:'WA ECAT',           icon:'⚙️',color:'#60A5FA'},
-  {key:'wa_bcat',         label:'WA BCAT',           icon:'📐',color:'#A78BFA'},
+// ── CONSTANTS ────────────────────────────────────────
+const PLATS = [
+  { key:'linkedin',         label:'LinkedIn',         icon:'💼', color:'#0A66C2' },
+  { key:'youtube',          label:'YouTube',          icon:'▶️', color:'#FF0000' },
+  { key:'facebook_follows', label:'FB Follows',       icon:'📘', color:'#4267B2' },
+  { key:'instagram',        label:'Instagram',        icon:'📸', color:'#E1306C' },
+  { key:'tiktok',           label:'TikTok',           icon:'🎵', color:'#69C9D0' },
+  { key:'whatsapp',         label:'WhatsApp',         icon:'💬', color:'#25D366' },
+  { key:'wa_mdcat',         label:'WA MDCAT',         icon:'🩺', color:'#34D399' },
+  { key:'wa_ecat',          label:'WA ECAT',          icon:'⚙️', color:'#60A5FA' },
+  { key:'wa_bcat',          label:'WA BCAT',          icon:'📐', color:'#A78BFA' },
 ];
 
-let D=[], cTrend=null, cDonut=null, cWow=null;
+// Keys used for "total reach" sum
+const TOTAL_KEYS = ['linkedin','youtube','facebook_follows','instagram','tiktok','whatsapp','wa_mdcat','wa_ecat','wa_bcat'];
 
-// ─── FILE ────────────────────────────────────────────
+let D = []; // all parsed entries in order
+
+// ── FILE LOADING ─────────────────────────────────────
 function onDrop(e){
-  e.preventDefault(); document.getElementById('drop-zone').classList.remove('dragover');
+  e.preventDefault();
+  document.getElementById('drop-zone').classList.remove('dragover');
   if(e.dataTransfer.files[0]) loadFile(e.dataTransfer.files[0]);
 }
 function onFileInput(e){ if(e.target.files[0]) loadFile(e.target.files[0]); }
+
 function loadFile(file){
-  const rd=new FileReader();
-  rd.onload=ev=>{
+  const rd = new FileReader();
+  rd.onload = ev => {
     try{
-      const wb=XLSX.read(ev.target.result,{type:'array',cellDates:true});
-      const sn=wb.SheetNames.find(n=>/week|engag/i.test(n))||wb.SheetNames[0];
-      parseRows(XLSX.utils.sheet_to_json(wb.Sheets[sn],{header:1,defval:null}));
-      if(!D.length){showToast('❌ No data found. Check Excel sheet format.');return;}
+      const wb = XLSX.read(ev.target.result, { type:'array', cellDates:true });
+      const sn = wb.SheetNames.find(n => /week|engag/i.test(n)) || wb.SheetNames[0];
+      const raw = XLSX.utils.sheet_to_json(wb.Sheets[sn], { header:1, defval:null });
+      parseRows(raw);
+      if(!D.length){ showToast('❌ No data found. Check your Excel sheet.'); return; }
       renderAll();
-      showToast('✅ Loaded '+D.length+' weeks — '+file.name);
-    }catch(err){showToast('❌ '+err.message);}
+      showToast('✅ Loaded ' + D.length + ' entries — ' + file.name);
+    } catch(err){ showToast('❌ ' + err.message); }
   };
   rd.readAsArrayBuffer(file);
 }
+
 function parseRows(raw){
-  D=[];
+  D = [];
   for(let r of raw){
-    if(!r||!(r[0] instanceof Date)||r[0].getFullYear()<2020) continue;
-    const v=x=>{
-      if(x===null||x===undefined||x==='-'||x==='') return null;
-      const n=parseFloat(String(x).replace(/[^0-9.-]/g,''));
-      return isNaN(n)?null:n;
+    if(!r || !(r[0] instanceof Date) || r[0].getFullYear() < 2020) continue;
+    const v = x => {
+      if(x === null || x === undefined || x === '-' || x === '') return null;
+      const n = parseFloat(String(x).replace(/[^0-9.-]/g, ''));
+      return isNaN(n) ? null : n;
     };
-    D.push({date:r[0],linkedin:v(r[1]),youtube:v(r[2]),facebook_likes:v(r[3]),facebook_follows:v(r[4]),instagram:v(r[5]),tiktok:v(r[6]),whatsapp:v(r[7]),wa_mdcat:v(r[8]),wa_ecat:v(r[9]),wa_bcat:v(r[10])});
+    D.push({
+      date:             r[0],
+      linkedin:         v(r[1]),
+      youtube:          v(r[2]),
+      facebook_likes:   v(r[3]),   // parsed but NOT shown
+      facebook_follows: v(r[4]),
+      instagram:        v(r[5]),
+      tiktok:           v(r[6]),
+      whatsapp:         v(r[7]),
+      wa_mdcat:         v(r[8]),
+      wa_ecat:          v(r[9]),
+      wa_bcat:          v(r[10]),
+    });
   }
-  D.sort((a,b)=>a.date-b.date);
+  // Already sorted ascending by date from Excel — keep as-is (entry order)
 }
 
-// ─── HELPERS ─────────────────────────────────────────
-const fd=d=>d.toLocaleDateString('en-GB',{day:'2-digit',month:'short',year:'numeric'});
-const fds=d=>d.toLocaleDateString('en-GB',{day:'2-digit',month:'short'});
-const fn=n=>n===null||n===undefined?'—':Number(n).toLocaleString();
-function fchg(d,showPct,base){
-  if(d===null) return `<span class="chg-val neu">—</span>`;
-  const cls=d>0?'up':d<0?'dn':'neu';
-  const arr=d>0?'▲':d<0?'▼':'';
-  const pct=showPct&&base?` <span class="chg-pct">(${d>0?'+':''}${((d/base)*100).toFixed(1)}%)</span>`:'';
-  return `<span class="chg-val ${cls}">${arr} ${Math.abs(d).toLocaleString()}${pct}</span>`;
-}
-const pc=key=>PLATS.find(p=>p.key===key)?.color||'#888';
+// ── HELPERS ──────────────────────────────────────────
+const fd  = d => d.toLocaleDateString('en-GB', { day:'2-digit', month:'short', year:'numeric' });
+const fds = d => d.toLocaleDateString('en-GB', { day:'2-digit', month:'short' });
+const fn  = n => (n === null || n === undefined) ? '—' : Number(n).toLocaleString();
 
-// ─── RENDER ALL ───────────────────────────────────────
+function chgBadge(cur, prev, showPct = false){
+  if(cur === null || prev === null) return '<span class="chg-val neu">—</span>';
+  const d   = cur - prev;
+  const cls = d > 0 ? 'up' : d < 0 ? 'dn' : 'neu';
+  const arr = d > 0 ? '▲' : d < 0 ? '▼' : '→';
+  const pct = showPct && prev ? ` <span class="chg-pct">(${d >= 0 ? '+' : ''}${((d/prev)*100).toFixed(1)}%)</span>` : '';
+  return `<span class="chg-val ${cls}">${arr} ${d >= 0 ? '+' : ''}${Math.abs(d).toLocaleString()}${pct}</span>`;
+}
+
+const platColor = key => PLATS.find(p => p.key === key)?.color || '#888';
+
+// ── RENDER ALL ───────────────────────────────────────
 function renderAll(){
-  document.getElementById('upload-section').style.display='none';
-  document.getElementById('print-btn').style.display='flex';
-  const pb=document.getElementById('period-badge');
-  pb.textContent='📅 '+fd(D[0].date)+' – '+fd(D[D.length-1].date);
-  pb.style.display='block';
-  document.getElementById('tb-sub').textContent='Chaajao Technologies — '+D.length+' weeks of data';
-  document.getElementById('sb-info').textContent=D.length+' weeks loaded';
-  document.getElementById('sb-date').textContent='Latest: '+fds(D[D.length-1].date);
-  ['sec-totals','sec-weekly','sec-monthly','sec-trends','sec-meeting'].forEach(id=>document.getElementById(id).style.display='flex');
-  renderTotals(); renderWeekly(); renderMonthly(); renderCharts(); renderMeeting();
+  document.getElementById('upload-section').style.display = 'none';
+  document.getElementById('print-btn').style.display = 'flex';
+
+  const last = D[D.length - 1];
+  const pb   = document.getElementById('period-badge');
+  pb.textContent = '📅 ' + fd(D[0].date) + ' – ' + fd(last.date);
+  pb.style.display = 'block';
+  document.getElementById('tb-sub').textContent = 'Chaajao Technologies — ' + D.length + ' entries loaded';
+  document.getElementById('sb-info').textContent = D.length + ' entries loaded';
+  document.getElementById('sb-date').textContent = 'Latest: ' + fds(last.date);
+
+  // Print header date
+  document.getElementById('ph-date').innerHTML =
+    'Report Date: <strong>' + fd(last.date) + '</strong><br>' +
+    'Data Range: ' + fd(D[0].date) + ' – ' + fd(last.date);
+
+  document.getElementById('snapshot-tag').textContent = '📍 ' + fd(last.date);
+
+  ['sec-totals','sec-weekly','sec-monthly','sec-trends','sec-meeting'].forEach(id =>
+    document.getElementById(id).style.display = 'flex'
+  );
+
+  renderTotals();
+  renderWeekly();
+  renderMonthly();
 }
 
-// ─── SEC 1: TOTALS ────────────────────────────────────
+// ════════════════════════════════════════════════════
+// SEC 1 — TOTAL OVERVIEW
+// ════════════════════════════════════════════════════
 function renderTotals(){
-  const L=D[D.length-1], P=D.length>1?D[D.length-2]:null;
-  document.getElementById('snapshot-tag').textContent='📍 '+fd(L.date);
+  const L = D[D.length - 1];
+  const P = D.length > 1 ? D[D.length - 2] : null; // previous entry
 
-  const sumKeys=['youtube','linkedin','facebook_follows','instagram','tiktok','whatsapp','wa_mdcat','wa_ecat','wa_bcat'];
-  const total=sumKeys.reduce((s,k)=>s+(L[k]||0),0);
-  const totalP=P?sumKeys.reduce((s,k)=>s+(P[k]||0),0):null;
-  const tD=totalP!==null?total-totalP:null;
+  // ── BANNER ──
+  const total  = TOTAL_KEYS.reduce((s,k) => s + (L[k] || 0), 0);
+  const totalP = P ? TOTAL_KEYS.reduce((s,k) => s + (P[k] || 0), 0) : null;
+  const tD     = totalP !== null ? total - totalP : null;
 
-  const bi=[
-    {lbl:'TOTAL REACH',val:total.toLocaleString(),chg:tD},
-    {lbl:'YOUTUBE',val:fn(L.youtube),chg:P?L.youtube-P.youtube:null},
-    {lbl:'FACEBOOK',val:fn(L.facebook_follows),chg:P&&L.facebook_follows&&P.facebook_follows?L.facebook_follows-P.facebook_follows:null},
-    {lbl:'INSTAGRAM',val:fn(L.instagram),chg:P&&L.instagram&&P.instagram?L.instagram-P.instagram:null},
-    {lbl:'TIKTOK',val:fn(L.tiktok),chg:P&&L.tiktok&&P.tiktok?L.tiktok-P.tiktok:null},
-    {lbl:'LINKEDIN',val:fn(L.linkedin),chg:P&&L.linkedin&&P.linkedin?L.linkedin-P.linkedin:null},
+  const bannerPlats = [
+    { key:'youtube',          lbl:'YOUTUBE'    },
+    { key:'facebook_follows', lbl:'FACEBOOK'   },
+    { key:'instagram',        lbl:'INSTAGRAM'  },
+    { key:'tiktok',           lbl:'TIKTOK'     },
+    { key:'linkedin',         lbl:'LINKEDIN'   },
+    { key:'whatsapp',         lbl:'WHATSAPP'   },
   ];
-  document.getElementById('total-banner').innerHTML=bi.map(b=>`
-    <div class="tot-item">
-      <div class="tot-lbl">${b.lbl}</div>
-      <div class="tot-num">${b.val}</div>
-      ${b.chg!==null?`<div class="tot-chg ${b.chg>0?'up':b.chg<0?'dn':'neu'}">${b.chg>0?'▲ +':'▼ '}${Math.abs(b.chg).toLocaleString()} this week</div>`:''}
-    </div>`).join('');
 
-  document.getElementById('kpi-grid').innerHTML=PLATS.map(p=>{
-    const cur=L[p.key], prv=P?P[p.key]:null;
-    const d=cur!==null&&prv!==null?cur-prv:null;
-    const cls=d===null?'neu':d>0?'up':d<0?'dn':'neu';
-    const pct=d!==null&&prv?((d/prv)*100).toFixed(1)+'%':null;
+  document.getElementById('total-banner').innerHTML =
+    `<div class="tot-item">
+       <div class="tot-lbl">TOTAL REACH</div>
+       <div class="tot-num">${total.toLocaleString()}</div>
+       ${tD !== null ? `<div class="tot-chg ${tD>=0?'up':'dn'}">${tD>=0?'▲ +':'▼ '}${Math.abs(tD).toLocaleString()} vs prev entry</div>` : ''}
+     </div>` +
+    bannerPlats.map(bp => {
+      const c = L[bp.key], p = P ? P[bp.key] : null;
+      const d = c !== null && p !== null ? c - p : null;
+      return `<div class="tot-item">
+        <div class="tot-lbl">${bp.lbl}</div>
+        <div class="tot-num">${fn(c)}</div>
+        ${d !== null ? `<div class="tot-chg ${d>0?'up':d<0?'dn':'neu'}">${d>=0?'▲ +':'▼ '}${Math.abs(d).toLocaleString()}</div>` : ''}
+      </div>`;
+    }).join('');
+
+  // ── KPI CARDS ── (all platforms including WA sub-channels)
+  document.getElementById('kpi-grid').innerHTML = PLATS.map(p => {
+    const cur = L[p.key], prv = P ? P[p.key] : null;
+    const d   = cur !== null && prv !== null ? cur - prv : null;
+    const cls = d === null ? 'neu' : d > 0 ? 'up' : d < 0 ? 'dn' : 'neu';
+    const pct = d !== null && prv ? ((d/prv)*100).toFixed(1)+'%' : null;
     return `<div class="kpi-card">
-      <div class="kpi-pdot" style="background:${p.color}"></div>
+      <div class="kpi-dot" style="background:${p.color}"></div>
       <div class="kpi-plat"><span>${p.icon}</span>${p.label}</div>
-      <div class="kpi-val">${cur!==null?fn(cur):'—'}</div>
+      <div class="kpi-val">${cur !== null ? fn(cur) : '—'}</div>
       <div class="kpi-chg ${cls}">
-        ${d===null?'No change data':(d>0?'▲ +':'▼ ')+Math.abs(d).toLocaleString()+' this week'}
-        ${pct?`<span style="font-size:10px;opacity:.75">(${d>=0?'+':''}${pct})</span>`:''}
+        ${d === null ? '<span class="neu">No prev data</span>'
+          : `<span>${d>=0?'▲ +':'▼ '}${Math.abs(d).toLocaleString()}</span>
+             ${pct ? `<span style="font-size:10px;opacity:.7;margin-left:3px">(${d>=0?'+':''}${pct})</span>` : ''}`}
       </div>
     </div>`;
   }).join('');
 }
 
-// ─── SEC 2: WEEKLY TABLE ─────────────────────────────
+// ════════════════════════════════════════════════════
+// SEC 2 — WEEKLY BREAKDOWN (last 3 ENTRIES, not dates)
+// ════════════════════════════════════════════════════
 function renderWeekly(){
-  const raw=D.slice(-3);
-  const weeks=[null,null,null];
-  for(let i=0;i<raw.length;i++) weeks[3-raw.length+i]=raw[i];
+  // Take last 3 entries by index — pure entry order
+  const len = D.length;
+  const e2  = len >= 1 ? D[len - 1] : null; // latest entry  = "This Week"
+  const e1  = len >= 2 ? D[len - 2] : null; // entry before  = "Last Week"
+  const e0  = len >= 3 ? D[len - 3] : null; // 2 before      = "2 Weeks Ago"
 
-  const labels=['2 Weeks Ago','Last Week','This Week'];
-  const wHead=document.getElementById('weekly-head');
-  const wBody=document.getElementById('weekly-body');
+  const cols = [e0, e1, e2];
+  const colLabels = ['2 Weeks Ago', 'Last Week', 'This Week'];
 
-  wHead.innerHTML='<th>Platform</th>'+
-    weeks.map((w,i)=>w?`<th>${labels[i]}<br><span style="font-weight:400;font-size:10px;opacity:.75">${fds(w.date)}</span></th>`:`<th style="opacity:.4">${labels[i]}</th>`).join('')+
-    '<th>Change ↑↓</th>';
+  // HEAD
+  document.getElementById('w-head').innerHTML =
+    '<th>Platform</th>' +
+    cols.map((c,i) =>
+      c ? `<th>${colLabels[i]}<br><span style="font-weight:400;font-size:10px;opacity:.75">${fds(c.date)}</span></th>`
+        : `<th style="opacity:.35">${colLabels[i]}</th>`
+    ).join('') +
+    '<th>Change<br><span style="font-weight:400;font-size:10px;opacity:.75">(Latest vs Prev)</span></th>';
 
-  const rows=[
-    {key:'linkedin',label:'LinkedIn',icon:'💼',color:'#0A66C2'},
-    {key:'youtube',label:'YouTube',icon:'▶️',color:'#FF0000'},
-    {key:'facebook_likes',label:'Facebook Likes',icon:'👍',color:'#1877F2'},
-    {key:'facebook_follows',label:'Facebook Follows',icon:'📘',color:'#4267B2'},
-    {key:'instagram',label:'Instagram',icon:'📸',color:'#E1306C'},
-    {key:'tiktok',label:'TikTok',icon:'🎵',color:'#69C9D0'},
-    {key:'whatsapp',label:'WhatsApp Channel',icon:'💬',color:'#25D366'},
-    {key:'wa_mdcat',label:'WA (MDCAT)',icon:'🩺',color:'#34D399'},
-    {key:'wa_ecat',label:'WA (ECAT)',icon:'⚙️',color:'#60A5FA'},
-    {key:'wa_bcat',label:'WA (BCAT)',icon:'📐',color:'#A78BFA'},
+  // ROWS — no facebook_likes
+  const rows = [
+    { key:'linkedin',         label:'LinkedIn',          icon:'💼', color:'#0A66C2' },
+    { key:'youtube',          label:'YouTube',           icon:'▶️', color:'#FF0000' },
+    { key:'facebook_follows', label:'Facebook Follows',  icon:'📘', color:'#4267B2' },
+    { key:'instagram',        label:'Instagram',         icon:'📸', color:'#E1306C' },
+    { key:'tiktok',           label:'TikTok',            icon:'🎵', color:'#69C9D0' },
+    { key:'whatsapp',         label:'WhatsApp Channel',  icon:'💬', color:'#25D366' },
+    { key:'wa_mdcat',         label:'WA Channel (MDCAT)',icon:'🩺', color:'#34D399' },
+    { key:'wa_ecat',          label:'WA Channel (ECAT)', icon:'⚙️', color:'#60A5FA' },
+    { key:'wa_bcat',          label:'WA Channel (BCAT)', icon:'📐', color:'#A78BFA' },
   ];
 
-  const w0=weeks[0],w1=weeks[1],w2=weeks[2];
-  wBody.innerHTML=rows.map(r=>{
-    const v0=w0?w0[r.key]:null, v1=w1?w1[r.key]:null, v2=w2?w2[r.key]:null;
-    const chg=v2!==null&&v1!==null?v2-v1:null;
-    return `<tr>
-      <td class="plat-col"><div class="plat-cell"><div class="plat-dot" style="background:${r.color}"></div><span class="plat-name">${r.icon} ${r.label}</span></div></td>
-      <td class="num-cell">${v0!==null?fn(v0):'—'}</td>
-      <td class="num-cell">${v1!==null?fn(v1):'—'}</td>
-      <td class="num-cell">${v2!==null?fn(v2):'—'}</td>
-      <td class="chg-col">${fchg(chg,true,v1)}</td>
+  let tbody = '';
+  for(const r of rows){
+    const v0 = e0 ? e0[r.key] : null;
+    const v1 = e1 ? e1[r.key] : null;
+    const v2 = e2 ? e2[r.key] : null;
+    tbody += `<tr>
+      <td class="plat-col">
+        <div class="plat-cell">
+          <div class="plat-dot" style="background:${r.color}"></div>
+          <span class="plat-name">${r.icon} ${r.label}</span>
+        </div>
+      </td>
+      <td class="num-cell">${v0 !== null ? fn(v0) : '—'}</td>
+      <td class="num-cell">${v1 !== null ? fn(v1) : '—'}</td>
+      <td class="num-cell">${v2 !== null ? fn(v2) : '—'}</td>
+      <td class="chg-col">${chgBadge(v2, v1, true)}</td>
     </tr>`;
-  }).join('');
+  }
 
-  // Total row
-  const keys=['linkedin','youtube','facebook_follows','instagram','tiktok','whatsapp','wa_mdcat','wa_ecat','wa_bcat'];
-  const t0=w0?keys.reduce((s,k)=>s+(w0[k]||0),0):null;
-  const t1=w1?keys.reduce((s,k)=>s+(w1[k]||0),0):null;
-  const t2=w2?keys.reduce((s,k)=>s+(w2[k]||0),0):null;
-  const tc=t2!==null&&t1!==null?t2-t1:null;
-  wBody.innerHTML+=`<tr class="grand-total">
+  // TOTAL ROW
+  const t0 = e0 ? TOTAL_KEYS.reduce((s,k) => s+(e0[k]||0),0) : null;
+  const t1 = e1 ? TOTAL_KEYS.reduce((s,k) => s+(e1[k]||0),0) : null;
+  const t2 = e2 ? TOTAL_KEYS.reduce((s,k) => s+(e2[k]||0),0) : null;
+  tbody += `<tr class="grand-total">
     <td class="plat-col"><span class="plat-name">📊 TOTAL REACH</span></td>
-    <td class="num-cell"><strong>${t0!==null?t0.toLocaleString():'—'}</strong></td>
-    <td class="num-cell"><strong>${t1!==null?t1.toLocaleString():'—'}</strong></td>
-    <td class="num-cell"><strong>${t2!==null?t2.toLocaleString():'—'}</strong></td>
-    <td class="chg-col"><strong>${fchg(tc,true,t1)}</strong></td>
+    <td class="num-cell"><strong>${t0 !== null ? t0.toLocaleString() : '—'}</strong></td>
+    <td class="num-cell"><strong>${t1 !== null ? t1.toLocaleString() : '—'}</strong></td>
+    <td class="num-cell"><strong>${t2 !== null ? t2.toLocaleString() : '—'}</strong></td>
+    <td class="chg-col"><strong>${chgBadge(t2, t1, true)}</strong></td>
   </tr>`;
+
+  document.getElementById('w-body').innerHTML = tbody;
 }
 
-// ─── SEC 3: MONTHLY ───────────────────────────────────
+// ════════════════════════════════════════════════════
+// SEC 3 — MONTHLY ANALYSIS (last 6 months only)
+// ════════════════════════════════════════════════════
 function renderMonthly(){
-  const byM={};
-  D.forEach(d=>{
-    const k=`${d.date.getFullYear()}-${String(d.date.getMonth()+1).padStart(2,'0')}`;
-    byM[k]=d;
-  });
-  const months=Object.keys(byM).sort().reverse();
-  const keys=['linkedin','youtube','facebook_follows','instagram','tiktok','whatsapp','wa_mdcat','wa_ecat','wa_bcat'];
+  // Group by year-month key, keep LAST entry of each month
+  const byM = {};
+  for(const d of D){
+    const key = `${d.date.getFullYear()}-${String(d.date.getMonth()+1).padStart(2,'0')}`;
+    byM[key] = d; // overwrite → last entry of each month
+  }
 
-  document.getElementById('monthly-body').innerHTML=months.map((m,i)=>{
-    const cur=byM[m], prev=i<months.length-1?byM[months[i+1]]:null;
-    const cell=k=>{
-      const c=cur[k], p=prev?prev[k]:null;
-      const d=c!==null&&p!==null?c-p:null;
-      const cls=d===null?'neu':d>0?'up':d<0?'dn':'neu';
-      const diff=d!==null?`<span class="month-diff ${cls}">${d>0?'▲ +':'▼ '}${Math.abs(d).toLocaleString()}</span>`:'';
-      return `<td><span class="month-num">${c!==null?c.toLocaleString():'—'}</span>${diff}</td>`;
+  // Sort months descending, take only 6 + 1 previous (for diff)
+  const months = Object.keys(byM).sort().reverse();
+  const show   = months.slice(0, 6);   // 6 most recent months to display
+  const extra  = months[6] || null;    // 7th month for diff of oldest shown month
+
+  const mkeys = ['linkedin','youtube','facebook_follows','instagram','tiktok','whatsapp','wa_mdcat','wa_ecat','wa_bcat'];
+
+  let tbody = '';
+  for(let i = 0; i < show.length; i++){
+    const mkey = show[i];
+    const cur  = byM[mkey];
+    // previous month = next in descending array
+    const prevKey = show[i+1] || extra;
+    const prev    = prevKey ? byM[prevKey] : null;
+
+    const cell = k => {
+      const c = cur[k], p = prev ? prev[k] : null;
+      const d = c !== null && p !== null ? c - p : null;
+      const cls = d === null ? 'neu' : d > 0 ? 'up' : d < 0 ? 'dn' : 'neu';
+      const diffHtml = d !== null
+        ? `<span class="m-diff ${cls}">${d>=0?'▲ +':'▼ '}${Math.abs(d).toLocaleString()}</span>`
+        : '';
+      return `<td><span class="m-num">${c !== null ? c.toLocaleString() : '—'}</span>${diffHtml}</td>`;
     };
-    const total=keys.reduce((s,k)=>s+(cur[k]||0),0);
-    const totalP=prev?keys.reduce((s,k)=>s+(prev[k]||0),0):null;
-    const tc=totalP!==null?total-totalP:null;
-    const tcCls=tc===null?'neu':tc>0?'up':tc<0?'dn':'neu';
-    const mLabel=new Date(m+'-02').toLocaleDateString('en-GB',{month:'long',year:'numeric'});
-    return `<tr>
+
+    const total  = mkeys.reduce((s,k) => s+(cur[k]||0), 0);
+    const totalP = prev ? mkeys.reduce((s,k) => s+(prev[k]||0), 0) : null;
+    const tc     = totalP !== null ? total - totalP : null;
+    const tcCls  = tc === null ? 'neu' : tc > 0 ? 'up' : tc < 0 ? 'dn' : 'neu';
+
+    const mLabel = new Date(mkey + '-02').toLocaleDateString('en-GB', { month:'long', year:'numeric' });
+
+    tbody += `<tr>
       <td class="plat-col"><span class="plat-name">${mLabel}</span></td>
-      ${cell('linkedin')}${cell('youtube')}${cell('facebook_follows')}${cell('instagram')}${cell('tiktok')}${cell('whatsapp')}${cell('wa_mdcat')}${cell('wa_ecat')}${cell('wa_bcat')}
-      <td><span class="chg-val ${tcCls}">${tc!==null?(tc>0?'▲ +':'▼ ')+Math.abs(tc).toLocaleString():'—'}</span></td>
+      ${cell('linkedin')}${cell('youtube')}${cell('facebook_follows')}${cell('instagram')}
+      ${cell('tiktok')}${cell('whatsapp')}${cell('wa_mdcat')}${cell('wa_ecat')}${cell('wa_bcat')}
+      <td><span class="chg-val ${tcCls}">${tc !== null ? (tc>=0?'▲ +':'▼ ')+Math.abs(tc).toLocaleString() : '—'}</span></td>
     </tr>`;
-  }).join('');
+  }
+
+  document.getElementById('m-body').innerHTML = tbody;
 }
 
-// ─── SEC 4: CHARTS ────────────────────────────────────
-function renderCharts(){ updateTrend(); buildDonut(); buildWow(); }
 
+// ── CHARTS ───────────────────────────────────────────
+let cTrend=null, cDonut=null, cWow=null;
 const baseOpts={
   responsive:true,maintainAspectRatio:false,
   plugins:{legend:{display:false},tooltip:{backgroundColor:'#1A1A24',titleColor:'#F0F0F0',bodyColor:'#9090A8',borderColor:'rgba(255,255,255,.08)',borderWidth:1}},
   scales:{x:{ticks:{color:'#55556A',font:{size:10},maxTicksLimit:12},grid:{color:'rgba(255,255,255,.04)'}},y:{ticks:{color:'#55556A',font:{size:10}},grid:{color:'rgba(255,255,255,.04)'}}}
 };
-
+function renderCharts(){ updateTrend(); buildDonut(); buildWow(); }
 function updateTrend(){
   const k=document.getElementById('trend-sel').value;
   const fd2=D.filter(d=>d[k]!==null);
-  const color=pc(k);
+  const color=platColor(k);
   if(cTrend) cTrend.destroy();
   const ctx=document.getElementById('trendChart').getContext('2d');
   const g=ctx.createLinearGradient(0,0,0,215);
   g.addColorStop(0,color+'55');g.addColorStop(1,color+'00');
   cTrend=new Chart(ctx,{type:'line',data:{labels:fd2.map(d=>fds(d.date)),datasets:[{data:fd2.map(d=>d[k]),borderColor:color,backgroundColor:g,borderWidth:2.5,pointRadius:1.5,pointHoverRadius:5,fill:true,tension:.4}]},options:baseOpts});
 }
-
 function buildDonut(){
   const L=D[D.length-1];
   const ks=['youtube','facebook_follows','instagram','linkedin','tiktok','whatsapp'];
   if(cDonut) cDonut.destroy();
   const ctx=document.getElementById('donutChart').getContext('2d');
   cDonut=new Chart(ctx,{type:'doughnut',
-    data:{labels:ks.map(k=>PLATS.find(p=>p.key===k)?.label||k),datasets:[{data:ks.map(k=>L[k]||0),backgroundColor:ks.map(k=>pc(k)),borderWidth:2,borderColor:'#13131A',hoverOffset:8}]},
+    data:{labels:ks.map(k=>PLATS.find(p=>p.key===k)?.label||k),datasets:[{data:ks.map(k=>L[k]||0),backgroundColor:ks.map(k=>platColor(k)),borderWidth:2,borderColor:'#13131A',hoverOffset:8}]},
     options:{responsive:true,maintainAspectRatio:false,cutout:'64%',plugins:{
       legend:{position:'right',labels:{color:'#9090A8',font:{size:10},padding:9,boxWidth:9}},
       tooltip:{backgroundColor:'#1A1A24',titleColor:'#F0F0F0',bodyColor:'#9090A8',borderColor:'rgba(255,255,255,.08)',borderWidth:1,callbacks:{label:c=>' '+c.label+': '+c.raw.toLocaleString()}}
     }}
   });
 }
-
 function buildWow(){
   const last=D.slice(-11);
   const lbls=last.slice(1).map(d=>fds(d.date));
@@ -572,42 +710,45 @@ function buildWow(){
     options:{...baseOpts,plugins:{legend:{display:true,labels:{color:'#9090A8',font:{size:11},boxWidth:10,padding:11}},tooltip:baseOpts.plugins.tooltip}}
   });
 }
-
-// ─── SEC 5: MEETING ───────────────────────────────────
+// ── MEETING ──────────────────────────────────────────
 function renderMeeting(){
   const L=D[D.length-1], P=D.length>1?D[D.length-2]:null, P4=D.length>4?D[D.length-5]:null;
   document.getElementById('mtg-date').textContent=fd(L.date);
   const df=(a,b)=>a!==null&&b!==null?a-b:null;
   const sp=(v,b)=>v!==null?`<span class="${v>0?'up':'dn'}" style="font-size:12px">${v>0?'▲ +':'▼ '}${Math.abs(v).toLocaleString()}${b?` (${v>0?'+':''}${((v/b)*100).toFixed(1)}%)`:''}</span>`:'';
-
   const keys=['linkedin','youtube','facebook_follows','instagram','tiktok','whatsapp'];
   const total=keys.reduce((s,k)=>s+(L[k]||0),0);
   const totalP=P?keys.reduce((s,k)=>s+(P[k]||0),0):null;
-
   const pts=[
-    {ico:'▶️',txt:`<b>YouTube:</b> ${fn(L.youtube)} subscribers ${sp(df(L.youtube,P?.youtube),P?.youtube)}${P4?` | vs 4 weeks: ${sp(df(L.youtube,P4?.youtube),P4?.youtube)}`:''}`},
+    {ico:'▶️',txt:`<b>YouTube:</b> ${fn(L.youtube)} subscribers ${sp(df(L.youtube,P?.youtube),P?.youtube)}${P4?` | vs 4 entries ago: ${sp(df(L.youtube,P4?.youtube),P4?.youtube)}`:''}`},
     {ico:'📘',txt:`<b>Facebook Follows:</b> ${fn(L.facebook_follows)} ${sp(df(L.facebook_follows,P?.facebook_follows),P?.facebook_follows)}`},
     {ico:'📸',txt:`<b>Instagram:</b> ${fn(L.instagram)} followers ${sp(df(L.instagram,P?.instagram),P?.instagram)}`},
-    {ico:'🎵',txt:`<b>TikTok:</b> ${fn(L.tiktok)} followers ${sp(df(L.tiktok,P?.tiktok),P?.tiktok)}${L.tiktok>=1000?' 🎉 Past 1K milestone!':''}`},
+    {ico:'🎵',txt:`<b>TikTok:</b> ${fn(L.tiktok)} followers ${sp(df(L.tiktok,P?.tiktok),P?.tiktok)}${L.tiktok>=1000?' 🎉 Past 1K!':''}`},
     {ico:'💼',txt:`<b>LinkedIn:</b> ${fn(L.linkedin)} followers ${sp(df(L.linkedin,P?.linkedin),P?.linkedin)}`},
     {ico:'💬',txt:`<b>WhatsApp Channel:</b> ${fn(L.whatsapp)} ${sp(df(L.whatsapp,P?.whatsapp),P?.whatsapp)}<br>MDCAT: ${fn(L.wa_mdcat)} | ECAT: ${fn(L.wa_ecat)} | BCAT: ${fn(L.wa_bcat)}`},
-    {ico:'📊',txt:`<b>Total Audience:</b> ${total.toLocaleString()} across all platforms ${totalP!==null?sp(total-totalP,totalP):''}`},
+    {ico:'📊',txt:`<b>Total Audience:</b> ${total.toLocaleString()} ${totalP!==null?sp(total-totalP,totalP):''}`},
   ];
   document.getElementById('mtg-pts').innerHTML=pts.map(p=>`<div class="mp"><div class="mp-ico">${p.ico}</div><div class="mp-txt">${p.txt}</div></div>`).join('');
 }
 
-// ─── NAVIGATION ──────────────────────────────────────
-function navTo(el,sec){
-  const t=document.getElementById('sec-'+sec), a=document.getElementById('scroll-area');
-  if(t&&a) a.scrollTo({top:t.getBoundingClientRect().top-a.getBoundingClientRect().top+a.scrollTop-16,behavior:'smooth'});
-  document.querySelectorAll('.sb-item').forEach(i=>i.classList.remove('active'));
+// ── NAVIGATION ───────────────────────────────────────
+function navTo(el, sec){
+  const target = document.getElementById('sec-' + sec);
+  const area   = document.getElementById('scroll-area');
+  if(target && area){
+    const top = target.getBoundingClientRect().top - area.getBoundingClientRect().top + area.scrollTop - 16;
+    area.scrollTo({ top, behavior:'smooth' });
+  }
+  document.querySelectorAll('.sb-item').forEach(i => i.classList.remove('active'));
   el.classList.add('active');
 }
+
+// ── TOAST ────────────────────────────────────────────
 function showToast(msg){
-  const t=document.getElementById('toast');
-  document.getElementById('toast-msg').textContent=msg;
-  t.style.display='flex';
-  setTimeout(()=>t.style.display='none',3500);
+  const t = document.getElementById('toast');
+  document.getElementById('toast-msg').textContent = msg;
+  t.style.display = 'flex';
+  setTimeout(() => t.style.display = 'none', 3500);
 }
 </script>
 </body>
