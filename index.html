@@ -331,52 +331,91 @@ body{font-family:'DM Sans',sans-serif;background:var(--bg);color:var(--text);dis
 
     <!-- UPLOAD -->
     <div id="upload-section">
-      <div style="width:100%;max-width:560px;display:flex;flex-direction:column;gap:14px;">
-        <!-- GOOGLE SHEETS -->
-        <div class="upload-box" style="padding:28px 32px;cursor:default;">
-          <div class="upload-ico-wrap" style="background:rgba(15,157,88,.1);">
-            <svg viewBox="0 0 24 24" style="fill:#0F9D58;width:28px;height:28px;"><path d="M19 3H5c-1.1 0-2 .9-2 2v14c0 1.1.9 2 2 2h14c1.1 0 2-.9 2-2V5c0-1.1-.9-2-2-2zm-7 3c1.93 0 3.5 1.57 3.5 3.5S13.93 13 12 13s-3.5-1.57-3.5-3.5S10.07 6 12 6zm7 13H5v-.23c0-.62.28-1.2.76-1.58C7.47 15.82 9.64 15 12 15s4.53.82 6.24 2.19c.48.38.76.97.76 1.58V19z"/></svg>
+      <div style="width:100%;max-width:590px;display:flex;flex-direction:column;gap:14px;">
+
+        <!-- HOW IT WORKS -->
+        <div style="background:linear-gradient(135deg,rgba(168,20,123,.07),rgba(168,20,123,.02));border:1px solid var(--mag-border);border-radius:12px;padding:16px 20px;display:flex;align-items:flex-start;gap:12px;">
+          <div style="width:34px;height:34px;background:var(--mag);border-radius:9px;display:flex;align-items:center;justify-content:center;flex-shrink:0;margin-top:1px;box-shadow:0 3px 12px rgba(168,20,123,.3);">
+            <svg width="18" height="18" viewBox="0 0 24 24" fill="#fff"><path d="M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zm1 15h-2v-6h2v6zm0-8h-2V7h2v2z"/></svg>
           </div>
-          <h2 style="font-size:20px;margin-bottom:6px;">Connect Google Sheet</h2>
-          <p style="margin-bottom:14px;font-size:12.5px;">Sheet must be <strong>"Anyone with link can view"</strong>. Auto-refreshes every 5 minutes.</p>
+          <div>
+            <div style="font-family:'Bebas Neue',sans-serif;font-size:15px;letter-spacing:1px;color:var(--dark);margin-bottom:4px;">Yeh Dashboard Kya Hai?</div>
+            <div style="font-size:12px;color:var(--text2);line-height:1.75;">
+              <strong>Chaajao Technologies</strong> ka Social Media Analytics tracker hai.<br>
+              <strong>LinkedIn, YouTube, Facebook, Instagram, TikTok, WhatsApp</strong> — sab platforms ka weekly aur monthly growth yahan milta hai.<br>
+              Data <strong>automatically load</strong> hota hai — page open karo, dashboard tayyar!
+            </div>
+          </div>
+        </div>
+
+        <!-- GOOGLE SHEETS -->
+        <div class="upload-box" style="padding:24px 28px;cursor:default;text-align:left;">
+          <div style="display:flex;align-items:center;justify-content:space-between;margin-bottom:12px;flex-wrap:wrap;gap:8px;">
+            <div style="display:flex;align-items:center;gap:10px;">
+              <div style="width:36px;height:36px;background:rgba(15,157,88,.1);border-radius:9px;display:flex;align-items:center;justify-content:center;flex-shrink:0;">
+                <svg viewBox="0 0 24 24" style="width:19px;height:19px;fill:#0F9D58"><path d="M19 3H5c-1.1 0-2 .9-2 2v14c0 1.1.9 2 2 2h14c1.1 0 2-.9 2-2V5c0-1.1-.9-2-2-2zm-7 3c1.93 0 3.5 1.57 3.5 3.5S13.93 13 12 13s-3.5-1.57-3.5-3.5S10.07 6 12 6zm7 13H5v-.23c0-.62.28-1.2.76-1.58C7.47 15.82 9.64 15 12 15s4.53.82 6.24 2.19c.48.38.76.97.76 1.58V19z"/></svg>
+              </div>
+              <div>
+                <div style="font-family:'Bebas Neue',sans-serif;font-size:15px;letter-spacing:.5px;color:var(--dark);">Google Sheet — Live Data</div>
+                <div style="font-size:10.5px;color:var(--muted);">Default link already set · Auto-refreshes every 5 min</div>
+              </div>
+            </div>
+            <button class="btn btn-ghost" style="font-size:11px;padding:5px 12px;" onclick="resetToDefault()" title="Chaajao ki default sheet restore karein">
+              <svg width="11" height="11" viewBox="0 0 24 24" fill="currentColor"><path d="M17.65 6.35A7.958 7.958 0 0 0 12 4c-4.42 0-7.99 3.58-7.99 8s3.57 8 7.99 8c3.73 0 6.84-2.55 7.73-6h-2.08A5.99 5.99 0 0 1 12 18c-3.31 0-6-2.69-6-6s2.69-6 6-6c1.66 0 3.14.69 4.22 1.78L13 11h7V4l-2.35 2.35z"/></svg>
+              Default URL
+            </button>
+          </div>
           <div style="display:flex;gap:8px;align-items:center;">
             <input id="gs-url" type="text" placeholder="https://docs.google.com/spreadsheets/d/..."
-              style="flex:1;padding:9px 13px;border-radius:8px;border:1px solid var(--border);background:var(--bg2);color:var(--text);font-family:'DM Sans',sans-serif;font-size:12.5px;outline:none;"
-              onkeydown="if(event.key==='Enter') connectSheet()">
+              style="flex:1;padding:9px 13px;border-radius:8px;border:1px solid var(--border);background:var(--bg2);color:var(--text);font-family:'DM Sans',sans-serif;font-size:12px;outline:none;transition:border .15s;"
+              onkeydown="if(event.key==='Enter') connectSheet()"
+              onfocus="this.style.borderColor='var(--mag)'" onblur="this.style.borderColor='var(--border)'">
             <button class="btn btn-mag" onclick="connectSheet()">
               <svg width="13" height="13" viewBox="0 0 24 24" fill="currentColor"><path d="M17 7l-1.41 1.41L18.17 11H8v2h10.17l-2.58 2.58L17 17l5-5zM4 5h8V3H4c-1.1 0-2 .9-2 2v14c0 1.1.9 2 2 2h8v-2H4V5z"/></svg>
               Connect
             </button>
           </div>
-          <div id="gs-status" style="margin-top:10px;font-size:11.5px;color:var(--muted);min-height:16px;"></div>
+          <div id="gs-status" style="margin-top:9px;font-size:11.5px;color:var(--muted);min-height:16px;"></div>
+          <div style="margin-top:10px;padding-top:10px;border-top:1px solid var(--border2);font-size:11px;color:var(--muted);line-height:1.65;">
+            💡 <strong>URL change karna ho?</strong> Naya Google Sheets link paste karein aur Connect dabayein. Sheet ka access <em>"Anyone with link can view"</em> zaroor hona chahiye.
+          </div>
         </div>
+
         <!-- DIVIDER -->
         <div style="display:flex;align-items:center;gap:10px;">
           <div style="flex:1;height:1px;background:var(--border);"></div>
-          <span style="font-size:11px;color:var(--muted);font-weight:600;letter-spacing:1px;">OR UPLOAD FILE</span>
+          <span style="font-size:10px;color:var(--muted);font-weight:700;letter-spacing:1.5px;text-transform:uppercase;">Ya Excel Upload Karein</span>
           <div style="flex:1;height:1px;background:var(--border);"></div>
         </div>
+
         <!-- FILE UPLOAD -->
-        <div class="upload-box" id="drop-zone" style="padding:22px 32px;"
+        <div class="upload-box" id="drop-zone" style="padding:20px 28px;"
           onclick="document.getElementById('file-input').click()"
           ondragover="event.preventDefault();this.classList.add('dragover')"
           ondragleave="this.classList.remove('dragover')"
           ondrop="onDrop(event)">
-          <div class="upload-ico-wrap">
+          <div class="upload-ico-wrap" style="margin-bottom:12px;">
             <svg viewBox="0 0 24 24"><use href="#icon-upload"/></svg>
           </div>
-          <h2 style="font-size:18px;margin-bottom:6px;">Upload Excel File</h2>
-          <p style="margin-bottom:14px;font-size:12px;">Drag & drop your <strong>.xlsx</strong> file here, or click to browse.</p>
+          <h2 style="font-size:17px;margin-bottom:5px;">Excel File Upload</h2>
+          <p style="font-size:11.5px;color:var(--text2);margin-bottom:14px;line-height:1.6;">
+            <strong>Social_Media_Analytics_Dashboard.xlsx</strong> yahan drop karein.<br>
+            <span style="font-size:11px;color:var(--muted);">Weekly Engagement sheet ka data automatically parse hoga.</span>
+          </p>
           <button class="btn btn-ghost" style="pointer-events:none;margin:0 auto;font-size:12px;">Browse File</button>
         </div>
         <input type="file" id="file-input" accept=".xlsx,.xls,.csv" onchange="onFileInput(event)">
+
       </div>
     </div>
 
     <!-- SEC 1: TOTAL OVERVIEW -->
     <div id="sec-totals" class="dash-sec" style="display:none">
       <div class="sec-hd">
-        <div class="sec-title">Total Overview</div>
+        <div>
+          <div class="sec-title">Total Overview</div>
+          <div style="font-size:11.5px;color:var(--muted);margin-top:4px;margin-left:14px;">Latest entry ke followers — tamam platforms ek jagah</div>
+        </div>
         <span class="sec-tag" id="snapshot-tag">Latest Snapshot</span>
       </div>
       <div class="total-banner" id="total-banner"></div>
@@ -386,7 +425,10 @@ body{font-family:'DM Sans',sans-serif;background:var(--bg);color:var(--text);dis
     <!-- SEC 2: WEEKLY COMPARISON -->
     <div id="sec-weekly" class="dash-sec" style="display:none">
       <div class="sec-hd">
-        <div class="sec-title">Weekly Breakdown</div>
+        <div>
+          <div class="sec-title">Weekly Breakdown</div>
+          <div style="font-size:11.5px;color:var(--muted);margin-top:4px;margin-left:14px;">Aakhri 3 entries ka side-by-side comparison — week-on-week growth</div>
+        </div>
         <span class="sec-tag">Latest 3 Entries</span>
       </div>
       <div class="tbl-wrap">
@@ -400,7 +442,10 @@ body{font-family:'DM Sans',sans-serif;background:var(--bg);color:var(--text);dis
     <!-- SEC 3: MONTHLY ANALYSIS -->
     <div id="sec-monthly" class="dash-sec" style="display:none">
       <div class="sec-hd">
-        <div class="sec-title">Monthly Analysis</div>
+        <div>
+          <div class="sec-title">Monthly Analysis</div>
+          <div style="font-size:11.5px;color:var(--muted);margin-top:4px;margin-left:14px;">Pichle 6 months ka platform-wise growth — har month mein kitna izafa hua</div>
+        </div>
         <span class="sec-tag">Last 6 Months</span>
       </div>
       <div class="tbl-wrap">
@@ -428,7 +473,10 @@ body{font-family:'DM Sans',sans-serif;background:var(--bg);color:var(--text);dis
     <!-- SEC 4: TRENDS -->
     <div id="sec-trends" class="dash-sec" style="display:none">
       <div class="sec-hd">
-        <div class="sec-title">Growth Trends</div>
+        <div>
+          <div class="sec-title">Growth Trends</div>
+          <div style="font-size:11.5px;color:var(--muted);margin-top:4px;margin-left:14px;">Platform growth chart — dropdown se koi bhi platform select karein</div>
+        </div>
         <span class="sec-tag">All Time</span>
       </div>
       <div class="chart-row">
@@ -460,7 +508,10 @@ body{font-family:'DM Sans',sans-serif;background:var(--bg);color:var(--text);dis
     <!-- SEC 5: MEETING -->
     <div id="sec-meeting" class="dash-sec" style="display:none">
       <div class="sec-hd">
-        <div class="sec-title">Meeting Summary</div>
+        <div>
+          <div class="sec-title">Meeting Summary</div>
+          <div style="font-size:11.5px;color:var(--muted);margin-top:4px;margin-left:14px;">Weekly team meeting ke liye tayyar talking points — copy kar ke seedha use karein</div>
+        </div>
         <span class="sec-tag">Auto Generated</span>
       </div>
       <div class="meeting-card">
@@ -717,16 +768,26 @@ function parseGvizResponse(json){
   D.sort((a,b) => a.date - b.date);
 }
 
-// ── RESTORE SAVED SHEET ON LOAD ──────────────────────
+// ── DEFAULT SHEET URL ────────────────────────────────
+const DEFAULT_GS_URL = 'https://docs.google.com/spreadsheets/d/1MG7nZhr4L7cORXWL5FTuTPUDn0354bpqlq4RrzZNZQo/';
+
+function resetToDefault(){
+  document.getElementById('gs-url').value = DEFAULT_GS_URL;
+  try{ localStorage.removeItem('ct_gs_url'); }catch(e){}
+  setGsStatus('✅ Default URL restore ho gaya — Connect dabayein.', '#0F9D58');
+}
+
 window.addEventListener('load', ()=>{
   try{
     const saved = localStorage.getItem('ct_gs_url');
-    if(saved){
-      document.getElementById('gs-url').value = saved;
-      setGsStatus('⏳ Reconnecting to saved sheet...', 'var(--muted)');
-      setTimeout(connectSheet, 500);
-    }
-  }catch(e){}
+    const urlToUse = saved || DEFAULT_GS_URL;
+    document.getElementById('gs-url').value = urlToUse;
+    setGsStatus('⏳ Connecting to Chaajao Social Analytics...', 'var(--muted)');
+    setTimeout(connectSheet, 600);
+  }catch(e){
+    document.getElementById('gs-url').value = DEFAULT_GS_URL;
+    setTimeout(connectSheet, 600);
+  }
 });
 
 function parseRows(raw){
