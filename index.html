@@ -9,7 +9,7 @@
 <link href="https://fonts.googleapis.com/css2?family=Bebas+Neue&family=DM+Sans:wght@300;400;500;600;700&display=swap" rel="stylesheet">
 <style>
 :root{
-  --mag:#A8147B; --mag2:#8A0F65; --mag3:#C41991; --mag-glow:rgba(168,20,123,.12); --mag-border:rgba(168,20,123,.28);
+  --mag:#B91C1C; --mag2:#991B1B; --mag3:#DC2626; --mag-glow:rgba(185,28,28,.12); --mag-border:rgba(185,28,28,.28);
   --bg:#FFFFFF; --bg2:#F7F5F6; --bg3:#F0EBEf; --bg4:#EAE2E7;
   --dark:#231F20; --dark2:#3A3336; --dark3:#544F51;
   --border:rgba(35,31,32,.1); --border2:rgba(35,31,32,.06);
@@ -23,19 +23,19 @@ body{font-family:'DM Sans',sans-serif;background:var(--bg);color:var(--text);dis
 /* ── SIDEBAR ── */
 #sidebar{width:var(--sidebar);background:var(--dark);display:flex;flex-direction:column;flex-shrink:0;height:100vh;}
 .sb-logo{padding:22px 20px 18px;border-bottom:1px solid rgba(255,255,255,.08);}
-.sb-logo-box{width:42px;height:42px;background:var(--mag);border-radius:11px;display:flex;align-items:center;justify-content:center;font-family:'Bebas Neue',sans-serif;font-size:22px;color:#fff;box-shadow:0 4px 18px rgba(168,20,123,.45);margin-bottom:11px;}
+.sb-logo-box{width:42px;height:42px;background:var(--mag);border-radius:11px;display:flex;align-items:center;justify-content:center;font-family:'Bebas Neue',sans-serif;font-size:22px;color:#fff;box-shadow:0 4px 18px rgba(185,28,28,.45);margin-bottom:11px;}
 .sb-name{font-family:'Bebas Neue',sans-serif;font-size:19px;letter-spacing:2px;color:#fff;}
 .sb-sub{font-size:9.5px;color:rgba(255,255,255,.35);letter-spacing:1px;text-transform:uppercase;margin-top:3px;}
 .sb-nav{flex:1;padding:10px 0;overflow-y:auto;}
 .sb-lbl{font-size:9px;font-weight:700;letter-spacing:2.5px;text-transform:uppercase;color:rgba(255,255,255,.25);padding:14px 20px 5px;}
 .sb-item{display:flex;align-items:center;gap:10px;padding:9px 20px;cursor:pointer;font-size:12.5px;font-weight:500;color:rgba(255,255,255,.5);border-left:3px solid transparent;transition:all .15s;user-select:none;text-decoration:none;}
 .sb-item:hover{color:rgba(255,255,255,.85);background:rgba(255,255,255,.05);}
-.sb-item.active{color:#fff;border-left-color:var(--mag3);background:rgba(168,20,123,.15);}
+.sb-item.active{color:#fff;border-left-color:var(--mag3);background:rgba(185,28,28,.15);}
 .sb-item .ico{width:16px;height:16px;flex-shrink:0;display:flex;align-items:center;justify-content:center;}
 .sb-item .ico svg{width:15px;height:15px;fill:currentColor;}
 .sb-foot{padding:14px 20px;border-top:1px solid rgba(255,255,255,.08);}
 .sb-foot-info{font-size:11px;color:rgba(255,255,255,.3);}
-.sb-foot-badge{display:inline-block;margin-top:6px;background:rgba(168,20,123,.2);border:1px solid rgba(168,20,123,.35);color:#D966B8;font-size:10px;font-weight:700;padding:3px 11px;border-radius:20px;}
+.sb-foot-badge{display:inline-block;margin-top:6px;background:rgba(185,28,28,.2);border:1px solid rgba(185,28,28,.35);color:#FCA5A5;font-size:10px;font-weight:700;padding:3px 11px;border-radius:20px;}
 
 /* ── MAIN ── */
 #main{flex:1;display:flex;flex-direction:column;height:100vh;overflow:hidden;}
@@ -48,7 +48,7 @@ body{font-family:'DM Sans',sans-serif;background:var(--bg);color:var(--text);dis
 .btn{display:inline-flex;align-items:center;gap:6px;padding:7px 16px;border-radius:8px;font-size:12px;font-family:'DM Sans',sans-serif;font-weight:600;cursor:pointer;border:none;transition:all .15s;}
 .btn-ghost{background:var(--bg2);color:var(--text2);border:1px solid var(--border);}
 .btn-ghost:hover{color:var(--text);background:var(--bg3);}
-.btn-mag{background:var(--mag);color:#fff;box-shadow:0 2px 12px rgba(168,20,123,.3);}
+.btn-mag{background:var(--mag);color:#fff;box-shadow:0 2px 12px rgba(185,28,28,.3);}
 .btn-mag:hover{background:var(--mag2);}
 .period-badge{font-size:11px;color:var(--text2);background:var(--bg2);border:1px solid var(--border);border-radius:7px;padding:5px 13px;font-weight:500;}
 
@@ -57,7 +57,7 @@ body{font-family:'DM Sans',sans-serif;background:var(--bg);color:var(--text);dis
 
 /* ── UPLOAD ── */
 #upload-section{display:flex;align-items:center;justify-content:center;min-height:380px;}
-.upload-box{background:var(--bg);border:2px dashed rgba(168,20,123,.25);border-radius:16px;padding:52px 70px;text-align:center;cursor:pointer;transition:all .2s;max-width:500px;width:100%;}
+.upload-box{background:var(--bg);border:2px dashed rgba(185,28,28,.25);border-radius:16px;padding:52px 70px;text-align:center;cursor:pointer;transition:all .2s;max-width:500px;width:100%;}
 .upload-box:hover,.upload-box.dragover{border-color:var(--mag);background:var(--mag-glow);}
 .upload-box h2{font-family:'Bebas Neue',sans-serif;font-size:26px;letter-spacing:1px;margin-bottom:8px;color:var(--dark);}
 .upload-box p{font-size:13px;color:var(--text2);line-height:1.65;margin-bottom:22px;}
@@ -68,10 +68,10 @@ body{font-family:'DM Sans',sans-serif;background:var(--bg);color:var(--text);dis
 .sec-hd{display:flex;align-items:center;justify-content:space-between;}
 .sec-title{font-family:'Bebas Neue',sans-serif;font-size:20px;letter-spacing:1px;display:flex;align-items:center;gap:10px;color:var(--dark);}
 .sec-title::before{content:'';width:4px;height:18px;background:var(--mag);border-radius:2px;display:block;}
-.sec-tag{font-size:9.5px;font-weight:700;letter-spacing:.8px;text-transform:uppercase;padding:3px 11px;border-radius:20px;background:rgba(168,20,123,.08);border:1px solid var(--mag-border);color:var(--mag);}
+.sec-tag{font-size:9.5px;font-weight:700;letter-spacing:.8px;text-transform:uppercase;padding:3px 11px;border-radius:20px;background:rgba(185,28,28,.08);border:1px solid var(--mag-border);color:var(--mag);}
 
 /* ── TOTAL BANNER ── */
-.total-banner{background:linear-gradient(135deg,rgba(168,20,123,.07) 0%,rgba(168,20,123,.02) 100%);border:1px solid var(--mag-border);border-radius:12px;padding:18px 24px;display:flex;align-items:center;justify-content:space-around;flex-wrap:wrap;gap:16px;}
+.total-banner{background:linear-gradient(135deg,rgba(185,28,28,.07) 0%,rgba(185,28,28,.02) 100%);border:1px solid var(--mag-border);border-radius:12px;padding:18px 24px;display:flex;align-items:center;justify-content:space-around;flex-wrap:wrap;gap:16px;}
 .tot-item{text-align:center;min-width:110px;}
 .tot-lbl{font-size:9.5px;font-weight:700;letter-spacing:1px;text-transform:uppercase;color:var(--muted);margin-bottom:5px;}
 .tot-num{font-family:'Bebas Neue',sans-serif;font-size:30px;letter-spacing:.5px;color:var(--mag);}
@@ -81,7 +81,7 @@ body{font-family:'DM Sans',sans-serif;background:var(--bg);color:var(--text);dis
 /* ── KPI GRID ── */
 .kpi-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(155px,1fr));gap:11px;}
 .kpi-card{background:var(--bg);border:1px solid var(--border);border-radius:12px;padding:15px 17px;position:relative;overflow:hidden;transition:border-color .15s,box-shadow .15s;}
-.kpi-card:hover{border-color:var(--mag-border);box-shadow:0 2px 14px rgba(168,20,123,.08);}
+.kpi-card:hover{border-color:var(--mag-border);box-shadow:0 2px 14px rgba(185,28,28,.08);}
 .kpi-dot{position:absolute;top:12px;right:12px;width:7px;height:7px;border-radius:50%;}
 .kpi-plat{font-size:10px;font-weight:700;letter-spacing:.8px;text-transform:uppercase;color:var(--muted);margin-bottom:8px;display:flex;align-items:center;gap:6px;}
 .kpi-plat svg{width:13px;height:13px;flex-shrink:0;}
@@ -97,7 +97,7 @@ body{font-family:'DM Sans',sans-serif;background:var(--bg);color:var(--text);dis
 .ctbl tbody tr{border-bottom:1px solid var(--border2);transition:background .12s;}
 .ctbl tbody tr:last-child{border-bottom:none;}
 .ctbl tbody tr:hover{background:var(--bg2);}
-.ctbl tbody tr.grand-total{background:rgba(168,20,123,.04);border-top:2px solid var(--mag-border);}
+.ctbl tbody tr.grand-total{background:rgba(185,28,28,.04);border-top:2px solid var(--mag-border);}
 .ctbl td{padding:11px 15px;font-size:13px;color:var(--text);text-align:center;vertical-align:middle;}
 .ctbl td.plat-col{text-align:left;}
 .plat-cell{display:flex;align-items:center;gap:9px;}
@@ -106,7 +106,7 @@ body{font-family:'DM Sans',sans-serif;background:var(--bg);color:var(--text);dis
 .plat-icon{width:17px;height:17px;flex-shrink:0;display:flex;align-items:center;justify-content:center;}
 .plat-icon svg{width:16px;height:16px;}
 .num-cell{font-weight:600;font-size:13px;color:var(--dark);}
-.chg-col{background:rgba(168,20,123,.02);}
+.chg-col{background:rgba(185,28,28,.02);}
 .chg-val{font-size:12px;font-weight:700;}
 .chg-pct{font-size:10px;opacity:.7;margin-left:2px;}
 .m-num{font-weight:600;font-size:13px;color:var(--dark);}
@@ -121,19 +121,6 @@ body{font-family:'DM Sans',sans-serif;background:var(--bg);color:var(--text);dis
 .chart-box{position:relative;height:215px;}
 .chart-sel{background:var(--bg2);border:1px solid var(--border);color:var(--text);font-family:'DM Sans',sans-serif;font-size:11px;font-weight:600;border-radius:7px;padding:5px 9px;cursor:pointer;outline:none;}
 
-/* MEETING */
-.meeting-card{background:var(--bg);border:1px solid var(--border);border-radius:12px;padding:22px 26px;box-shadow:0 1px 4px rgba(35,31,32,.04);}
-.mtg-top{display:flex;align-items:center;gap:13px;margin-bottom:18px;}
-.mtg-icon{width:40px;height:40px;background:var(--mag);border-radius:10px;display:flex;align-items:center;justify-content:center;box-shadow:0 3px 14px rgba(168,20,123,.35);}
-.mtg-icon svg{width:20px;height:20px;fill:#fff;}
-.mtg-title{font-family:'Bebas Neue',sans-serif;font-size:19px;letter-spacing:1px;color:var(--dark);}
-.mtg-sub{font-size:11px;color:var(--muted);}
-.mtg-pts{display:grid;grid-template-columns:repeat(auto-fill,minmax(270px,1fr));gap:9px;}
-.mp{background:var(--bg2);border:1px solid var(--border);border-radius:9px;padding:12px 14px;display:flex;align-items:flex-start;gap:10px;}
-.mp-ico{flex-shrink:0;margin-top:1px;width:18px;height:18px;display:flex;align-items:center;}
-.mp-ico svg{width:16px;height:16px;}
-.mp-txt{font-size:12.5px;color:var(--text2);line-height:1.55;}
-.mp-txt b{color:var(--text);}
 
 /* ── PRINT ── */
 @media print{
@@ -144,12 +131,12 @@ body{font-family:'DM Sans',sans-serif;background:var(--bg);color:var(--text);dis
   html,body{height:auto!important;overflow:visible!important;display:block!important;background:#fff!important;color:#111!important;}
   #sidebar{display:none!important;}
   #main{height:auto!important;overflow:visible!important;display:block!important;}
-  #topbar,#upload-section,#sec-trends,#sec-meeting{display:none!important;}
+  #topbar,#upload-section,#sec-trends{display:none!important;}
   #scroll-area{overflow:visible!important;height:auto!important;padding:0!important;display:block!important;background:#fff!important;gap:0!important;}
 
   /* Scale entire print content to fit A4 landscape in one page */
   #scroll-area > *{transform-origin:top left;}
-  .print-header{display:flex!important;align-items:center!important;justify-content:space-between!important;padding-bottom:5px!important;border-bottom:2px solid #A8147B!important;margin-bottom:6px!important;}
+  .print-header{display:flex!important;align-items:center!important;justify-content:space-between!important;padding-bottom:5px!important;border-bottom:2px solid #B91C1C!important;margin-bottom:6px!important;}
 
   /* Sections */
   .dash-sec{display:none!important;}
@@ -164,17 +151,17 @@ body{font-family:'DM Sans',sans-serif;background:var(--bg);color:var(--text);dis
   .sec-hd{margin-bottom:3px!important;}
   .sec-tag{display:none!important;}
   .sec-title{color:#111!important;font-size:10px!important;letter-spacing:.5px!important;}
-  .sec-title::before{background:#A8147B!important;width:3px!important;height:11px!important;}
+  .sec-title::before{background:#B91C1C!important;width:3px!important;height:11px!important;}
 
   /* TOTAL BANNER — single row */
   .total-banner{
-    background:#fdf3f9!important;border:1px solid #e9a5d6!important;border-radius:3px!important;
+    background:#fef2f2!important;border:1px solid #fca5a5!important;border-radius:3px!important;
     padding:4px 8px!important;margin-bottom:0!important;
     display:flex!important;flex-wrap:nowrap!important;justify-content:space-around!important;gap:4px!important;
   }
   .tot-item{min-width:0!important;flex:1!important;padding:1px 4px!important;text-align:center!important;}
   .tot-lbl{color:#555!important;font-size:7px!important;letter-spacing:.3px!important;margin-bottom:1px!important;}
-  .tot-num{color:#A8147B!important;font-size:13px!important;line-height:1.1!important;}
+  .tot-num{color:#B91C1C!important;font-size:13px!important;line-height:1.1!important;}
   .tot-chg{font-size:7px!important;margin-top:0!important;}
 
   /* KPI CARDS — single row of 9 */
@@ -201,7 +188,7 @@ body{font-family:'DM Sans',sans-serif;background:var(--bg);color:var(--text);dis
   .ctbl td{color:#111!important;padding:3px 5px!important;font-size:8px!important;background:#fff!important;}
   .ctbl tbody tr{border-bottom:1px solid #f0f0f0!important;}
   .ctbl tbody tr:hover{background:#fff!important;}
-  .ctbl tbody tr.grand-total{background:#fdf3f9!important;}
+  .ctbl tbody tr.grand-total{background:#fef2f2!important;}
   .ctbl tbody tr.grand-total td{color:#111!important;}
   .plat-cell{gap:4px!important;}
   .plat-icon{width:11px!important;height:11px!important;}
@@ -225,16 +212,95 @@ body{font-family:'DM Sans',sans-serif;background:var(--bg);color:var(--text);dis
   .neu,.chg-val.neu,.m-diff.neu,.tot-chg.neu,.kpi-chg.neu{color:#888!important;}
 }
 
+
+/* ══ HAMBURGER BUTTON (mobile) ══ */
+#hamburger{display:none;position:fixed;top:14px;left:14px;z-index:300;
+  width:38px;height:38px;background:var(--dark);border:none;border-radius:9px;
+  cursor:pointer;align-items:center;justify-content:center;box-shadow:0 2px 10px rgba(0,0,0,.25);}
+#hamburger svg{width:18px;height:18px;fill:#fff;}
+#sidebar-overlay{display:none;position:fixed;inset:0;background:rgba(0,0,0,.5);z-index:199;}
+
+/* ══ RESPONSIVE BREAKPOINTS ══ */
+@media(max-width:1024px){
+  :root{--sidebar:220px;}
+  #scroll-area{padding:18px 18px;gap:20px;}
+  .chart-row{grid-template-columns:1fr;}
+  .kpi-grid{grid-template-columns:repeat(auto-fill,minmax(140px,1fr));}
+}
+
+@media(max-width:768px){
+  /* Sidebar becomes slide-in drawer */
+  #sidebar{position:fixed;left:-260px;top:0;width:252px!important;z-index:200;
+    transition:left .28s cubic-bezier(.4,0,.2,1);box-shadow:none;}
+  #sidebar.open{left:0;box-shadow:4px 0 24px rgba(0,0,0,.35);}
+  #sidebar-overlay.open{display:block;}
+  #hamburger{display:flex;}
+  #main{width:100%;}
+  #topbar{padding:0 16px 0 60px;height:54px;}
+  .tb-title{font-size:17px;}
+  .tb-sub{font-size:10px;}
+  .tb-right .period-badge,.tb-right #change-src-btn{display:none;}
+  .tb-right .btn{font-size:11px;padding:6px 11px;}
+  #scroll-area{padding:14px 12px;gap:16px;}
+
+  /* Tables — horizontal scroll */
+  .tbl-wrap{overflow-x:auto;-webkit-overflow-scrolling:touch;}
+  .ctbl{min-width:580px;}
+
+  /* Charts */
+  .chart-row{grid-template-columns:1fr;}
+  .chart-box{height:180px;}
+
+  /* KPI */
+  .kpi-grid{grid-template-columns:repeat(2,1fr);gap:8px;}
+  .kpi-val{font-size:24px;}
+
+  /* Banner */
+  .total-banner{padding:12px 14px;gap:10px;}
+  .tot-num{font-size:22px;}
+  .tot-item{min-width:80px;}
+
+  /* Upload */
+  #upload-section{padding:12px;}
+  .upload-box{padding:28px 18px!important;}
+
+  /* Section info banners */
+  .sec-info-banner{padding:10px 12px!important;gap:10px!important;}
+  .sec-info-banner > div:first-child{width:30px!important;height:30px!important;}
+}
+
+@media(max-width:480px){
+  #topbar{padding:0 12px 0 56px;}
+  .tb-title{font-size:15px;letter-spacing:.5px;}
+  .tb-right .btn-ghost{display:none;}
+  #scroll-area{padding:10px 10px;gap:14px;}
+  .kpi-grid{grid-template-columns:repeat(2,1fr);gap:7px;}
+  .kpi-card{padding:11px 12px;}
+  .kpi-val{font-size:22px;}
+  .kpi-plat{font-size:9px;}
+  .total-banner{flex-direction:column;align-items:stretch;gap:0;}
+  .tot-item{min-width:0;display:flex;align-items:center;justify-content:space-between;
+    padding:8px 0;border-bottom:1px solid var(--border2);text-align:left;}
+  .tot-item:last-child{border-bottom:none;}
+  .tot-lbl{margin-bottom:0;flex:1;}
+  .tot-num{font-size:20px;flex-shrink:0;}
+  .tot-chg{font-size:10px;margin-top:0;margin-left:8px;}
+  .sec-title{font-size:17px;}
+  .chart-box{height:160px;}
+  .ctbl{min-width:500px;}
+  .ctbl thead th,.ctbl td{padding:8px 10px;font-size:11.5px;}
+}
+
 /* ── PRINT HEADER ── */
-.print-header{display:none;align-items:center;justify-content:space-between;padding-bottom:12px;border-bottom:2px solid #A8147B;margin-bottom:16px;}
+.print-header{display:none;align-items:center;justify-content:space-between;padding-bottom:12px;border-bottom:2px solid #B91C1C;margin-bottom:16px;}
 .ph-logo{display:flex;align-items:center;gap:12px;}
-.ph-box{width:36px;height:36px;background:#A8147B;border-radius:8px;display:flex;align-items:center;justify-content:center;font-family:'Bebas Neue',sans-serif;font-size:18px;color:#fff;}
+.ph-box{width:36px;height:36px;background:#B91C1C;border-radius:8px;display:flex;align-items:center;justify-content:center;font-family:'Bebas Neue',sans-serif;font-size:18px;color:#fff;}
 .ph-name{font-family:'Bebas Neue',sans-serif;font-size:22px;letter-spacing:1.5px;color:#111;}
 .ph-sub{font-size:10px;color:#666;letter-spacing:.5px;text-transform:uppercase;}
 .ph-date{font-size:11px;color:#666;text-align:right;}
 
 /* ── UPLOAD ICON ── */
-.upload-ico-wrap{width:60px;height:60px;background:rgba(168,20,123,.08);border-radius:14px;display:flex;align-items:center;justify-content:center;margin:0 auto 16px;}
+.upload-ico-wrap{width:60px;height:60px;background:rgba(185,28,28,.08);border-radius:14px;display:flex;align-items:center;justify-content:center;margin:0 auto 16px;}
 .upload-ico-wrap svg{width:28px;height:28px;fill:var(--mag);}
 
 /* ── TOAST ── */
@@ -264,6 +330,8 @@ body{font-family:'DM Sans',sans-serif;background:var(--bg);color:var(--text);dis
 </svg>
 
 <!-- SIDEBAR -->
+<button id="hamburger" onclick="toggleSidebar()" aria-label="Menu"><svg viewBox="0 0 24 24"><path d="M3 18h18v-2H3v2zm0-5h18v-2H3v2zm0-7v2h18V6H3z"/></svg></button>
+<div id="sidebar-overlay" onclick="toggleSidebar()"></div>
 <div id="sidebar">
   <div class="sb-logo">
     <div class="sb-logo-box">CT</div>
@@ -281,8 +349,7 @@ body{font-family:'DM Sans',sans-serif;background:var(--bg);color:var(--text);dis
     <div class="sb-lbl">Insights</div>
     <a class="sb-item" onclick="navTo(this,'trends')">
       <span class="ico"><svg viewBox="0 0 24 24"><use href="#icon-trends"/></svg></span> Growth Trends</a>
-    <a class="sb-item" onclick="navTo(this,'meeting')">
-      <span class="ico"><svg viewBox="0 0 24 24"><use href="#icon-meeting"/></svg></span> Meeting Summary</a>
+
     <div class="sb-lbl">Actions</div>
     <a class="sb-item" onclick="document.getElementById('file-input').click()">
       <span class="ico"><svg viewBox="0 0 24 24"><use href="#icon-upload"/></svg></span> Upload New File</a>
@@ -334,8 +401,8 @@ body{font-family:'DM Sans',sans-serif;background:var(--bg);color:var(--text);dis
       <div style="width:100%;max-width:590px;display:flex;flex-direction:column;gap:14px;">
 
         <!-- HOW IT WORKS -->
-        <div style="background:linear-gradient(135deg,rgba(168,20,123,.07),rgba(168,20,123,.02));border:1px solid var(--mag-border);border-radius:12px;padding:16px 20px;display:flex;align-items:flex-start;gap:12px;">
-          <div style="width:34px;height:34px;background:var(--mag);border-radius:9px;display:flex;align-items:center;justify-content:center;flex-shrink:0;margin-top:1px;box-shadow:0 3px 12px rgba(168,20,123,.3);">
+        <div style="background:linear-gradient(135deg,rgba(185,28,28,.07),rgba(185,28,28,.02));border:1px solid var(--mag-border);border-radius:12px;padding:16px 20px;display:flex;align-items:flex-start;gap:12px;">
+          <div style="width:34px;height:34px;background:var(--mag);border-radius:9px;display:flex;align-items:center;justify-content:center;flex-shrink:0;margin-top:1px;box-shadow:0 3px 12px rgba(185,28,28,.3);">
             <svg width="18" height="18" viewBox="0 0 24 24" fill="#fff"><path d="M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zm1 15h-2v-6h2v6zm0-8h-2V7h2v2z"/></svg>
           </div>
           <div>
@@ -411,11 +478,17 @@ body{font-family:'DM Sans',sans-serif;background:var(--bg);color:var(--text);dis
 
     <!-- SEC 1: TOTAL OVERVIEW -->
     <div id="sec-totals" class="dash-sec" style="display:none">
-      <div class="sec-hd">
-        <div>
-          <div class="sec-title">Total Overview</div>
-          <div style="font-size:11.5px;color:var(--muted);margin-top:4px;margin-left:14px;">Latest entry ke followers — tamam platforms ek jagah</div>
+      <div class="sec-info-banner" style="background:linear-gradient(135deg,rgba(185,28,28,.05),transparent);border-left:4px solid #B91C1C;border-radius:0 10px 10px 0;padding:12px 16px;margin-bottom:2px;display:flex;align-items:center;gap:14px;">
+          <div style="width:36px;height:36px;background:#B91C1C18;border-radius:9px;display:flex;align-items:center;justify-content:center;flex-shrink:0;">
+            <svg width="18" height="18" viewBox="0 0 24 24" fill="#B91C1C"><path d="M3 13h8V3H3v10zm0 8h8v-6H3v6zm10 0h8V11h-8v10zm0-18v6h8V3h-8z"/></svg>
+          </div>
+          <div>
+            <div style="font-size:13px;font-weight:700;color:var(--dark);margin-bottom:2px;">Total Follower Count</div>
+            <div style="font-size:11.5px;color:var(--text2);line-height:1.5;">Aaj tak kitne log Chaajao ko follow kar rahe hain — har platform ka latest number</div>
+          </div>
         </div>
+      <div class="sec-hd">
+        <div class="sec-title">Total Overview</div>
         <span class="sec-tag" id="snapshot-tag">Latest Snapshot</span>
       </div>
       <div class="total-banner" id="total-banner"></div>
@@ -424,11 +497,17 @@ body{font-family:'DM Sans',sans-serif;background:var(--bg);color:var(--text);dis
 
     <!-- SEC 2: WEEKLY COMPARISON -->
     <div id="sec-weekly" class="dash-sec" style="display:none">
-      <div class="sec-hd">
-        <div>
-          <div class="sec-title">Weekly Breakdown</div>
-          <div style="font-size:11.5px;color:var(--muted);margin-top:4px;margin-left:14px;">Aakhri 3 entries ka side-by-side comparison — week-on-week growth</div>
+      <div class="sec-info-banner" style="background:linear-gradient(135deg,rgba(185,28,28,.05),transparent);border-left:4px solid #0A66C2;border-radius:0 10px 10px 0;padding:12px 16px;margin-bottom:2px;display:flex;align-items:center;gap:14px;">
+          <div style="width:36px;height:36px;background:#0A66C218;border-radius:9px;display:flex;align-items:center;justify-content:center;flex-shrink:0;">
+            <svg width="18" height="18" viewBox="0 0 24 24" fill="#0A66C2"><path d="M17 12h-5v5h5v-5zM16 1v2H8V1H6v2H5c-1.11 0-1.99.9-1.99 2L3 19c0 1.1.89 2 2 2h14c1.1 0 2-.9 2-2V5c0-1.1-.9-2-2-2h-1V1h-2zm3 18H5V8h14v11z"/></svg>
+          </div>
+          <div>
+            <div style="font-size:13px;font-weight:700;color:var(--dark);margin-bottom:2px;">Is Hafte Kya Badla?</div>
+            <div style="font-size:11.5px;color:var(--text2);line-height:1.5;">Aakhri 3 updates ka comparison — green matlab izafa, red matlab kami</div>
+          </div>
         </div>
+      <div class="sec-hd">
+        <div class="sec-title">Weekly Breakdown</div>
         <span class="sec-tag">Latest 3 Entries</span>
       </div>
       <div class="tbl-wrap">
@@ -441,11 +520,17 @@ body{font-family:'DM Sans',sans-serif;background:var(--bg);color:var(--text);dis
 
     <!-- SEC 3: MONTHLY ANALYSIS -->
     <div id="sec-monthly" class="dash-sec" style="display:none">
-      <div class="sec-hd">
-        <div>
-          <div class="sec-title">Monthly Analysis</div>
-          <div style="font-size:11.5px;color:var(--muted);margin-top:4px;margin-left:14px;">Pichle 6 months ka platform-wise growth — har month mein kitna izafa hua</div>
+      <div class="sec-info-banner" style="background:linear-gradient(135deg,rgba(185,28,28,.05),transparent);border-left:4px solid #059669;border-radius:0 10px 10px 0;padding:12px 16px;margin-bottom:2px;display:flex;align-items:center;gap:14px;">
+          <div style="width:36px;height:36px;background:#05966918;border-radius:9px;display:flex;align-items:center;justify-content:center;flex-shrink:0;">
+            <svg width="18" height="18" viewBox="0 0 24 24" fill="#059669"><path d="M19 3H5c-1.1 0-2 .9-2 2v14c0 1.1.9 2 2 2h14c1.1 0 2-.9 2-2V5c0-1.1-.9-2-2-2zm-7 14l-5-5 1.41-1.41L12 14.17l7.59-7.59L21 8l-9 9z"/></svg>
+          </div>
+          <div>
+            <div style="font-size:13px;font-weight:700;color:var(--dark);margin-bottom:2px;">Mahina Ba Mahina Growth</div>
+            <div style="font-size:11.5px;color:var(--text2);line-height:1.5;">Har mahine kitna growth hua — numbers ke saath upar/neeche ka arrow clearly dikhata hai</div>
+          </div>
         </div>
+      <div class="sec-hd">
+        <div class="sec-title">Monthly Analysis</div>
         <span class="sec-tag">Last 6 Months</span>
       </div>
       <div class="tbl-wrap">
@@ -472,11 +557,17 @@ body{font-family:'DM Sans',sans-serif;background:var(--bg);color:var(--text);dis
 
     <!-- SEC 4: TRENDS -->
     <div id="sec-trends" class="dash-sec" style="display:none">
-      <div class="sec-hd">
-        <div>
-          <div class="sec-title">Growth Trends</div>
-          <div style="font-size:11.5px;color:var(--muted);margin-top:4px;margin-left:14px;">Platform growth chart — dropdown se koi bhi platform select karein</div>
+      <div class="sec-info-banner" style="background:linear-gradient(135deg,rgba(185,28,28,.05),transparent);border-left:4px solid #7C3AED;border-radius:0 10px 10px 0;padding:12px 16px;margin-bottom:2px;display:flex;align-items:center;gap:14px;">
+          <div style="width:36px;height:36px;background:#7C3AED18;border-radius:9px;display:flex;align-items:center;justify-content:center;flex-shrink:0;">
+            <svg width="18" height="18" viewBox="0 0 24 24" fill="#7C3AED"><path d="M16 6l2.29 2.29-4.88 4.88-4-4L2 16.59 3.41 18l6-6 4 4 6.3-6.29L22 12V6z"/></svg>
+          </div>
+          <div>
+            <div style="font-size:13px;font-weight:700;color:var(--dark);margin-bottom:2px;">Growth Ka Graph</div>
+            <div style="font-size:11.5px;color:var(--text2);line-height:1.5;">Dropdown se koi bhi platform chunein — uska poora history graphically dekhein</div>
+          </div>
         </div>
+      <div class="sec-hd">
+        <div class="sec-title">Growth Trends</div>
         <span class="sec-tag">All Time</span>
       </div>
       <div class="chart-row">
@@ -504,29 +595,7 @@ body{font-family:'DM Sans',sans-serif;background:var(--bg);color:var(--text);dis
         <div class="chart-box"><canvas id="wowChart"></canvas></div>
       </div>
     </div>
-
-    <!-- SEC 5: MEETING -->
-    <div id="sec-meeting" class="dash-sec" style="display:none">
-      <div class="sec-hd">
-        <div>
-          <div class="sec-title">Meeting Summary</div>
-          <div style="font-size:11.5px;color:var(--muted);margin-top:4px;margin-left:14px;">Weekly team meeting ke liye tayyar talking points — copy kar ke seedha use karein</div>
         </div>
-        <span class="sec-tag">Auto Generated</span>
-      </div>
-      <div class="meeting-card">
-        <div class="mtg-top">
-          <div class="mtg-icon">
-            <svg viewBox="0 0 24 24"><use href="#icon-meeting"/></svg>
-          </div>
-          <div>
-            <div class="mtg-title">Weekly Report — <span id="mtg-date"></span></div>
-            <div class="mtg-sub">Key talking points for your weekly team meeting</div>
-          </div>
-        </div>
-        <div class="mtg-pts" id="mtg-pts"></div>
-      </div>
-    </div>
 
   </div>
 </div>
@@ -841,7 +910,7 @@ function renderAll(){
     'Report Date: <strong>' + fd(last.date) + '</strong><br>Data Range: ' + fd(D[0].date) + ' – ' + fd(last.date);
   document.getElementById('snapshot-tag').textContent = fd(last.date);
 
-  ['sec-totals','sec-weekly','sec-monthly','sec-trends','sec-meeting'].forEach(id =>
+  ['sec-totals','sec-weekly','sec-monthly','sec-trends'].forEach(id =>
     document.getElementById(id).style.display = 'flex'
   );
 
@@ -849,7 +918,6 @@ function renderAll(){
   renderWeekly();
   renderMonthly();
   renderCharts();
-  renderMeeting();
 }
 
 // ── SEC 1: TOTAL OVERVIEW ────────────────────────────
@@ -919,7 +987,7 @@ function renderWeekly(){
       ?`<th>${colLabels[i]}<br><span style="font-weight:400;font-size:10px;opacity:.7">${fds(c.date)}</span></th>`
       :`<th style="opacity:.35">${colLabels[i]}</th>`
     ).join('') +
-    '<th>Change<br><span style="font-weight:400;font-size:10px;opacity:.7">(Latest vs Prev)</span></th>';
+    '<th>Weekly Change<br><span style="font-weight:400;font-size:10px;opacity:.7">(New followers gained)</span></th>';
 
   const rows = [
     {key:'linkedin',         label:'LinkedIn',          iconId:'icon-linkedin',  color:'#0A66C2'},
@@ -950,20 +1018,37 @@ function renderWeekly(){
     </tr>`;
   }
 
-  const t0=e0?TOTAL_KEYS.reduce((s,k)=>s+(e0[k]||0),0):null;
-  const t1=e1?TOTAL_KEYS.reduce((s,k)=>s+(e1[k]||0),0):null;
-  const t2=e2?TOTAL_KEYS.reduce((s,k)=>s+(e2[k]||0),0):null;
+  // New followers this week = diff between each consecutive entry
+  const diff = (a, b) => (a!==null && b!==null) ? a - b : null;
+  const wkDiff0 = e0&&e1 ? TOTAL_KEYS.reduce((s,k)=>s+(diff(e0[k],null)??0),0) : null; // not shown
+  const wkDiff1 = e1&&e0 ? TOTAL_KEYS.reduce((s,k)=>s+(diff(e1[k],e0[k])??0),0) : null;
+  const wkDiff2 = e2&&e1 ? TOTAL_KEYS.reduce((s,k)=>s+(diff(e2[k],e1[k])??0),0) : null;
+
+  const fmtDiff = v => {
+    if(v===null) return '<span style="color:var(--muted)">—</span>';
+    const cls = v>0?'up':v<0?'dn':'neu';
+    return `<span class="chg-val ${cls}" style="font-size:14px;">${v>=0?'▲ +':'▼ '}${Math.abs(v).toLocaleString()}</span>`;
+  };
+
   tbody+=`<tr class="grand-total">
     <td class="plat-col">
       <div class="plat-cell">
         <div class="plat-icon">${platIcon('icon-chart',16,'var(--mag)')}</div>
-        <span class="plat-name">TOTAL REACH</span>
+        <div>
+          <span class="plat-name">New Followers This Week</span>
+          <div style="font-size:10px;color:var(--muted);font-weight:400;margin-top:2px;">Tamam platforms ka combined izafa</div>
+        </div>
       </div>
     </td>
-    <td class="num-cell"><strong>${t0!==null?t0.toLocaleString():'—'}</strong></td>
-    <td class="num-cell"><strong>${t1!==null?t1.toLocaleString():'—'}</strong></td>
-    <td class="num-cell"><strong>${t2!==null?t2.toLocaleString():'—'}</strong></td>
-    <td class="chg-col"><strong>${chgBadge(t2,t1,true)}</strong></td>
+    <td class="num-cell">${fmtDiff(wkDiff1)}</td>
+    <td class="num-cell">${fmtDiff(wkDiff1)}</td>
+    <td class="num-cell" style="background:rgba(22,163,74,.04)"><strong>${fmtDiff(wkDiff2)}</strong></td>
+    <td class="chg-col">
+      ${wkDiff2!==null&&wkDiff1!==null
+        ? `<span class="chg-val ${(wkDiff2-wkDiff1)>=0?'up':'dn'}">${(wkDiff2-wkDiff1)>=0?'▲':'▼'} ${Math.abs(wkDiff2-wkDiff1).toLocaleString()} vs prev week</span>`
+        : '<span class="chg-val neu">—</span>'
+      }
+    </td>
   </tr>`;
 
   document.getElementById('w-body').innerHTML=tbody;
@@ -1014,7 +1099,7 @@ const baseOpts={
   responsive:true, maintainAspectRatio:false,
   plugins:{
     legend:{display:false},
-    tooltip:{backgroundColor:'#231F20',titleColor:'#fff',bodyColor:'#A09298',borderColor:'rgba(168,20,123,.2)',borderWidth:1}
+    tooltip:{backgroundColor:'#231F20',titleColor:'#fff',bodyColor:'#A09298',borderColor:'rgba(185,28,28,.2)',borderWidth:1}
   },
   scales:{
     x:{ticks:{color:'#A09298',font:{size:10},maxTicksLimit:12},grid:{color:'rgba(35,31,32,.06)'}},
@@ -1050,7 +1135,7 @@ function buildDonut(){
     responsive:true,maintainAspectRatio:false,cutout:'64%',
     plugins:{
       legend:{position:'right',labels:{color:'#544F51',font:{size:10},padding:9,boxWidth:9}},
-      tooltip:{backgroundColor:'#231F20',titleColor:'#fff',bodyColor:'#A09298',borderColor:'rgba(168,20,123,.2)',borderWidth:1,callbacks:{label:c=>' '+c.label+': '+c.raw.toLocaleString()}}
+      tooltip:{backgroundColor:'#231F20',titleColor:'#fff',bodyColor:'#A09298',borderColor:'rgba(185,28,28,.2)',borderWidth:1,callbacks:{label:c=>' '+c.label+': '+c.raw.toLocaleString()}}
     }
   }});
 }
@@ -1075,33 +1160,7 @@ function buildWow(){
   }}});
 }
 
-// ── MEETING ──────────────────────────────────────────
-function renderMeeting(){
-  const L=D[D.length-1], P=D.length>1?D[D.length-2]:null, P4=D.length>4?D[D.length-5]:null;
-  document.getElementById('mtg-date').textContent=fd(L.date);
-  const df=(a,b)=>a!==null&&b!==null?a-b:null;
-  const sp=(v,b)=>v!==null?`<span class="${v>0?'up':'dn'}" style="font-size:12px">${v>0?'▲ +':'▼ '}${Math.abs(v).toLocaleString()}${b?` (${v>0?'+':''}${((v/b)*100).toFixed(1)}%)`:''}</span>`:'';
-  const keys=['linkedin','youtube','facebook_follows','instagram','tiktok','whatsapp'];
-  const total=keys.reduce((s,k)=>s+(L[k]||0),0);
-  const totalP=P?keys.reduce((s,k)=>s+(P[k]||0),0):null;
 
-  const pts=[
-    {iconId:'icon-youtube',  color:'#FF0000', txt:`<b>YouTube:</b> ${fn(L.youtube)} subscribers ${sp(df(L.youtube,P?.youtube),P?.youtube)}${P4?` | vs 4 entries ago: ${sp(df(L.youtube,P4?.youtube),P4?.youtube)}`:''}`},
-    {iconId:'icon-facebook', color:'#1877F2', txt:`<b>Facebook Follows:</b> ${fn(L.facebook_follows)} ${sp(df(L.facebook_follows,P?.facebook_follows),P?.facebook_follows)}`},
-    {iconId:'icon-instagram',color:'#E1306C', txt:`<b>Instagram:</b> ${fn(L.instagram)} followers ${sp(df(L.instagram,P?.instagram),P?.instagram)}`},
-    {iconId:'icon-tiktok',   color:'#161823', txt:`<b>TikTok:</b> ${fn(L.tiktok)} followers ${sp(df(L.tiktok,P?.tiktok),P?.tiktok)}${L.tiktok>=1000?' 🎉 Past 1K!':''}`},
-    {iconId:'icon-linkedin', color:'#0A66C2', txt:`<b>LinkedIn:</b> ${fn(L.linkedin)} followers ${sp(df(L.linkedin,P?.linkedin),P?.linkedin)}`},
-    {iconId:'icon-whatsapp', color:'#25D366', txt:`<b>WhatsApp Channel:</b> ${fn(L.whatsapp)} ${sp(df(L.whatsapp,P?.whatsapp),P?.whatsapp)}<br>MDCAT: ${fn(L.wa_mdcat)} | ECAT: ${fn(L.wa_ecat)} | BCAT: ${fn(L.wa_bcat)}`},
-    {iconId:'icon-chart',    color:'var(--mag)', txt:`<b>Total Audience:</b> ${total.toLocaleString()} ${totalP!==null?sp(total-totalP,totalP):''}`},
-  ];
-
-  document.getElementById('mtg-pts').innerHTML=pts.map(p=>
-    `<div class="mp">
-      <div class="mp-ico">${platIcon(p.iconId,16,p.color)}</div>
-      <div class="mp-txt">${p.txt}</div>
-    </div>`
-  ).join('');
-}
 
 // ── CHANGE SOURCE ────────────────────────────────────
 function changeSource(){
@@ -1110,7 +1169,7 @@ function changeSource(){
   gsSheetId=null; gsGid='0';
   D=[];
   // Hide dashboard sections, show upload
-  ['sec-totals','sec-weekly','sec-monthly','sec-trends','sec-meeting'].forEach(id=>
+  ['sec-totals','sec-weekly','sec-monthly','sec-trends'].forEach(id=>
     document.getElementById(id).style.display='none'
   );
   document.getElementById('upload-section').style.display='flex';
@@ -1142,6 +1201,22 @@ async function manualRefresh(){
     showToast('No Google Sheet connected. Paste a URL first.');
   }
 }
+
+
+// ── SIDEBAR TOGGLE (mobile) ──────────────────────────
+function toggleSidebar(){
+  const sb = document.getElementById('sidebar');
+  const ov = document.getElementById('sidebar-overlay');
+  const open = sb.classList.toggle('open');
+  ov.classList.toggle('open', open);
+  document.body.style.overflow = open ? 'hidden' : '';
+}
+// Close sidebar when a nav item is clicked on mobile
+document.querySelectorAll('.sb-item, .sb-month-item').forEach(el=>{
+  el.addEventListener('click', ()=>{
+    if(window.innerWidth<=768) toggleSidebar();
+  });
+});
 
 // ── TOAST ────────────────────────────────────────────
 function showToast(msg){
