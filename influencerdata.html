@@ -336,6 +336,57 @@ body::before {
 }
 #toast.show{opacity:1;}
 
+/* ── ACCORDION ── */
+.acc-body{
+  display:none;
+  border-top:1px solid var(--border);
+  margin-top:12px;padding-top:12px;
+  flex-direction:column;gap:10px;
+  animation:fadeIn .2s ease;
+}
+.acc-body.open{display:flex;}
+.acc-arrow{
+  width:22px;height:22px;border-radius:50%;
+  background:var(--bg3);border:1px solid var(--border);
+  display:flex;align-items:center;justify-content:center;
+  flex-shrink:0;transition:transform .25s ease;
+}
+.acc-arrow svg{width:12px;height:12px;fill:var(--text3);}
+.inf-card.expanded .acc-arrow{transform:rotate(180deg);}
+.inf-card.expanded{border-color:var(--bm);}
+
+/* accordion reel rows */
+.acc-reel-row{
+  display:flex;align-items:center;gap:8px;
+  padding:9px 10px;background:var(--bg3);border-radius:9px;
+}
+.acc-reel-num{font-family:'Bebas Neue',sans-serif;font-size:12px;letter-spacing:1px;color:var(--m3);min-width:44px;}
+.acc-reel-views{font-size:11px;color:var(--text3);flex:1;}
+.acc-reel-link{
+  display:inline-flex;align-items:center;gap:4px;
+  font-size:10px;font-weight:600;color:var(--m);
+  background:var(--md);border:1px solid var(--bm);
+  border-radius:7px;padding:4px 9px;text-decoration:none;white-space:nowrap;
+}
+.acc-kpi-row{display:grid;grid-template-columns:1fr 1fr;gap:7px;}
+.acc-kpi{background:var(--bg3);border-radius:9px;padding:9px 10px;}
+.acc-kpi-lbl{font-size:9px;color:var(--text3);font-weight:600;letter-spacing:.8px;text-transform:uppercase;margin-bottom:4px;}
+.acc-kpi-val{font-family:'Bebas Neue',sans-serif;font-size:18px;letter-spacing:.5px;line-height:1;}
+.acc-kpi-val.green{color:var(--green);}
+.acc-kpi-val.red{color:var(--red);}
+
+/* status line (replaces progress bar) */
+.inf-status-line{
+  display:flex;align-items:center;gap:6px;
+  padding-top:10px;
+  border-top:1px solid var(--border);
+  justify-content:space-between;
+}
+.inf-status-text{
+  font-size:10px;color:var(--text3);font-weight:500;
+  white-space:nowrap;overflow:hidden;text-overflow:ellipsis;flex:1;
+}
+
 /* ── FOOTER ── */
 .page-footer{
   text-align:center;padding:10px 0 4px;
@@ -597,11 +648,12 @@ function payChip(label, status) {
   return `<span class="pay-chip ${cls}">${label}: ${status || 'Unpaid'}</span>`;
 }
 
-/* ── INFLUENCER CARD HTML ── */
+/* ── INFLUENCER CARD: ROSTER (navigate to detail) ── */
 function infCardHTML(inf, idx) {
   const views = totalViews(inf);
   const posted = postedCount(inf);
-  const pct = inf.totalReels > 0 ? (posted / inf.totalReels) * 100 : 0;
+  const isLocked = /locked|✅/i.test(inf.status);
+  const statusShort = inf.status ? (inf.status.length > 22 ? inf.status.slice(0,22)+'…' : inf.status) : '';
   return `
   <div class="inf-card" onclick="openDetail(${idx})">
     <div class="inf-card-top">
@@ -617,8 +669,82 @@ function infCardHTML(inf, idx) {
       <div class="inf-stat"><div class="inf-stat-val">${inf.totalAmt ? 'Rs.'+Number(inf.totalAmt).toLocaleString() : '—'}</div><div class="inf-stat-lbl">Amount</div></div>
       <div class="inf-stat"><div class="inf-stat-val">${posted}/${inf.totalReels}</div><div class="inf-stat-lbl">Reels</div></div>
     </div>
-    <div class="progress-bar"><div class="progress-fill" style="width:${pct}%"></div></div>
+    ${statusShort ? `<div class="inf-status-line">
+      <span class="inf-status-text" style="color:${isLocked?'var(--green)':'var(--amber)'};">
+        ${isLocked ? '✅' : '🔄'} ${statusShort}
+      </span>
+    </div>` : ''}
   </div>`;
+}
+
+/* ── INFLUENCER CARD: DASHBOARD (accordion expand) ── */
+function dashCardHTML(inf, idx) {
+  const views  = totalViews(inf);
+  const posted = postedCount(inf);
+  const paid   = paidAmt(inf);
+  const pend   = pendingAmt(inf);
+  const isLocked = /locked|✅/i.test(inf.status);
+  const statusShort = inf.status ? (inf.status.length > 28 ? inf.status.slice(0,28)+'…' : inf.status) : '';
+
+  const reelData = [
+    { num:1, link:inf.reel1, pay:inf.pay1, views:inf.views1 },
+    { num:2, link:inf.reel2, pay:inf.pay2, views:inf.views2 },
+    { num:3, link:inf.reel3, pay:inf.pay3, views:null },
+  ];
+
+  let reelsHTML = '';
+  for (let r = 0; r < inf.totalReels; r++) {
+    const rd = reelData[r];
+    const ps = (rd.pay||'').toLowerCase();
+    const pColor = ps==='paid'?'var(--green)':ps==='pending'?'var(--amber)':'var(--red)';
+    reelsHTML += `
+    <div class="acc-reel-row">
+      <span class="acc-reel-num">REEL ${rd.num}</span>
+      <span class="pay-badge ${ps==='paid'?'paid':ps==='pending'?'pending':'unpaid'}" style="flex-shrink:0">${rd.pay||'Unpaid'}</span>
+      <span class="acc-reel-views">${rd.views!==null && rd.views!==undefined ? fn(rd.views)+' views' : ''}</span>
+      ${rd.link ? `<a href="${rd.link}" target="_blank" rel="noopener" class="acc-reel-link" onclick="event.stopPropagation()">
+        <svg viewBox="0 0 24 24" style="width:11px;height:11px;fill:var(--m)"><use href="#i-link"/></svg>Open
+      </a>` : `<span style="font-size:10px;color:var(--text3);font-style:italic;">No link</span>`}
+    </div>`;
+  }
+
+  return `
+  <div class="inf-card" id="dcard-${idx}" onclick="toggleDashCard(${idx}, event)">
+    <div class="inf-card-top">
+      <div class="avatar">${inf.name.charAt(0).toUpperCase()}</div>
+      <div class="inf-name-wrap">
+        <div class="inf-name">${inf.name}</div>
+        <div class="inf-followers">${inf.followers || '—'} followers</div>
+      </div>
+      <div class="acc-arrow" id="darrow-${idx}">
+        <svg viewBox="0 0 24 24"><path d="M7 10l5 5 5-5z"/></svg>
+      </div>
+    </div>
+    ${statusShort ? `<div class="inf-status-line">
+      <span class="inf-status-text" style="color:${isLocked?'var(--green)':'var(--amber)'};">
+        ${isLocked ? '✅' : '🔄'} ${statusShort}
+      </span>
+      ${inf.status ? `<span class="status-badge ${isLocked?'green-b':'amber-b'}" onclick="event.stopPropagation();showModal(${JSON.stringify(inf.status)})" style="font-size:8px;padding:2px 7px;">Details</span>` : ''}
+    </div>` : ''}
+    <div class="acc-body" id="dbody-${idx}">
+      <div class="acc-kpi-row">
+        <div class="acc-kpi"><div class="acc-kpi-lbl">Paid</div><div class="acc-kpi-val green">${frs(paid)}</div></div>
+        <div class="acc-kpi"><div class="acc-kpi-lbl">Pending</div><div class="acc-kpi-val red">${frs(pend)}</div></div>
+      </div>
+      ${reelsHTML}
+      ${inf.notes ? `<div style="font-size:11px;color:var(--text3);padding:2px 0;">${inf.notes}</div>` : ''}
+    </div>
+  </div>`;
+}
+
+function toggleDashCard(idx, e) {
+  if (e.target.closest('.status-badge') || e.target.closest('a')) return;
+  const card  = document.getElementById('dcard-' + idx);
+  const body  = document.getElementById('dbody-' + idx);
+  const arrow = document.getElementById('darrow-' + idx);
+  const isOpen = body.classList.contains('open');
+  body.classList.toggle('open', !isOpen);
+  card.classList.toggle('expanded', !isOpen);
 }
 
 /* ── RENDER ALL ── */
@@ -631,8 +757,7 @@ function renderAll() {
 
 /* ── DASHBOARD ── */
 function renderDash() {
-  const totalReach = DATA.reduce((s, i) => s + totalViews(i), 0);
-  const totalBudget = DATA.reduce((s, i) => s + (i.totalAmt || 0), 0);
+  const totalReach  = DATA.reduce((s, i) => s + totalViews(i), 0);
   const totalPaid   = DATA.reduce((s, i) => s + paidAmt(i), 0);
   const totalPend   = DATA.reduce((s, i) => s + pendingAmt(i), 0);
   const totalPosted = DATA.reduce((s, i) => s + postedCount(i), 0);
@@ -647,30 +772,18 @@ function renderDash() {
 
   <div class="kpi-grid">
     <div class="kpi-card">
-      <div class="kpi-lbl">Total Budget</div>
-      <div class="kpi-val maroon">${frs(totalBudget)}</div>
-      <div class="kpi-sub">campaign total</div>
-    </div>
-    <div class="kpi-card">
       <div class="kpi-lbl">Paid</div>
       <div class="kpi-val green">${frs(totalPaid)}</div>
-      <div class="kpi-sub">disbursed</div>
     </div>
     <div class="kpi-card">
       <div class="kpi-lbl">Pending</div>
       <div class="kpi-val red">${frs(totalPend)}</div>
-      <div class="kpi-sub">remaining</div>
-    </div>
-    <div class="kpi-card">
-      <div class="kpi-lbl">Total Views</div>
-      <div class="kpi-val maroon">${fn(totalReach)}</div>
-      <div class="kpi-sub">across all reels</div>
     </div>
   </div>
 
-  <div class="sec-label">Recent</div>`;
+  <div class="sec-label">Influencers</div>`;
 
-  DATA.slice(0, 5).forEach((inf, i) => { html += infCardHTML(inf, i); });
+  DATA.forEach((inf, i) => { html += dashCardHTML(inf, i); });
   html += `<div class="page-footer">Developed by <a href="https://www.linkedin.com/in/usmankhan07/" target="_blank" rel="noopener">Usman Khan</a></div>`;
 
   const c = document.getElementById('dash-content');
