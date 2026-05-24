@@ -1,0 +1,273 @@
+<!DOCTYPE html>
+<html lang="ur">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
+<meta name="apple-mobile-web-app-capable" content="yes">
+<meta name="apple-mobile-web-app-status-bar-style" content="default">
+<meta name="apple-mobile-web-app-title" content="Chaajao">
+<meta name="theme-color" content="#FFFFFF">
+<title>Chaajao</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Bebas+Neue&family=Outfit:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+<style>
+:root {
+  --maroon:  #800000;
+  --maroon2: #A00000;
+  --maroon3: #5A0000;
+  --bg:      #FFFFFF;
+  --bg2:     #FAFAFA;
+  --bg3:     #F5F1F1;
+  --border:  rgba(128,0,0,0.09);
+  --border-m:rgba(128,0,0,0.20);
+  --text:    #1A0000;
+  --text2:   #6B4040;
+  --text3:   #A07878;
+  --safe-top:    env(safe-area-inset-top, 0px);
+  --safe-bottom: env(safe-area-inset-bottom, 0px);
+}
+
+*, *::before, *::after { margin:0; padding:0; box-sizing:border-box; -webkit-tap-highlight-color:transparent; }
+
+body {
+  font-family: 'Outfit', sans-serif;
+  background: var(--bg);
+  color: var(--text);
+  min-height: 100vh;
+  overflow-x: hidden;
+  padding-top: calc(64px + var(--safe-top));
+  padding-bottom: calc(32px + var(--safe-bottom));
+}
+
+/* grain */
+body::before {
+  content: '';
+  position: fixed; inset: 0; z-index: 0; pointer-events: none;
+  background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 200 200' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.85' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)' opacity='0.04'/%3E%3C/svg%3E");
+  background-size: 200px 200px; opacity: 0.28;
+}
+
+/* topbar */
+#topbar {
+  position: fixed; top: 0; left: 0; right: 0; z-index: 200;
+  height: calc(64px + var(--safe-top));
+  padding-top: var(--safe-top);
+  background: rgba(255,255,255,0.95);
+  backdrop-filter: blur(28px); -webkit-backdrop-filter: blur(28px);
+  border-bottom: 1px solid var(--border);
+  display: flex; align-items: center; justify-content: space-between;
+  padding-left: 20px; padding-right: 20px;
+  box-shadow: 0 1px 18px rgba(128,0,0,0.06);
+}
+
+.brand { display: flex; align-items: center; gap: 11px; }
+.brand-mark {
+  width: 38px; height: 38px;
+  background: linear-gradient(145deg, var(--maroon2), var(--maroon3));
+  border-radius: 11px;
+  display: flex; align-items: center; justify-content: center;
+  box-shadow: 0 0 20px rgba(128,0,0,0.26), inset 0 1px 0 rgba(255,255,255,0.12);
+}
+.brand-mark svg { width: 20px; height: 20px; fill: #fff; }
+.brand-name {
+  font-family: 'Bebas Neue', sans-serif;
+  font-size: 26px; letter-spacing: 3.5px; color: var(--maroon); line-height: 1;
+}
+.tb-date {
+  font-size: 11px; color: var(--text2);
+  background: var(--bg3); border: 1px solid var(--border);
+  border-radius: 20px; padding: 5px 12px;
+  font-weight: 500; white-space: nowrap;
+}
+
+/* container */
+.container {
+  position: relative; z-index: 1;
+  max-width: 520px; margin: 0 auto;
+  padding: 28px 16px 20px;
+  display: flex; flex-direction: column; gap: 20px;
+}
+
+/* welcome */
+.welcome {
+  text-align: center; padding: 8px 0 4px;
+  opacity: 0; transform: translateY(16px);
+  animation: fadeUp .5s cubic-bezier(.22,1,.36,1) .08s forwards;
+}
+.welcome-text {
+  font-size: 13px; color: var(--text3); font-weight: 400; letter-spacing: .2px;
+}
+.welcome-text strong { color: var(--text2); font-weight: 600; }
+
+/* divider */
+.divider {
+  display: flex; align-items: center; gap: 12px;
+  opacity: 0; transform: translateY(12px);
+  animation: fadeUp .5s cubic-bezier(.22,1,.36,1) .18s forwards;
+}
+.divider-line { flex: 1; height: 1px; background: var(--border); }
+.divider-label {
+  font-family: 'Bebas Neue', sans-serif;
+  font-size: 12px; letter-spacing: 4px; color: var(--text3);
+}
+
+/* cards */
+.cards { display: flex; flex-direction: column; gap: 12px; }
+
+.app-card {
+  display: flex; align-items: center;
+  position: relative; overflow: hidden;
+  background: var(--bg2);
+  border: 1px solid var(--border);
+  border-radius: 18px;
+  padding: 20px;
+  text-decoration: none; color: inherit;
+  gap: 16px;
+  transition: transform .22s cubic-bezier(.22,1,.36,1), box-shadow .22s ease, border-color .22s ease;
+  opacity: 0; transform: translateY(20px);
+  will-change: transform;
+}
+.app-card:nth-child(1) { animation: fadeUp .55s cubic-bezier(.22,1,.36,1) .28s forwards; }
+.app-card:nth-child(2) { animation: fadeUp .55s cubic-bezier(.22,1,.36,1) .38s forwards; }
+
+.app-card:hover, .app-card:focus {
+  transform: translateY(-3px);
+  box-shadow: 0 12px 36px rgba(128,0,0,0.11), 0 2px 6px rgba(128,0,0,0.05);
+  border-color: var(--border-m);
+  outline: none;
+}
+.app-card:active { transform: translateY(0px); }
+
+/* left accent bar */
+.app-card::before {
+  content: '';
+  position: absolute; top: 0; left: 0; bottom: 0; width: 3px;
+  background: linear-gradient(180deg, var(--maroon2), var(--maroon3));
+  border-radius: 18px 0 0 18px;
+}
+
+.card-icon {
+  width: 48px; height: 48px; flex-shrink: 0;
+  border-radius: 14px;
+  background: linear-gradient(145deg, var(--maroon2), var(--maroon3));
+  display: flex; align-items: center; justify-content: center;
+  box-shadow: 0 4px 14px rgba(128,0,0,0.20);
+}
+.card-icon svg { width: 24px; height: 24px; fill: #fff; }
+
+.card-info { flex: 1; min-width: 0; }
+.card-tag {
+  font-size: 9px; font-weight: 700; letter-spacing: 1.8px; text-transform: uppercase;
+  color: var(--text3); margin-bottom: 5px; display: block;
+}
+.card-title {
+  font-family: 'Bebas Neue', sans-serif;
+  font-size: 22px; letter-spacing: 1px; color: var(--text); line-height: 1;
+}
+
+.card-arrow {
+  font-size: 20px; color: var(--maroon);
+  font-weight: 300; flex-shrink: 0;
+  transition: transform .2s cubic-bezier(.22,1,.36,1);
+  opacity: 0.55;
+}
+.app-card:hover .card-arrow { transform: translateX(4px); opacity: 1; }
+
+/* footer */
+.page-footer {
+  text-align: center;
+  font-size: 11.5px; color: var(--text3);
+  opacity: 0; animation: fadeUp .45s cubic-bezier(.22,1,.36,1) .5s forwards;
+}
+.page-footer a {
+  color: var(--maroon); font-weight: 600; text-decoration: none;
+  border-bottom: 1px dotted rgba(128,0,0,0.3); padding-bottom: 1px;
+}
+.page-footer a:hover { border-color: var(--maroon); }
+
+@keyframes fadeUp {
+  from { opacity:0; transform:translateY(20px); }
+  to   { opacity:1; transform:translateY(0); }
+}
+
+@media (min-width:520px) {
+  body { background:#F7F3F3; }
+  .container {
+    margin-top: 16px;
+    background: var(--bg);
+    border-radius: 24px;
+    border: 1px solid var(--border);
+    box-shadow: 0 8px 48px rgba(128,0,0,0.08);
+    min-height: 80vh;
+  }
+}
+</style>
+</head>
+<body>
+
+<svg xmlns="http://www.w3.org/2000/svg" style="position:absolute;width:0;height:0;overflow:hidden;">
+  <symbol id="i-lightning" viewBox="0 0 24 24"><path d="M7 2v11h3v9l7-12h-4l4-8z"/></symbol>
+  <symbol id="i-trend"     viewBox="0 0 24 24"><path d="M16 6l2.29 2.29-4.88 4.88-4-4L2 16.59 3.41 18l6-6 4 4 6.3-6.29L22 12V6z"/></symbol>
+  <symbol id="i-users"     viewBox="0 0 24 24"><path d="M16 11c1.66 0 2.99-1.34 2.99-3S17.66 5 16 5c-1.66 0-3 1.34-3 3s1.34 3 3 3zm-8 0c1.66 0 2.99-1.34 2.99-3S9.66 5 8 5C6.34 5 5 6.34 5 8s1.34 3 3 3zm0 2c-2.33 0-7 1.17-7 3.5V19h14v-2.5c0-2.33-4.67-3.5-7-3.5zm8 0c-.29 0-.62.02-.97.05 1.16.84 1.97 1.97 1.97 3.45V19h6v-2.5c0-2.33-4.67-3.5-7-3.5z"/></symbol>
+</svg>
+
+<div id="topbar">
+  <div class="brand">
+    <div class="brand-mark">
+      <svg viewBox="0 0 24 24"><use href="#i-lightning"/></svg>
+    </div>
+    <div class="brand-name">CHAAJAO</div>
+  </div>
+  <div class="tb-date" id="tb-date"></div>
+</div>
+
+<div class="container">
+
+  <div class="welcome">
+    <span class="welcome-text">Khush Amdeed — <strong>app chunein</strong></span>
+  </div>
+
+  <div class="divider">
+    <div class="divider-line"></div>
+    <span class="divider-label">APPS</span>
+    <div class="divider-line"></div>
+  </div>
+
+  <div class="cards">
+
+    <a href="socialmedia.html" class="app-card">
+      <div class="card-icon">
+        <svg viewBox="0 0 24 24"><use href="#i-trend"/></svg>
+      </div>
+      <div class="card-info">
+        <span class="card-tag">Social Media</span>
+        <div class="card-title">Social Media Tracker</div>
+      </div>
+      <span class="card-arrow">›</span>
+    </a>
+
+    <a href="influencerdata.html" class="app-card">
+      <div class="card-icon">
+        <svg viewBox="0 0 24 24"><use href="#i-users"/></svg>
+      </div>
+      <div class="card-info">
+        <span class="card-tag">Campaign</span>
+        <div class="card-title">Influencer Tracker</div>
+      </div>
+      <span class="card-arrow">›</span>
+    </a>
+
+  </div>
+
+  <div class="page-footer">
+    Developed by <a href="https://www.linkedin.com/in/usmankhan07/" target="_blank" rel="noopener">Usman Khan</a>
+  </div>
+
+</div>
+
+<script>
+  const d = new Date();
+  document.getElementById('tb-date').textContent = d.toLocaleDateString('en-GB', { day:'2-digit', month:'short', year:'numeric' });
+</script>
+</body>
+</html>
