@@ -1,200 +1,364 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="ur">
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
 <meta name="apple-mobile-web-app-capable" content="yes">
-<meta name="theme-color" content="#800000">
+<meta name="apple-mobile-web-app-status-bar-style" content="default">
+<meta name="apple-mobile-web-app-title" content="Influencer Tracker">
+<meta name="theme-color" content="#FFFFFF">
 <title>Influencer Tracker</title>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/4.4.0/chart.umd.min.js"></script>
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link href="https://fonts.googleapis.com/css2?family=Bebas+Neue&family=Outfit:wght@300;400;500;600;700&display=swap" rel="stylesheet">
 <style>
-:root{
-  --m:#800000;--m2:#A00000;--m3:#5A0000;--md:rgba(128,0,0,0.08);--mg:rgba(128,0,0,0.15);
-  --bg:#FFFFFF;--bg2:#FAFAFA;--bg3:#F4F1F1;--bg4:#EDE8E8;
-  --border:rgba(128,0,0,0.10);--bm:rgba(128,0,0,0.22);
-  --text:#1A0000;--text2:#6B4040;--text3:#A07070;
-  --green:#187A3A;--red:#C0392B;--amber:#B45309;
-  --safe-top:env(safe-area-inset-top,0px);--safe-bot:env(safe-area-inset-bottom,0px)
+:root {
+  --m:       #800000;
+  --m2:      #A00000;
+  --m3:      #5A0000;
+  --md:      rgba(128,0,0,0.08);
+  --bg:      #FFFFFF;
+  --bg2:     #FAFAFA;
+  --bg3:     #F4F1F1;
+  --bg4:     #EDE8E8;
+  --border:  rgba(128,0,0,0.10);
+  --bm:      rgba(128,0,0,0.22);
+  --text:    #1A0000;
+  --text2:   #6B4040;
+  --text3:   #A07070;
+  --green:   #187A3A;
+  --red:     #C0392B;
+  --amber:   #B45309;
+  --safe-top: env(safe-area-inset-top, 0px);
+  --safe-bot: env(safe-area-inset-bottom, 0px);
 }
-*,*::before,*::after{margin:0;padding:0;box-sizing:border-box;-webkit-tap-highlight-color:transparent}
-body{font-family:'Outfit',sans-serif;background:var(--bg);color:var(--text);min-height:100vh;overflow-x:hidden;padding-bottom:calc(70px + var(--safe-bot));padding-top:calc(60px + var(--safe-top));font-size:14px}
-body::before{content:'';position:fixed;inset:0;z-index:0;pointer-events:none;background-image:url("data:image/svg+xml,%3Csvg viewBox='0 0 200 200' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)' opacity='0.03'/%3E%3C/svg%3E");background-size:200px;opacity:.25}
 
-/* TOPBAR */
-#topbar{position:fixed;top:0;left:0;right:0;z-index:200;height:calc(60px + var(--safe-top));padding-top:var(--safe-top);background:rgba(255,255,255,0.96);backdrop-filter:blur(24px);-webkit-backdrop-filter:blur(24px);border-bottom:1px solid var(--border);display:flex;align-items:center;padding-left:18px;padding-right:18px;gap:10px;box-shadow:0 1px 12px rgba(128,0,0,0.06)}
-.brand{display:flex;align-items:center;gap:10px;flex:1}
-.brand-mark{width:34px;height:34px;background:linear-gradient(135deg,var(--m2),var(--m3));border-radius:9px;display:flex;align-items:center;justify-content:center;box-shadow:0 0 18px rgba(128,0,0,0.25);flex-shrink:0}
-.brand-mark svg{width:18px;height:18px;fill:#fff}
-.brand-name{font-family:'Bebas Neue',sans-serif;font-size:22px;letter-spacing:2px;color:var(--m)}
-.tb-actions{display:flex;align-items:center;gap:6px}
-.back-btn{display:flex;align-items:center;gap:5px;font-size:11px;font-weight:700;color:var(--m);text-decoration:none;background:var(--bg3);border:1px solid var(--bm);border-radius:9px;padding:6px 11px;white-space:nowrap}
-.back-btn svg{width:12px;height:12px;fill:currentColor}
-.icon-btn{width:34px;height:34px;border-radius:9px;border:1px solid var(--border);background:var(--bg3);color:var(--text2);cursor:pointer;display:flex;align-items:center;justify-content:center;transition:all .15s;flex-shrink:0}
-.icon-btn svg{width:14px;height:14px;fill:currentColor}
-.icon-btn:active{background:var(--md);color:var(--m);border-color:var(--bm)}
+*,*::before,*::after{margin:0;padding:0;box-sizing:border-box;-webkit-tap-highlight-color:transparent;}
 
-/* BOTTOM NAV */
-#bottom-nav{position:fixed;bottom:0;left:0;right:0;z-index:200;height:calc(62px + var(--safe-bot));padding-bottom:var(--safe-bot);background:rgba(255,255,255,0.97);backdrop-filter:blur(24px);-webkit-backdrop-filter:blur(24px);border-top:1px solid var(--border);display:flex;align-items:stretch;box-shadow:0 -2px 14px rgba(128,0,0,0.06)}
-.nav-item{flex:1;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:3px;cursor:pointer;border:none;background:none;color:var(--text3);transition:color .2s;font-size:8px;font-weight:600;letter-spacing:.8px;text-transform:uppercase;position:relative;min-width:50px}
-.nav-item svg{width:18px;height:18px;fill:currentColor;transition:transform .2s}
-.nav-item::after{content:'';position:absolute;top:0;left:50%;transform:translateX(-50%);width:0;height:2px;background:var(--m);transition:width .25s cubic-bezier(.4,0,.2,1);border-radius:0 0 3px 3px}
-.nav-item.active{color:var(--m)}.nav-item.active::after{width:24px}.nav-item.active svg{transform:translateY(-1px)}.nav-item:active{opacity:.6}
+body {
+  font-family: 'Outfit', sans-serif;
+  background: var(--bg);
+  color: var(--text);
+  min-height: 100vh;
+  overflow-x: hidden;
+  padding-top: calc(62px + var(--safe-top));
+  padding-bottom: calc(68px + var(--safe-bot));
+  font-size: 14px;
+}
 
-/* PAGES */
-.page{display:none;flex-direction:column;gap:12px;padding:14px;position:relative;z-index:1}
-.page.active{display:flex;animation:fadeIn .2s ease}
-@keyframes fadeIn{from{opacity:0;transform:translateY(5px)}to{opacity:1;transform:translateY(0)}}
+/* grain */
+body::before {
+  content:''; position:fixed; inset:0; z-index:0; pointer-events:none;
+  background-image:url("data:image/svg+xml,%3Csvg viewBox='0 0 200 200' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)' opacity='0.03'/%3E%3C/svg%3E");
+  background-size:200px 200px; opacity:.25;
+}
 
-/* SECTION LABEL */
-.sec-label{font-family:'Bebas Neue',sans-serif;font-size:13px;letter-spacing:3px;color:var(--text3);display:flex;align-items:center;gap:10px;padding:2px 0}
-.sec-label::after{content:'';flex:1;height:1px;background:var(--border)}
+/* ── TOPBAR ── */
+#topbar {
+  position:fixed; top:0; left:0; right:0; z-index:200;
+  height:calc(62px + var(--safe-top));
+  padding-top:var(--safe-top);
+  background:rgba(255,255,255,0.95);
+  backdrop-filter:blur(24px); -webkit-backdrop-filter:blur(24px);
+  border-bottom:1px solid var(--border);
+  display:flex; align-items:center; justify-content:space-between;
+  padding-left:18px; padding-right:18px;
+  box-shadow:0 1px 14px rgba(128,0,0,0.07);
+}
+.brand{display:flex;align-items:center;gap:10px;}
+.brand-mark{
+  width:36px;height:36px;border-radius:10px;
+  background:linear-gradient(145deg,var(--m2),var(--m3));
+  display:flex;align-items:center;justify-content:center;
+  box-shadow:0 0 18px rgba(128,0,0,0.24);
+}
+.brand-mark svg{width:18px;height:18px;fill:#fff;}
+.brand-name{font-family:'Bebas Neue',sans-serif;font-size:22px;letter-spacing:2.5px;color:var(--m);}
+.home-btn{
+  display:flex;align-items:center;gap:5px;
+  font-size:12px;font-weight:600;color:var(--m);
+  background:var(--md);border:1px solid var(--bm);
+  border-radius:20px;padding:6px 12px;text-decoration:none;
+  transition:background .15s;
+}
+.home-btn:active{background:rgba(128,0,0,0.14);}
+.home-btn svg{width:13px;height:13px;fill:var(--m);}
 
-/* HERO CARD */
-.hero-card{background:linear-gradient(135deg,var(--m) 0%,var(--m3) 100%);border-radius:18px;padding:22px 20px;position:relative;overflow:hidden;box-shadow:0 8px 28px rgba(128,0,0,0.22)}
-.hero-card::before{content:'';position:absolute;top:-50px;right:-30px;width:160px;height:160px;background:radial-gradient(circle,rgba(255,255,255,0.10) 0%,transparent 70%);border-radius:50%;pointer-events:none}
-.hero-label{font-size:10px;font-weight:600;letter-spacing:2.5px;text-transform:uppercase;color:rgba(255,255,255,0.60);margin-bottom:8px}
-.hero-num{font-family:'Bebas Neue',sans-serif;font-size:50px;letter-spacing:-1px;line-height:1;color:#fff}
-.hero-sub{font-size:11px;color:rgba(255,255,255,0.50);margin-top:8px}
+/* ── BOTTOM NAV ── */
+#bottom-nav {
+  position:fixed;bottom:0;left:0;right:0;z-index:200;
+  height:calc(62px + var(--safe-bot));
+  padding-bottom:var(--safe-bot);
+  background:rgba(255,255,255,0.97);
+  backdrop-filter:blur(24px); -webkit-backdrop-filter:blur(24px);
+  border-top:1px solid var(--border);
+  display:flex;align-items:stretch;
+  box-shadow:0 -2px 14px rgba(128,0,0,0.06);
+}
+.nav-item{
+  flex:1;display:flex;flex-direction:column;
+  align-items:center;justify-content:center;gap:3px;
+  cursor:pointer;border:none;background:none;
+  color:var(--text3);transition:color .2s;
+  font-size:8px;font-weight:600;letter-spacing:.8px;text-transform:uppercase;
+  position:relative;
+}
+.nav-item svg{width:18px;height:18px;fill:currentColor;transition:transform .2s;}
+.nav-item::after{
+  content:'';position:absolute;top:0;left:50%;transform:translateX(-50%);
+  width:0;height:2px;background:var(--m);
+  transition:width .25s cubic-bezier(.4,0,.2,1);border-radius:0 0 3px 3px;
+}
+.nav-item.active{color:var(--m);}
+.nav-item.active::after{width:24px;}
+.nav-item.active svg{transform:translateY(-1px);}
+.nav-item:active{opacity:.6;}
 
-/* KPI GRID */
-.kpi-grid{display:grid;grid-template-columns:1fr 1fr;gap:9px}
-.kpi-card{background:var(--bg2);border:1px solid var(--border);border-radius:14px;padding:13px 12px;position:relative;overflow:hidden}
-.kpi-card::before{content:'';position:absolute;top:0;left:0;right:0;height:2px;background:var(--kc,var(--m));opacity:.7}
-.kpi-lbl{font-size:9px;font-weight:700;letter-spacing:1.5px;text-transform:uppercase;color:var(--text3);margin-bottom:7px}
-.kpi-val{font-family:'Bebas Neue',sans-serif;font-size:26px;letter-spacing:.5px;line-height:1;margin-bottom:3px;color:var(--text)}
-.kpi-sub{font-size:10px;color:var(--text3)}
+/* ── PAGES ── */
+.page{display:none;flex-direction:column;gap:14px;padding:16px 14px;position:relative;z-index:1;}
+.page.active{display:flex;animation:fadeIn .25s ease;}
+@keyframes fadeIn{from{opacity:0;transform:translateY(6px)}to{opacity:1;transform:translateY(0)}}
 
-/* INF CARD */
-.inf-card{background:var(--bg2);border:1px solid var(--border);border-radius:14px;padding:14px;cursor:pointer;transition:border-color .15s,box-shadow .15s}
-.inf-card:active{border-color:var(--bm);box-shadow:0 4px 16px rgba(128,0,0,0.10)}
-.inf-header{display:flex;align-items:center;gap:10px;margin-bottom:10px}
-.inf-avatar{width:38px;height:38px;border-radius:10px;background:linear-gradient(135deg,var(--m2),var(--m3));display:flex;align-items:center;justify-content:center;font-family:'Bebas Neue',sans-serif;font-size:20px;color:#fff;flex-shrink:0}
-.inf-name{font-size:14px;font-weight:700;color:var(--text);line-height:1.2}
-.inf-meta{font-size:10px;color:var(--text3);margin-top:2px}
-.s-badge{font-size:9px;font-weight:700;letter-spacing:.8px;text-transform:uppercase;padding:3px 8px;border-radius:20px;white-space:nowrap;flex-shrink:0}
-.s-green{background:rgba(24,122,58,0.10);color:var(--green);border:1px solid rgba(24,122,58,0.2)}
-.s-amber{background:rgba(180,83,9,0.10);color:var(--amber);border:1px solid rgba(180,83,9,0.2)}
-.s-red{background:rgba(192,57,43,0.10);color:var(--red);border:1px solid rgba(192,57,43,0.2)}
-.inf-stats{display:grid;grid-template-columns:repeat(3,1fr);gap:6px}
-.inf-stat{background:var(--bg3);border-radius:8px;padding:7px 5px;text-align:center}
-.inf-stat-lbl{font-size:8px;font-weight:600;letter-spacing:.8px;text-transform:uppercase;color:var(--text3);margin-bottom:3px}
-.inf-stat-val{font-family:'Bebas Neue',sans-serif;font-size:15px;color:var(--text);letter-spacing:.3px}
-.prog-wrap{height:3px;background:var(--bg4);border-radius:3px;margin-top:10px;overflow:hidden}
-.prog-bar{height:100%;border-radius:3px;background:linear-gradient(90deg,var(--m2),var(--m3));transition:width .4s}
+/* ── LOADING / ERROR ── */
+#loading-screen{
+  display:flex;flex-direction:column;align-items:center;
+  justify-content:center;min-height:55vh;gap:20px;text-align:center;padding:40px;
+}
+.spinner-wrap{position:relative;width:44px;height:44px;}
+.spinner-ring{
+  width:44px;height:44px;border-radius:50%;
+  border:1.5px solid var(--border);border-top-color:var(--m);
+  animation:spin .8s linear infinite;position:absolute;inset:0;
+}
+@keyframes spin{to{transform:rotate(360deg)}}
+.spinner-dot{
+  width:8px;height:8px;border-radius:50%;background:var(--m);
+  position:absolute;top:50%;left:50%;transform:translate(-50%,-50%);
+  box-shadow:0 0 12px rgba(128,0,0,0.4);
+}
+.loading-title{font-size:15px;font-weight:500;color:var(--text2);}
+.loading-sub{font-size:12px;color:var(--text3);font-family:'Bebas Neue',sans-serif;letter-spacing:3px;}
+#error-screen{
+  display:none;flex-direction:column;align-items:center;
+  justify-content:center;min-height:55vh;gap:14px;text-align:center;padding:40px;
+}
+.error-icon{font-size:40px;}
+.error-title{font-family:'Bebas Neue',sans-serif;font-size:24px;letter-spacing:3px;color:var(--text);}
+.error-msg{font-size:13px;color:var(--text2);max-width:260px;line-height:1.7;}
+.btn-retry{
+  background:linear-gradient(135deg,var(--m2),var(--m3));color:#fff;
+  border:none;border-radius:10px;padding:11px 28px;
+  font-size:13px;font-weight:700;cursor:pointer;letter-spacing:.5px;margin-top:6px;
+  box-shadow:0 4px 20px rgba(128,0,0,0.25);
+}
 
-/* DETAIL VIEW */
-.detail-hero{background:linear-gradient(135deg,var(--m),var(--m3));border-radius:18px;padding:18px;position:relative;overflow:hidden;box-shadow:0 6px 24px rgba(128,0,0,0.20)}
-.detail-hero::before{content:'';position:absolute;top:-40px;right:-30px;width:140px;height:140px;background:radial-gradient(circle,rgba(255,255,255,0.08) 0%,transparent 70%);border-radius:50%;pointer-events:none}
-.d-avatar{width:48px;height:48px;border-radius:12px;background:rgba(255,255,255,0.15);display:flex;align-items:center;justify-content:center;font-family:'Bebas Neue',sans-serif;font-size:26px;color:#fff;flex-shrink:0;border:1px solid rgba(255,255,255,0.2)}
-.d-name{font-family:'Bebas Neue',sans-serif;font-size:24px;letter-spacing:2px;color:#fff;line-height:1}
-.d-meta{font-size:11px;color:rgba(255,255,255,0.55);margin-top:3px}
-.d-btn{background:rgba(255,255,255,0.15);color:#fff;border:1px solid rgba(255,255,255,0.25);border-radius:9px;padding:7px 13px;font-size:11px;font-weight:700;cursor:pointer;display:flex;align-items:center;gap:5px;font-family:'Outfit',sans-serif}
-.d-btn svg{width:12px;height:12px;fill:#fff}
-.d-btn-del{background:rgba(192,57,43,0.25);border-color:rgba(192,57,43,0.4)}
-.back-pill{display:inline-flex;align-items:center;gap:6px;font-size:11px;font-weight:700;color:var(--m);background:var(--bg3);border:1px solid var(--bm);border-radius:9px;padding:7px 13px;cursor:pointer;border-style:solid;font-family:'Outfit',sans-serif}
-.back-pill svg{width:12px;height:12px;fill:currentColor}
+/* ── SECTION LABEL ── */
+.sec-label{
+  font-family:'Bebas Neue',sans-serif;font-size:13px;letter-spacing:3px;color:var(--text3);
+  padding:0 2px;display:flex;align-items:center;gap:10px;
+}
+.sec-label::after{content:'';flex:1;height:1px;background:var(--border);}
 
-/* REEL CARD */
-.reel-card{background:var(--bg2);border:1px solid var(--border);border-radius:14px;padding:13px}
-.reel-title{display:flex;align-items:center;gap:8px;margin-bottom:8px}
-.reel-num{width:20px;height:20px;border-radius:50%;background:linear-gradient(135deg,var(--m2),var(--m3));display:flex;align-items:center;justify-content:center;font-size:10px;font-weight:700;color:#fff;flex-shrink:0}
-.reel-name{font-size:13px;font-weight:600;color:var(--text);flex:1}
-.reel-link{display:inline-flex;align-items:center;gap:5px;font-size:11px;font-weight:700;color:var(--m);text-decoration:none;background:var(--md);border-radius:8px;padding:5px 10px;margin-bottom:8px}
-.reel-link svg{width:11px;height:11px;fill:currentColor}
-.reel-metrics{display:grid;grid-template-columns:repeat(3,1fr);gap:6px}
-.reel-metric{background:var(--bg3);border-radius:8px;padding:7px 5px;text-align:center}
-.reel-metric-lbl{font-size:8px;font-weight:600;letter-spacing:.8px;text-transform:uppercase;color:var(--text3);margin-bottom:3px}
-.reel-metric-val{font-family:'Bebas Neue',sans-serif;font-size:15px;color:var(--text)}
-.reel-no-link{font-size:11px;color:var(--text3);font-style:italic;margin-bottom:8px}
+/* ── HERO CARD ── */
+.hero-card{
+  background:linear-gradient(135deg,var(--m) 0%,var(--m3) 100%);
+  border-radius:18px;padding:22px 20px;position:relative;overflow:hidden;
+  box-shadow:0 8px 32px rgba(128,0,0,0.22);
+}
+.hero-card::before{
+  content:'';position:absolute;top:-60px;right:-40px;
+  width:180px;height:180px;
+  background:radial-gradient(circle,rgba(255,255,255,0.10) 0%,transparent 70%);
+  border-radius:50%;pointer-events:none;
+}
+.hero-label{font-size:10px;font-weight:600;letter-spacing:2.5px;text-transform:uppercase;color:rgba(255,255,255,0.60);margin-bottom:8px;}
+.hero-num{font-family:'Bebas Neue',sans-serif;font-size:52px;letter-spacing:-1px;line-height:1;color:#fff;}
+.hero-sub{font-size:12px;color:rgba(255,255,255,0.55);margin-top:8px;font-weight:400;}
 
-/* INFO CARD */
-.info-card{background:var(--bg2);border:1px solid var(--border);border-radius:14px;overflow:hidden}
-.info-row{display:flex;flex-direction:column;gap:2px;padding:10px 14px;border-bottom:1px solid var(--border)}
-.info-row:last-child{border-bottom:none}
-.info-lbl{font-size:9px;font-weight:700;letter-spacing:1.5px;text-transform:uppercase;color:var(--text3)}
-.info-val{font-size:12px;font-weight:500;color:var(--text);word-break:break-all;margin-top:2px}
-.bank-box{background:var(--text);color:rgba(255,255,255,0.8);border-radius:9px;padding:10px 12px;font-size:11px;line-height:1.7;margin-top:4px;word-break:break-all}
+/* ── KPI GRID ── */
+.kpi-grid{display:grid;grid-template-columns:1fr 1fr;gap:9px;}
+.kpi-card{background:var(--bg2);border:1px solid var(--border);border-radius:13px;padding:14px 12px;}
+.kpi-card.full{grid-column:1/-1;}
+.kpi-lbl{font-size:10px;color:var(--text3);font-weight:600;letter-spacing:1px;text-transform:uppercase;margin-bottom:6px;}
+.kpi-val{font-family:'Bebas Neue',sans-serif;font-size:26px;letter-spacing:.5px;color:var(--text);line-height:1;margin-bottom:3px;}
+.kpi-val.green{color:var(--green);}
+.kpi-val.red{color:var(--red);}
+.kpi-val.maroon{color:var(--m);}
+.kpi-sub{font-size:11px;color:var(--text3);}
 
-/* PAYMENT TAB */
-.pay-card{background:var(--bg2);border:1px solid var(--border);border-radius:14px;padding:13px}
-.pay-name{font-size:14px;font-weight:700;color:var(--text);margin-bottom:2px}
-.pay-contact{font-size:10px;color:var(--text3);margin-bottom:10px}
-.pay-toggles{display:flex;gap:6px;flex-wrap:wrap;margin-bottom:10px}
-.pay-tog{padding:6px 12px;border-radius:9px;border:1px solid var(--border);background:var(--bg3);font-size:10px;font-weight:700;cursor:pointer;transition:all .15s;font-family:'Outfit',sans-serif;display:flex;align-items:center;gap:4px}
-.pay-tog.is-paid{background:rgba(24,122,58,0.08);border-color:rgba(24,122,58,0.25);color:var(--green)}
-.pay-tog.is-unpaid{color:var(--text3)}
-.pay-tog.is-pending{background:rgba(180,83,9,0.08);border-color:rgba(180,83,9,0.2);color:var(--amber)}
-.pay-summary{display:flex;justify-content:space-between;padding-top:8px;border-top:1px solid var(--border);font-size:11px;font-weight:600}
+/* ── INFLUENCER CARD ── */
+.inf-card{
+  background:var(--bg2);border:1px solid var(--border);border-radius:14px;
+  padding:14px;cursor:pointer;transition:border-color .2s,box-shadow .2s;
+  position:relative;overflow:hidden;
+}
+.inf-card::before{
+  content:'';position:absolute;top:0;left:0;right:0;height:2px;
+  background:linear-gradient(90deg,var(--m2),var(--m3));opacity:.7;
+}
+.inf-card:active{border-color:var(--bm);box-shadow:0 4px 16px rgba(128,0,0,0.10);}
+.inf-card-top{display:flex;align-items:center;gap:11px;margin-bottom:12px;}
+.avatar{
+  width:40px;height:40px;border-radius:50%;flex-shrink:0;
+  background:linear-gradient(135deg,var(--m2),var(--m3));
+  display:flex;align-items:center;justify-content:center;
+  font-family:'Bebas Neue',sans-serif;font-size:18px;color:#fff;letter-spacing:1px;
+  box-shadow:0 2px 10px rgba(128,0,0,0.20);
+}
+.inf-name-wrap{flex:1;min-width:0;}
+.inf-name{font-size:14px;font-weight:700;color:var(--text);white-space:nowrap;overflow:hidden;text-overflow:ellipsis;}
+.inf-followers{font-size:11px;color:var(--text3);margin-top:2px;}
+.status-badge{
+  display:inline-flex;align-items:center;
+  font-size:9px;font-weight:700;letter-spacing:.6px;text-transform:uppercase;
+  padding:3px 9px;border-radius:20px;cursor:pointer;flex-shrink:0;max-width:120px;
+  white-space:nowrap;overflow:hidden;text-overflow:ellipsis;
+}
+.status-badge.green-b{background:rgba(24,122,58,0.10);color:var(--green);border:1px solid rgba(24,122,58,0.20);}
+.status-badge.amber-b{background:rgba(180,83,9,0.10);color:var(--amber);border:1px solid rgba(180,83,9,0.20);}
+.inf-stats{display:grid;grid-template-columns:1fr 1fr 1fr;gap:6px;margin-bottom:10px;}
+.inf-stat{background:var(--bg3);border-radius:8px;padding:7px 6px;text-align:center;}
+.inf-stat-val{font-family:'Bebas Neue',sans-serif;font-size:15px;color:var(--text);letter-spacing:.5px;}
+.inf-stat-lbl{font-size:9px;color:var(--text3);font-weight:500;margin-top:2px;letter-spacing:.3px;}
+.progress-bar{height:4px;background:var(--bg4);border-radius:4px;overflow:hidden;}
+.progress-fill{height:100%;background:linear-gradient(90deg,var(--m2),var(--m3));border-radius:4px;transition:width .4s ease;}
 
-/* IMPORT */
-.import-box{background:var(--bg2);border:1px solid var(--border);border-radius:14px;padding:13px;display:flex;flex-direction:column;gap:10px}
-.import-box textarea{width:100%;background:var(--bg3);border:1px solid var(--border);border-radius:10px;padding:10px;font-size:11px;font-family:'Outfit',sans-serif;resize:vertical;color:var(--text);min-height:110px;outline:none}
-.import-box textarea:focus{border-color:var(--bm)}
-.btn-row{display:flex;gap:8px;flex-wrap:wrap}
-.btn-primary{background:linear-gradient(135deg,var(--m2),var(--m3));color:#fff;border:none;border-radius:10px;padding:10px 18px;font-size:12px;font-weight:700;cursor:pointer;box-shadow:0 4px 16px rgba(128,0,0,0.20);font-family:'Outfit',sans-serif;letter-spacing:.3px}
-.btn-primary:active{opacity:.85}
-.btn-secondary{background:var(--bg3);color:var(--m);border:1px solid var(--bm);border-radius:10px;padding:9px 16px;font-size:12px;font-weight:700;cursor:pointer;font-family:'Outfit',sans-serif}
-.preview-wrap{background:var(--bg2);border:1px solid var(--border);border-radius:14px;overflow:hidden}
-.preview-table{width:100%;border-collapse:collapse;font-size:11px}
-.preview-table th{background:var(--bg3);padding:8px 10px;text-align:left;font-size:9px;font-weight:700;letter-spacing:1px;text-transform:uppercase;color:var(--text3);border-bottom:1px solid var(--border)}
-.preview-table td{padding:8px 10px;border-bottom:1px solid var(--border);color:var(--text2)}
-.preview-table tr:last-child td{border-bottom:none}
-.preview-foot{padding:10px 13px;border-top:1px solid var(--border)}
+/* ── DETAIL VIEW ── */
+#detail-view{
+  display:none;flex-direction:column;gap:14px;
+  padding:16px 14px;position:relative;z-index:1;
+  animation:fadeIn .25s ease;
+}
+.back-btn{
+  display:inline-flex;align-items:center;gap:6px;
+  border:1px solid var(--bm);background:var(--md);
+  color:var(--m);border-radius:20px;padding:7px 14px;
+  font-size:12px;font-weight:600;cursor:pointer;width:fit-content;
+}
+.back-btn svg{width:13px;height:13px;fill:var(--m);}
+.detail-hero{
+  background:linear-gradient(135deg,var(--m),var(--m3));
+  border-radius:18px;padding:20px;
+  box-shadow:0 8px 28px rgba(128,0,0,0.20);
+  display:flex;align-items:center;gap:14px;
+}
+.detail-avatar{
+  width:52px;height:52px;border-radius:50%;flex-shrink:0;
+  background:rgba(255,255,255,0.18);border:2px solid rgba(255,255,255,0.30);
+  display:flex;align-items:center;justify-content:center;
+  font-family:'Bebas Neue',sans-serif;font-size:22px;color:#fff;
+}
+.detail-name{font-family:'Bebas Neue',sans-serif;font-size:22px;letter-spacing:1.5px;color:#fff;line-height:1;}
+.detail-meta{font-size:11px;color:rgba(255,255,255,0.55);margin-top:4px;}
+.reel-card{background:var(--bg2);border:1px solid var(--border);border-radius:12px;padding:14px;}
+.reel-head{display:flex;align-items:center;gap:8px;margin-bottom:10px;}
+.reel-num{
+  font-family:'Bebas Neue',sans-serif;font-size:13px;letter-spacing:1.5px;
+  background:var(--md);color:var(--m3);border-radius:20px;padding:3px 10px;
+}
+.pay-badge{font-size:9px;font-weight:700;padding:3px 9px;border-radius:20px;letter-spacing:.5px;text-transform:uppercase;}
+.pay-badge.paid{background:rgba(24,122,58,0.10);color:var(--green);}
+.pay-badge.pending{background:rgba(180,83,9,0.10);color:var(--amber);}
+.pay-badge.unpaid{background:rgba(192,57,43,0.10);color:var(--red);}
+.reel-link-btn{
+  display:inline-flex;align-items:center;gap:5px;
+  font-size:11px;font-weight:600;color:var(--m);
+  background:var(--md);border:1px solid var(--bm);
+  border-radius:8px;padding:5px 12px;text-decoration:none;
+  margin-bottom:6px;
+}
+.reel-views{font-size:11px;color:var(--text3);}
+.info-card{background:var(--bg2);border:1px solid var(--border);border-radius:14px;overflow:hidden;}
+.info-row{display:flex;align-items:flex-start;gap:10px;padding:11px 14px;border-bottom:1px solid var(--border);}
+.info-row:last-child{border-bottom:none;}
+.info-lbl{font-size:10px;font-weight:700;letter-spacing:.8px;text-transform:uppercase;color:var(--text3);min-width:72px;padding-top:1px;}
+.info-val{font-size:12px;color:var(--text2);flex:1;line-height:1.55;word-break:break-word;}
+.bank-box{background:var(--bg3);border-radius:8px;padding:8px 10px;font-size:11px;font-weight:500;color:var(--text);font-family:monospace;word-break:break-all;}
 
-/* REPORTS */
-.report-list{background:var(--bg2);border:1px solid var(--border);border-radius:14px;overflow:hidden}
-.report-row{display:flex;align-items:center;justify-content:space-between;padding:11px 14px;border-bottom:1px solid var(--border)}
-.report-row:last-child{border-bottom:none}
-.report-name{font-weight:600;color:var(--text);font-size:13px}
-.report-meta{font-size:10px;color:var(--text3);margin-top:2px}
-.report-pkr{font-family:'Bebas Neue',sans-serif;font-size:16px;color:var(--m);text-align:right}
-.report-pend{font-size:10px;color:var(--red);text-align:right;margin-top:2px}
+/* ── PAYMENT CARDS ── */
+.pay-card{background:var(--bg2);border:1px solid var(--border);border-radius:14px;padding:14px;}
+.pay-card-top{display:flex;align-items:center;gap:10px;margin-bottom:10px;}
+.pay-chips{display:flex;gap:6px;flex-wrap:wrap;margin-bottom:10px;}
+.pay-chip{font-size:10px;font-weight:600;padding:4px 10px;border-radius:20px;letter-spacing:.4px;}
+.pay-chip.paid{background:rgba(24,122,58,0.10);color:var(--green);}
+.pay-chip.pending{background:rgba(180,83,9,0.10);color:var(--amber);}
+.pay-chip.unpaid{background:rgba(192,57,43,0.10);color:var(--red);}
+.pay-summary{font-size:11px;color:var(--text3);border-top:1px solid var(--border);padding-top:8px;}
+.pay-summary span{font-weight:600;color:var(--text2);}
 
-/* MODAL */
-.modal-overlay{position:fixed;inset:0;background:rgba(26,0,0,0.45);backdrop-filter:blur(4px);z-index:400;display:flex;align-items:flex-end}
-.modal{background:var(--bg);border-radius:20px 20px 0 0;width:100%;max-height:90vh;overflow:hidden;display:flex;flex-direction:column;padding-bottom:var(--safe-bot)}
-.modal-head{display:flex;align-items:center;justify-content:space-between;padding:15px 18px;border-bottom:1px solid var(--border);flex-shrink:0}
-.modal-title{font-family:'Bebas Neue',sans-serif;font-size:18px;letter-spacing:2px;color:var(--m)}
-.modal-close{width:30px;height:30px;border-radius:8px;border:1px solid var(--border);background:var(--bg3);cursor:pointer;display:flex;align-items:center;justify-content:center;font-size:16px;color:var(--text2);font-family:'Outfit',sans-serif}
-.modal-body{overflow-y:auto;padding:14px 18px;display:flex;flex-direction:column;gap:10px;flex:1}
-.form-sec{font-family:'Bebas Neue',sans-serif;font-size:13px;letter-spacing:2px;color:var(--m);padding-bottom:4px;border-bottom:1px solid var(--border);margin-top:4px}
-.f-group{display:flex;flex-direction:column;gap:3px}
-.f-group label{font-size:9px;font-weight:700;letter-spacing:1.2px;text-transform:uppercase;color:var(--text3)}
-.f-input{background:var(--bg3);border:1px solid var(--border);border-radius:10px;padding:10px 12px;font-size:13px;color:var(--text);font-family:'Outfit',sans-serif;outline:none;transition:border-color .15s;width:100%}
-.f-input:focus{border-color:var(--bm)}
-.f-grid{display:grid;grid-template-columns:1fr 1fr;gap:9px}
-.modal-foot{padding:12px 18px;border-top:1px solid var(--border);display:flex;gap:8px;flex-shrink:0}
+/* ── REPORT ROW ── */
+.report-row{
+  display:flex;align-items:center;gap:10px;padding:12px 14px;
+  background:var(--bg2);border:1px solid var(--border);border-radius:12px;
+}
+.report-info{flex:1;min-width:0;}
+.report-name{font-size:13px;font-weight:700;color:var(--text);}
+.report-meta{font-size:10px;color:var(--text3);margin-top:3px;}
+.report-amt{text-align:right;flex-shrink:0;}
+.report-total{font-family:'Bebas Neue',sans-serif;font-size:18px;color:var(--m);letter-spacing:.5px;}
+.report-pend{font-size:10px;color:var(--red);margin-top:2px;font-weight:600;}
 
-/* TOAST */
-#toast{position:fixed;bottom:calc(74px + var(--safe-bot));left:50%;transform:translateX(-50%);background:var(--m);border-radius:20px;padding:9px 18px;font-size:12px;font-weight:500;color:#fff;white-space:nowrap;z-index:999;box-shadow:0 4px 24px rgba(128,0,0,0.3);opacity:0;transition:opacity .2s;pointer-events:none}
-#toast.show{opacity:1}
+/* ── STATUS POPUP ── */
+#status-modal{
+  position:fixed;inset:0;z-index:999;
+  background:rgba(26,0,0,0.40);
+  backdrop-filter:blur(4px);-webkit-backdrop-filter:blur(4px);
+  display:none;align-items:center;justify-content:center;padding:24px;
+  animation:fadeIn .2s ease;
+}
+#status-modal.show{display:flex;}
+.modal-card{
+  background:var(--bg);border-radius:16px;padding:20px;
+  max-width:320px;width:100%;position:relative;
+  box-shadow:0 20px 60px rgba(128,0,0,0.18);
+  animation:scaleIn .2s cubic-bezier(.34,1.56,.64,1);
+}
+@keyframes scaleIn{from{opacity:0;transform:scale(.92)}to{opacity:1;transform:scale(1)}}
+.modal-title{font-family:'Bebas Neue',sans-serif;font-size:18px;letter-spacing:2px;color:var(--m);margin-bottom:12px;}
+.modal-body{font-size:13px;color:var(--text2);line-height:1.7;}
+.modal-close{
+  position:absolute;top:14px;right:16px;
+  width:28px;height:28px;border-radius:50%;
+  border:1px solid var(--border);background:var(--bg3);
+  color:var(--text2);font-size:14px;cursor:pointer;
+  display:flex;align-items:center;justify-content:center;
+}
 
-/* EMPTY */
-.empty{text-align:center;padding:40px 20px;color:var(--text3);font-size:13px}
-.empty-icon{font-size:36px;margin-bottom:10px}
+/* ── TOAST ── */
+#toast{
+  position:fixed;bottom:calc(74px + var(--safe-bot));
+  left:50%;transform:translateX(-50%);
+  background:var(--m);border-radius:20px;padding:9px 18px;
+  font-size:12px;font-weight:500;color:#fff;
+  white-space:nowrap;z-index:998;
+  box-shadow:0 4px 24px rgba(128,0,0,0.30);
+  opacity:0;transition:opacity .2s;pointer-events:none;
+}
+#toast.show{opacity:1;}
 
-/* FOOTER */
-.page-footer{text-align:center;padding:12px 0 4px;font-size:11px;color:var(--text3);border-top:1px solid var(--border);margin-top:4px}
-.page-footer a{color:var(--m);text-decoration:none;font-weight:600}
+/* ── FOOTER ── */
+.page-footer{
+  text-align:center;padding:10px 0 4px;
+  font-size:11px;color:var(--text3);
+  border-top:1px solid var(--border);margin-top:4px;
+}
+.page-footer a{color:var(--m);text-decoration:none;font-weight:600;}
 
-@media(min-width:480px){body{max-width:520px;margin:0 auto}}
-svg.defs{position:absolute;width:0;height:0;overflow:hidden}
+@media(min-width:480px){body{max-width:520px;margin:0 auto;}}
+svg.defs{position:absolute;width:0;height:0;overflow:hidden;}
 </style>
 </head>
 <body>
 
-<svg class="defs">
-<symbol id="i-back" viewBox="0 0 24 24"><path d="M20 11H7.83l5.59-5.59L12 4l-8 8 8 8 1.41-1.41L7.83 13H20v-2z"/></symbol>
-<symbol id="i-users" viewBox="0 0 24 24"><path d="M16 11c1.66 0 2.99-1.34 2.99-3S17.66 5 16 5c-1.66 0-3 1.34-3 3s1.34 3 3 3zm-8 0c1.66 0 2.99-1.34 2.99-3S9.66 5 8 5C6.34 5 5 6.34 5 8s1.34 3 3 3zm0 2c-2.33 0-7 1.17-7 3.5V19h14v-2.5c0-2.33-4.67-3.5-7-3.5zm8 0c-.29 0-.62.02-.97.05 1.16.84 1.97 1.97 1.97 3.45V19h6v-2.5c0-2.33-4.67-3.5-7-3.5z"/></symbol>
-<symbol id="i-pay" viewBox="0 0 24 24"><path d="M20 4H4c-1.11 0-2 .89-2 2v12c0 1.11.89 2 2 2h16c1.11 0 2-.89 2-2V6c0-1.11-.89-2-2-2zm0 14H4v-6h16v6zm0-10H4V6h16v2z"/></symbol>
-<symbol id="i-sync" viewBox="0 0 24 24"><path d="M19 9h-4V3H9v6H5l7 7 7-7zM5 18v2h14v-2H5z"/></symbol>
-<symbol id="i-report" viewBox="0 0 24 24"><path d="M9 17H7v-7h2v7zm4 0h-2V7h2v10zm4 0h-2v-4h2v4zm2.5 2.1h-15V5h15v14.1zm0-16.1h-15C3.1 3 2 4.1 2 5.5v13C2 19.9 3.1 21 4.5 21h15c1.4 0 2.5-1.1 2.5-2.5v-13C22 4.1 20.9 3 19.5 3z"/></symbol>
-<symbol id="i-plus" viewBox="0 0 24 24"><path d="M19 13h-6v6h-2v-6H5v-2h6V5h2v6h6v2z"/></symbol>
-<symbol id="i-edit" viewBox="0 0 24 24"><path d="M3 17.25V21h3.75L17.81 9.94l-3.75-3.75L3 17.25zM20.71 7.04a1 1 0 0 0 0-1.41l-2.34-2.34a1 1 0 0 0-1.41 0l-1.83 1.83 3.75 3.75 1.83-1.83z"/></symbol>
-<symbol id="i-del" viewBox="0 0 24 24"><path d="M6 19c0 1.1.9 2 2 2h8c1.1 0 2-.9 2-2V7H6v12zM19 4h-3.5l-1-1h-5l-1 1H5v2h14V4z"/></symbol>
-<symbol id="i-link" viewBox="0 0 24 24"><path d="M3.9 12c0-1.71 1.39-3.1 3.1-3.1h4V7H7c-2.76 0-5 2.24-5 5s2.24 5 5 5h4v-1.9H7c-1.71 0-3.1-1.39-3.1-3.1zM8 13h8v-2H8v2zm9-6h-4v1.9h4c1.71 0 3.1 1.39 3.1 3.1s-1.39 3.1-3.1 3.1h-4V17h4c2.76 0 5-2.24 5-5s-2.24-5-5-5z"/></symbol>
-<symbol id="i-light" viewBox="0 0 24 24"><path d="M7 2v11h3v9l7-12h-4l4-8z"/></symbol>
+<svg class="defs" xmlns="http://www.w3.org/2000/svg">
+  <symbol id="i-users"    viewBox="0 0 24 24"><path d="M16 11c1.66 0 2.99-1.34 2.99-3S17.66 5 16 5c-1.66 0-3 1.34-3 3s1.34 3 3 3zm-8 0c1.66 0 2.99-1.34 2.99-3S9.66 5 8 5C6.34 5 5 6.34 5 8s1.34 3 3 3zm0 2c-2.33 0-7 1.17-7 3.5V19h14v-2.5c0-2.33-4.67-3.5-7-3.5zm8 0c-.29 0-.62.02-.97.05 1.16.84 1.97 1.97 1.97 3.45V19h6v-2.5c0-2.33-4.67-3.5-7-3.5z"/></symbol>
+  <symbol id="i-home"     viewBox="0 0 24 24"><path d="M10 20v-6h4v6h5v-8h3L12 3 2 12h3v8z"/></symbol>
+  <symbol id="i-dash"     viewBox="0 0 24 24"><path d="M3 13h8V3H3v10zm0 8h8v-6H3v6zm10 0h8V11h-8v10zm0-18v6h8V3h-8z"/></symbol>
+  <symbol id="i-roster"   viewBox="0 0 24 24"><path d="M20 6h-2.18c.07-.44.18-.88.18-1.36C18 2.54 15.46 0 12 0S6 2.54 6 4.64c0 .48.11.92.18 1.36H4c-1.11 0-2 .89-2 2v12c0 1.11.89 2 2 2h16c1.11 0 2-.89 2-2V8c0-1.11-.89-2-2-2zM12 2c1.35 0 2 .96 2 2.64 0 .66-.34 1.36-.5 2h-3c-.16-.64-.5-1.34-.5-2C10 2.96 10.65 2 12 2zm8 18H4V8h16v12z"/></symbol>
+  <symbol id="i-pay"      viewBox="0 0 24 24"><path d="M20 4H4c-1.11 0-2 .89-2 2v12c0 1.11.89 2 2 2h16c1.11 0 2-.89 2-2V6c0-1.11-.89-2-2-2zm0 14H4v-6h16v6zm0-10H4V6h16v2z"/></symbol>
+  <symbol id="i-report"   viewBox="0 0 24 24"><path d="M19 3H5c-1.1 0-2 .9-2 2v14c0 1.1.9 2 2 2h14c1.1 0 2-.9 2-2V5c0-1.1-.9-2-2-2zm-7 3c1.93 0 3.5 1.57 3.5 3.5S13.93 13 12 13s-3.5-1.57-3.5-3.5S10.07 6 12 6zm7 13H5v-.23c0-.62.28-1.2.76-1.58C7.47 15.82 9.64 15 12 15s4.53.82 6.24 2.19c.48.38.76.97.76 1.58V19z"/></symbol>
+  <symbol id="i-back"     viewBox="0 0 24 24"><path d="M20 11H7.83l5.59-5.59L12 4l-8 8 8 8 1.41-1.41L7.83 13H20v-2z"/></symbol>
+  <symbol id="i-link"     viewBox="0 0 24 24"><path d="M3.9 12c0-1.71 1.39-3.1 3.1-3.1h4V7H7c-2.76 0-5 2.24-5 5s2.24 5 5 5h4v-1.9H7c-1.71 0-3.1-1.39-3.1-3.1zM8 13h8v-2H8v2zm9-6h-4v1.9h4c1.71 0 3.1 1.39 3.1 3.1s-1.39 3.1-3.1 3.1h-4V17h4c2.76 0 5-2.24 5-5s-2.24-5-5-5z"/></symbol>
 </svg>
 
 <!-- TOPBAR -->
@@ -203,454 +367,491 @@ svg.defs{position:absolute;width:0;height:0;overflow:hidden}
     <div class="brand-mark"><svg viewBox="0 0 24 24"><use href="#i-users"/></svg></div>
     <div class="brand-name">INFLUENCER</div>
   </div>
-  <div class="tb-actions">
-    <a href="index.html" class="back-btn"><svg viewBox="0 0 24 24"><use href="#i-back"/></svg>Home</a>
-    <button class="icon-btn" onclick="openModal()" title="Add"><svg viewBox="0 0 24 24"><use href="#i-plus"/></svg></button>
-  </div>
+  <a href="index.html" class="home-btn">
+    <svg viewBox="0 0 24 24"><use href="#i-back"/></svg>
+    Home
+  </a>
 </div>
 
-<!-- PAGES -->
-<div id="page-dashboard" class="page active"><div id="dash-c"></div></div>
-<div id="page-roster"    class="page"><div id="roster-c"></div></div>
-<div id="page-payments"  class="page"><div id="pay-c"></div></div>
-<div id="page-sync"      class="page"><div id="sync-c"></div></div>
-<div id="page-reports"   class="page"><div id="rep-c"></div></div>
+<!-- PAGE: DASHBOARD -->
+<div id="page-dashboard" class="page active">
+  <div id="loading-screen">
+    <div class="spinner-wrap"><div class="spinner-ring"></div><div class="spinner-dot"></div></div>
+    <div class="loading-title">Data load ho raha hai...</div>
+    <div class="loading-sub">Influencer Tracker</div>
+  </div>
+  <div id="error-screen">
+    <div class="error-icon">📡</div>
+    <div class="error-title">Data nahi mila</div>
+    <div class="error-msg" id="error-msg">Sheet se connect nahi ho saka.</div>
+    <button class="btn-retry" onclick="fetchSheet()">Dobara Try Karein</button>
+  </div>
+  <div id="dash-content" style="display:none;flex-direction:column;gap:14px;"></div>
+</div>
+
+<!-- PAGE: ROSTER -->
+<div id="page-roster" class="page">
+  <div id="roster-content" style="display:flex;flex-direction:column;gap:12px;"></div>
+</div>
+
+<!-- DETAIL VIEW (overlays roster) -->
+<div id="detail-view"></div>
+
+<!-- PAGE: PAYMENTS -->
+<div id="page-payments" class="page">
+  <div id="payments-content" style="display:flex;flex-direction:column;gap:12px;"></div>
+</div>
+
+<!-- PAGE: REPORTS -->
+<div id="page-reports" class="page">
+  <div id="reports-content" style="display:flex;flex-direction:column;gap:12px;"></div>
+</div>
 
 <!-- BOTTOM NAV -->
 <nav id="bottom-nav">
-  <button class="nav-item active" data-page="dashboard" onclick="goPage('dashboard')"><svg viewBox="0 0 24 24"><use href="#i-light"/></svg>Dashboard</button>
-  <button class="nav-item" data-page="roster" onclick="goPage('roster')"><svg viewBox="0 0 24 24"><use href="#i-users"/></svg>Roster</button>
-  <button class="nav-item" data-page="payments" onclick="goPage('payments')"><svg viewBox="0 0 24 24"><use href="#i-pay"/></svg>Payments</button>
-  <button class="nav-item" data-page="sync" onclick="goPage('sync')"><svg viewBox="0 0 24 24"><use href="#i-sync"/></svg>Sync</button>
-  <button class="nav-item" data-page="reports" onclick="goPage('reports')"><svg viewBox="0 0 24 24"><use href="#i-report"/></svg>Reports</button>
+  <button class="nav-item active" data-page="dashboard" onclick="goPage('dashboard')">
+    <svg viewBox="0 0 24 24"><use href="#i-dash"/></svg>Dashboard
+  </button>
+  <button class="nav-item" data-page="roster" onclick="goPage('roster')">
+    <svg viewBox="0 0 24 24"><use href="#i-roster"/></svg>Roster
+  </button>
+  <button class="nav-item" data-page="payments" onclick="goPage('payments')">
+    <svg viewBox="0 0 24 24"><use href="#i-pay"/></svg>Payments
+  </button>
+  <button class="nav-item" data-page="reports" onclick="goPage('reports')">
+    <svg viewBox="0 0 24 24"><use href="#i-report"/></svg>Reports
+  </button>
 </nav>
 
-<!-- ADD/EDIT MODAL -->
-<div id="modal" style="display:none" class="modal-overlay" onclick="if(event.target===this)closeModal()">
-  <div class="modal">
-    <div class="modal-head">
-      <span class="modal-title" id="modal-title">Add Influencer</span>
-      <button class="modal-close" onclick="closeModal()">✕</button>
-    </div>
-    <div class="modal-body">
-      <div class="form-sec">Identity</div>
-      <div class="f-group"><label>Naam *</label><input class="f-input" id="f-name" placeholder="Fatima Khan"></div>
-      <div class="f-grid">
-        <div class="f-group"><label>Email</label><input class="f-input" id="f-email" type="email" placeholder="email@..."></div>
-        <div class="f-group"><label>Contact</label><input class="f-input" id="f-contact" placeholder="03001234567"></div>
-      </div>
-      <div class="f-grid">
-        <div class="f-group"><label>Followers</label><input class="f-input" id="f-followers" placeholder="10k"></div>
-        <div class="f-group"><label>Profile Link</label><input class="f-input" id="f-profile" placeholder="instagram.com/..."></div>
-      </div>
-
-      <div class="form-sec">Financials</div>
-      <div class="f-grid">
-        <div class="f-group"><label>Original Demand</label><input class="f-input" id="f-demand" placeholder="Rs. 10,000"></div>
-        <div class="f-group"><label>Final Deal / Reel</label><input class="f-input" id="f-deal" type="number" placeholder="3000" oninput="calcTotal()"></div>
-      </div>
-      <div class="f-grid">
-        <div class="f-group"><label>Total Reels</label><input class="f-input" id="f-reels" type="number" value="3" min="1" max="3" oninput="calcTotal()"></div>
-        <div class="f-group"><label>Total Amount (auto)</label><input class="f-input" id="f-total" type="number" placeholder="9000"></div>
-      </div>
-      <div class="f-group"><label>Bank / Account Details</label><textarea class="f-input" id="f-bank" rows="2" placeholder="Easypaisa / IBAN..."></textarea></div>
-
-      <div class="form-sec">Collaboration</div>
-      <div class="f-group"><label>Status</label><input class="f-input" id="f-status" placeholder="Locked ✅ / In Discussion..."></div>
-      <div class="f-group"><label>Notes</label><input class="f-input" id="f-notes" placeholder="Internal notes..."></div>
-
-      <div class="form-sec">Reel 1</div>
-      <div class="f-grid">
-        <div class="f-group"><label>Link</label><input class="f-input" id="f-r1l" placeholder="https://..."></div>
-        <div class="f-group"><label>Payment</label><select class="f-input" id="f-r1p"><option>Unpaid</option><option>Paid</option><option>Pending</option></select></div>
-      </div>
-      <div class="f-grid">
-        <div class="f-group"><label>Views</label><input class="f-input" id="f-r1v" type="number" value="0"></div>
-        <div class="f-group"><label>Likes</label><input class="f-input" id="f-r1lk" type="number" value="0"></div>
-        <div class="f-group"><label>Comments</label><input class="f-input" id="f-r1c" type="number" value="0"></div>
-        <div class="f-group"><label>Shares</label><input class="f-input" id="f-r1sh" type="number" value="0"></div>
-      </div>
-
-      <div class="form-sec">Reel 2</div>
-      <div class="f-grid">
-        <div class="f-group"><label>Link</label><input class="f-input" id="f-r2l" placeholder="https://..."></div>
-        <div class="f-group"><label>Payment</label><select class="f-input" id="f-r2p"><option>Unpaid</option><option>Paid</option><option>Pending</option></select></div>
-      </div>
-      <div class="f-grid">
-        <div class="f-group"><label>Views</label><input class="f-input" id="f-r2v" type="number" value="0"></div>
-        <div class="f-group"><label>Likes</label><input class="f-input" id="f-r2lk" type="number" value="0"></div>
-        <div class="f-group"><label>Comments</label><input class="f-input" id="f-r2c" type="number" value="0"></div>
-        <div class="f-group"><label>Shares</label><input class="f-input" id="f-r2sh" type="number" value="0"></div>
-      </div>
-
-      <div class="form-sec">Reel 3</div>
-      <div class="f-grid">
-        <div class="f-group"><label>Link</label><input class="f-input" id="f-r3l" placeholder="https://..."></div>
-        <div class="f-group"><label>Payment</label><select class="f-input" id="f-r3p"><option>Unpaid</option><option>Paid</option><option>Pending</option></select></div>
-      </div>
-      <div class="f-grid">
-        <div class="f-group"><label>Views</label><input class="f-input" id="f-r3v" type="number" value="0"></div>
-        <div class="f-group"><label>Likes</label><input class="f-input" id="f-r3lk" type="number" value="0"></div>
-        <div class="f-group"><label>Comments</label><input class="f-input" id="f-r3c" type="number" value="0"></div>
-        <div class="f-group"><label>Shares</label><input class="f-input" id="f-r3sh" type="number" value="0"></div>
-      </div>
-    </div>
-    <div class="modal-foot">
-      <button class="btn-secondary" onclick="closeModal()">Cancel</button>
-      <button class="btn-primary" onclick="saveInf()" style="flex:1">Save</button>
-    </div>
+<!-- STATUS MODAL -->
+<div id="status-modal" onclick="closeModal(event)">
+  <div class="modal-card">
+    <button class="modal-close" onclick="hideModal()">✕</button>
+    <div class="modal-title">Collaboration Status</div>
+    <div class="modal-body" id="modal-body"></div>
   </div>
 </div>
 
 <div id="toast"></div>
 
-<script type="module">
-import{initializeApp}from'https://www.gstatic.com/firebasejs/10.12.2/firebase-app.js';
-import{getFirestore,collection,onSnapshot,addDoc,updateDoc,deleteDoc,doc,serverTimestamp}from'https://www.gstatic.com/firebasejs/10.12.2/firebase-firestore.js';
+<script>
+const SHEET_ID   = '1S_r6TpWg6_w5rZFWGwXN95wqldjvFFGw4XZF_sKGLo4';
+const SHEET_NAME = 'Sheet1';
 
-const app=initializeApp({apiKey:"AIzaSyD3dkoNG5FphKqx1f0aO6-G_hAeEzMUTVc",authDomain:"gen-lang-client-0206245065.firebaseapp.com",projectId:"gen-lang-client-0206245065",appId:"1:799783606768:web:3769ea361a3e184c236535"});
-const db=getFirestore(app,"ai-studio-462058ff-0b97-4841-91bd-9c014706132e");
-const COL='influencers';
+let DATA = [];
+let refreshTimer = null;
+let curPage = 'dashboard';
 
-let ALL=[],editId=null,selId=null;
-
-// Helpers
-const fn=n=>!n&&n!==0?'0':Number(n).toLocaleString();
-const gv=id=>Number(document.getElementById(id)?.value)||0;
-const gs=id=>(document.getElementById(id)?.value||'').trim();
-const totalViews=i=>(i.r1v||0)+(i.r2v||0)+(i.r3v||0);
-const totalLikes=i=>(i.r1lk||0)+(i.r2lk||0)+(i.r3lk||0);
-const posted=i=>[i.r1l,i.r2l,i.r3l].filter(Boolean).length;
-const paidCount=i=>[i.r1p,i.r2p,i.r3p].filter(x=>(x||'').toLowerCase()==='paid').length;
-const paidAmt=i=>{const per=Math.round((i.totalPKR||0)/Math.max(i.reels||1,1));return paidCount(i)*per};
-const pendAmt=i=>Math.max(0,(i.totalPKR||0)-paidAmt(i));
-
-function sBadge(s){const sl=(s||'').toLowerCase();const cls=sl.includes('lock')||s.includes('✅')?'s-green':sl.includes('discus')||sl.includes('discuss')?'s-amber':'s-amber';return`<span class="s-badge ${cls}">${s||'—'}</span>`}
-function pBadge(s){const sl=(s||'').toLowerCase();return sl==='paid'?`<span class="s-badge s-green">Paid</span>`:sl==='pending'?`<span class="s-badge s-amber">Pending</span>`:`<span class="s-badge s-red">Unpaid</span>`}
-
-// Firestore listener
-onSnapshot(collection(db,COL),snap=>{
-  ALL=snap.docs.map(d=>({id:d.id,...d.data()}));
-  ALL.sort((a,b)=>(a.name||'').localeCompare(b.name||''));
-  renderAll();
-});
-
-// Expose globals
-window.calcTotal=()=>{const d=gv('f-deal'),r=gv('f-reels');document.getElementById('f-total').value=d*r||0};
-window.goPage=p=>{
-  document.querySelectorAll('.page').forEach(e=>e.classList.remove('active'));
-  document.getElementById('page-'+p).classList.add('active');
-  document.querySelectorAll('.nav-item').forEach(e=>e.classList.toggle('active',e.dataset.page===p));
-  if(p==='roster'&&selId)renderDetail(selId);else{selId=null;renderAll();}
-  window.scrollTo(0,0);
+/* ── HELPERS ── */
+const fn  = n => (n===null||n===undefined||isNaN(n)) ? '—' : Number(n).toLocaleString();
+const frs = n => (n===null||n===undefined||isNaN(n)) ? '—' : 'Rs. ' + Number(n).toLocaleString();
+const vcell = c => {
+  if (!c || c.v === null || c.v === undefined) return null;
+  if (typeof c.v === 'number') return c.v;
+  const s = String(c.v).trim();
+  if (s === '' || s === '-') return null;
+  const n = parseFloat(s.replace(/[^0-9.-]/g, ''));
+  return isNaN(n) ? null : n;
+};
+const scell = c => {
+  if (!c || c.v === null || c.v === undefined) return '';
+  return String(c.f || c.v).trim();
 };
 
-function renderAll(){renderDash();renderRoster();renderPayments();renderSync();renderReports()}
-
-// ─── DASHBOARD ───
-function renderDash(){
-  const n=ALL.length;
-  const tv=ALL.reduce((s,i)=>s+totalViews(i),0);
-  const tb=ALL.reduce((s,i)=>s+(i.totalPKR||0),0);
-  const tp=ALL.reduce((s,i)=>s+paidAmt(i),0);
-  const tn=ALL.reduce((s,i)=>s+pendAmt(i),0);
-  const tpo=ALL.reduce((s,i)=>s+posted(i),0);
-  const tr=ALL.reduce((s,i)=>s+(i.reels||0),0);
-  const tl=ALL.reduce((s,i)=>s+totalLikes(i),0);
-  const eng=tv>0?((tl/tv)*100).toFixed(2):'0.00';
-
-  document.getElementById('dash-c').innerHTML=`
-  <div class="hero-card">
-    <div class="hero-label">Total Reach</div>
-    <div class="hero-num">${fn(tv)}</div>
-    <div class="hero-sub">${n} creators · ${tpo}/${tr} reels posted</div>
-  </div>
-  <div class="kpi-grid">
-    <div class="kpi-card" style="--kc:var(--m)"><div class="kpi-lbl">Budget</div><div class="kpi-val" style="font-size:20px">Rs.${fn(tb)}</div><div class="kpi-sub">total committed</div></div>
-    <div class="kpi-card" style="--kc:var(--green)"><div class="kpi-lbl">Paid</div><div class="kpi-val" style="color:var(--green);font-size:20px">Rs.${fn(tp)}</div><div class="kpi-sub">disbursed</div></div>
-    <div class="kpi-card" style="--kc:var(--red)"><div class="kpi-lbl">Pending</div><div class="kpi-val" style="color:var(--red);font-size:20px">Rs.${fn(tn)}</div><div class="kpi-sub">outstanding</div></div>
-    <div class="kpi-card" style="--kc:var(--m)"><div class="kpi-lbl">Eng Rate</div><div class="kpi-val" style="color:var(--m)">${eng}%</div><div class="kpi-sub">likes / views</div></div>
-  </div>
-  <div class="sec-label">Recent</div>
-  ${ALL.length===0?`<div class="empty"><div class="empty-icon">👥</div>Koi influencer nahi.<br>+ button se add karein.</div>`:''}
-  ${ALL.slice(0,5).map(i=>infCard(i)).join('')}
-  <div class="page-footer">Developed by <a href="https://www.linkedin.com/in/usmankhan07/" target="_blank">Usman Khan</a></div>`
+/* ── CALCULATIONS ── */
+function paidCount(inf) {
+  let n = 0;
+  if (inf.totalReels >= 1 && (inf.pay1||'').toLowerCase() === 'paid') n++;
+  if (inf.totalReels >= 2 && (inf.pay2||'').toLowerCase() === 'paid') n++;
+  if (inf.totalReels >= 3 && (inf.pay3||'').toLowerCase() === 'paid') n++;
+  return n;
+}
+function paidAmt(inf) {
+  if (!inf.totalAmt || !inf.totalReels) return 0;
+  return Math.round((paidCount(inf) / inf.totalReels) * inf.totalAmt);
+}
+function pendingAmt(inf) {
+  return (inf.totalAmt || 0) - paidAmt(inf);
+}
+function postedCount(inf) {
+  let n = 0;
+  if (inf.totalReels >= 1 && inf.reel1) n++;
+  if (inf.totalReels >= 2 && inf.reel2) n++;
+  if (inf.totalReels >= 3 && inf.reel3) n++;
+  return n;
+}
+function totalViews(inf) {
+  return (inf.views1 || 0) + (inf.views2 || 0) + (inf.views3 || 0);
 }
 
-function infCard(i){
-  const v=totalViews(i),pct=i.reels?Math.round((posted(i)/i.reels)*100):0;
-  return`<div class="inf-card" onclick="viewInf('${i.id}')">
-    <div class="inf-header">
-      <div class="inf-avatar">${(i.name||'?')[0].toUpperCase()}</div>
-      <div style="flex:1;min-width:0">
-        <div class="inf-name">${i.name}</div>
-        <div class="inf-meta">${i.followers||'—'} followers</div>
+/* ── PARSE ── */
+function parseGviz(json) {
+  DATA = [];
+  for (const row of json.table?.rows || []) {
+    const c = row.c || [];
+    const name = scell(c[0]);
+    if (!name) continue;
+    DATA.push({
+      name:        name,
+      email:       scell(c[1]),
+      contact:     scell(c[2]),
+      followers:   scell(c[3]),
+      profileLink: scell(c[4]),
+      origDemand:  vcell(c[5]),
+      dealPerReel: vcell(c[6]),
+      totalReels:  vcell(c[7]) || 1,
+      totalAmt:    vcell(c[8]),
+      bankDetails: scell(c[9]),
+      status:      scell(c[10]),
+      notes:       scell(c[11]),
+      reel1:       scell(c[12]),
+      pay1:        scell(c[13]),
+      views1:      vcell(c[14]) || 0,
+      reel2:       scell(c[15]),
+      pay2:        scell(c[16]),
+      views2:      vcell(c[17]) || 0,
+      reel3:       scell(c[18]),
+      pay3:        scell(c[19]),
+    });
+  }
+}
+
+/* ── FETCH ── */
+async function fetchSheet() {
+  const url = `https://docs.google.com/spreadsheets/d/${SHEET_ID}/gviz/tq?tqx=out:json&sheet=${encodeURIComponent(SHEET_NAME)}&range=A2:T500`;
+  try {
+    const res = await fetch(url);
+    if (!res.ok) throw new Error('HTTP ' + res.status);
+    const txt = await res.text();
+    const m = txt.match(/google\.visualization\.Query\.setResponse\(([\s\S]*)\)/);
+    if (!m) throw new Error('Sheet public nahi hai');
+    const json = JSON.parse(m[1]);
+    if (json.status === 'error') throw new Error(json.errors?.[0]?.message || 'Sheet error');
+    parseGviz(json);
+    if (!DATA.length) throw new Error('Sheet mein data nahi mila');
+    document.getElementById('loading-screen').style.display = 'none';
+    document.getElementById('error-screen').style.display   = 'none';
+    renderAll();
+    if (refreshTimer) clearInterval(refreshTimer);
+    refreshTimer = setInterval(silentRefresh, 5 * 60 * 1000);
+  } catch(err) {
+    document.getElementById('loading-screen').style.display = 'none';
+    document.getElementById('error-screen').style.display   = 'flex';
+    document.getElementById('error-msg').textContent        = err.message;
+  }
+}
+
+async function silentRefresh() {
+  const url = `https://docs.google.com/spreadsheets/d/${SHEET_ID}/gviz/tq?tqx=out:json&sheet=${encodeURIComponent(SHEET_NAME)}&range=A2:T500`;
+  try {
+    const res = await fetch(url); if (!res.ok) return;
+    const txt = await res.text();
+    const m = txt.match(/google\.visualization\.Query\.setResponse\(([\s\S]*)\)/); if (!m) return;
+    const json = JSON.parse(m[1]); if (json.status === 'error') return;
+    parseGviz(json); if (!DATA.length) return;
+    renderAll(); showToast('Data refresh ho gaya');
+  } catch(e) {}
+}
+
+/* ── NAV ── */
+function goPage(p) {
+  // hide detail if open
+  document.getElementById('detail-view').style.display = 'none';
+  document.querySelectorAll('.page').forEach(el => el.classList.remove('active'));
+  document.getElementById('page-' + p).classList.add('active');
+  document.querySelectorAll('.nav-item').forEach(el => el.classList.toggle('active', el.dataset.page === p));
+  curPage = p;
+  window.scrollTo(0, 0);
+}
+
+/* ── STATUS MODAL ── */
+function showModal(text) {
+  document.getElementById('modal-body').textContent = text || '—';
+  document.getElementById('status-modal').classList.add('show');
+}
+function hideModal() {
+  document.getElementById('status-modal').classList.remove('show');
+}
+function closeModal(e) {
+  if (e.target === document.getElementById('status-modal')) hideModal();
+}
+
+/* ── BADGE HTML ── */
+function statusBadge(status, idx) {
+  const isLocked = /locked|✅/i.test(status);
+  const cls = isLocked ? 'green-b' : 'amber-b';
+  const short = status.length > 18 ? status.slice(0, 18) + '…' : status;
+  return `<span class="status-badge ${cls}" onclick="event.stopPropagation();showModal(${JSON.stringify(status)})">${short || '—'}</span>`;
+}
+
+function payBadge(status) {
+  const s = (status || '').toLowerCase();
+  if (s === 'paid')    return '<span class="pay-badge paid">Paid</span>';
+  if (s === 'pending') return '<span class="pay-badge pending">Pending</span>';
+  return '<span class="pay-badge unpaid">Unpaid</span>';
+}
+
+function payChip(label, status) {
+  const s = (status || '').toLowerCase();
+  const cls = s === 'paid' ? 'paid' : s === 'pending' ? 'pending' : 'unpaid';
+  return `<span class="pay-chip ${cls}">${label}: ${status || 'Unpaid'}</span>`;
+}
+
+/* ── INFLUENCER CARD HTML ── */
+function infCardHTML(inf, idx) {
+  const views = totalViews(inf);
+  const posted = postedCount(inf);
+  const pct = inf.totalReels > 0 ? (posted / inf.totalReels) * 100 : 0;
+  return `
+  <div class="inf-card" onclick="openDetail(${idx})">
+    <div class="inf-card-top">
+      <div class="avatar">${inf.name.charAt(0).toUpperCase()}</div>
+      <div class="inf-name-wrap">
+        <div class="inf-name">${inf.name}</div>
+        <div class="inf-followers">${inf.followers || '—'} followers</div>
       </div>
-      ${sBadge(i.collaborationStatus)}
+      ${inf.status ? statusBadge(inf.status, idx) : ''}
     </div>
     <div class="inf-stats">
-      <div class="inf-stat"><div class="inf-stat-lbl">Views</div><div class="inf-stat-val">${fn(v)}</div></div>
-      <div class="inf-stat"><div class="inf-stat-lbl">Amount</div><div class="inf-stat-val" style="font-size:12px">Rs.${fn(i.totalPKR)}</div></div>
-      <div class="inf-stat"><div class="inf-stat-lbl">Reels</div><div class="inf-stat-val">${posted(i)}/${i.reels||0}</div></div>
+      <div class="inf-stat"><div class="inf-stat-val">${fn(views)}</div><div class="inf-stat-lbl">Views</div></div>
+      <div class="inf-stat"><div class="inf-stat-val">${inf.totalAmt ? 'Rs.'+Number(inf.totalAmt).toLocaleString() : '—'}</div><div class="inf-stat-lbl">Amount</div></div>
+      <div class="inf-stat"><div class="inf-stat-val">${posted}/${inf.totalReels}</div><div class="inf-stat-lbl">Reels</div></div>
     </div>
-    <div class="prog-wrap"><div class="prog-bar" style="width:${pct}%"></div></div>
-  </div>`
-}
-
-// ─── ROSTER ───
-function renderRoster(){
-  if(selId){renderDetail(selId);return}
-  document.getElementById('roster-c').innerHTML=`
-  <div style="display:flex;align-items:center;gap:8px">
-    <div class="sec-label" style="flex:1">All (${ALL.length})</div>
-    <button class="btn-primary" onclick="openModal()" style="padding:8px 13px;font-size:11px">+ Add</button>
-  </div>
-  ${ALL.length===0?`<div class="empty"><div class="empty-icon">👥</div>Koi influencer nahi.</div>`:''}
-  ${ALL.map(i=>infCard(i)).join('')}
-  <div class="page-footer">Developed by <a href="https://www.linkedin.com/in/usmankhan07/" target="_blank">Usman Khan</a></div>`
-}
-
-window.viewInf=id=>{selId=id;window.goPage('roster')};
-
-function renderDetail(id){
-  const i=ALL.find(x=>x.id===id);
-  if(!i){selId=null;renderRoster();return}
-  const v=totalViews(i),lk=totalLikes(i),eng=(i.r1c||0)+(i.r2c||0)+(i.r3c||0)+(i.r1sh||0)+(i.r2sh||0)+(i.r3sh||0)+lk;
-
-  const reelBlock=(n,link,pay,v,lk,c,sh)=>`
-  <div class="reel-card">
-    <div class="reel-title">
-      <div class="reel-num">${n}</div>
-      <div class="reel-name">Reel ${n}</div>
-      ${pBadge(pay)}
-    </div>
-    ${link?`<a class="reel-link" href="${link}" target="_blank"><svg viewBox="0 0 24 24"><use href="#i-link"/></svg>Link kholein</a>`:`<div class="reel-no-link">Link nahi diya</div>`}
-    <div class="reel-metrics">
-      <div class="reel-metric"><div class="reel-metric-lbl">Views</div><div class="reel-metric-val">${fn(v)}</div></div>
-      <div class="reel-metric"><div class="reel-metric-lbl">Likes</div><div class="reel-metric-val">${fn(lk)}</div></div>
-      <div class="reel-metric"><div class="reel-metric-lbl">Comments</div><div class="reel-metric-val">${fn(c)}</div></div>
-    </div>
+    <div class="progress-bar"><div class="progress-fill" style="width:${pct}%"></div></div>
   </div>`;
+}
 
-  document.getElementById('roster-c').innerHTML=`
-  <button class="back-pill" onclick="selId=null;renderRoster()"><svg viewBox="0 0 24 24"><use href="#i-back"/></svg>Back</button>
-  <div class="detail-hero">
-    <div style="display:flex;align-items:center;gap:13px">
-      <div class="d-avatar">${(i.name||'?')[0].toUpperCase()}</div>
-      <div><div class="d-name">${i.name}</div><div class="d-meta">${i.followers||'—'} followers · ${i.reels||0} reels</div></div>
+/* ── RENDER ALL ── */
+function renderAll() {
+  renderDash();
+  renderRoster();
+  renderPayments();
+  renderReports();
+}
+
+/* ── DASHBOARD ── */
+function renderDash() {
+  const totalReach = DATA.reduce((s, i) => s + totalViews(i), 0);
+  const totalBudget = DATA.reduce((s, i) => s + (i.totalAmt || 0), 0);
+  const totalPaid   = DATA.reduce((s, i) => s + paidAmt(i), 0);
+  const totalPend   = DATA.reduce((s, i) => s + pendingAmt(i), 0);
+  const totalPosted = DATA.reduce((s, i) => s + postedCount(i), 0);
+  const totalPossible = DATA.reduce((s, i) => s + (i.totalReels || 0), 0);
+
+  let html = `
+  <div class="hero-card">
+    <div class="hero-label">Total Reach</div>
+    <div class="hero-num">${fn(totalReach)}</div>
+    <div class="hero-sub">${DATA.length} influencers · ${totalPosted}/${totalPossible} reels posted</div>
+  </div>
+
+  <div class="kpi-grid">
+    <div class="kpi-card">
+      <div class="kpi-lbl">Total Budget</div>
+      <div class="kpi-val maroon">${frs(totalBudget)}</div>
+      <div class="kpi-sub">campaign total</div>
     </div>
-    <div style="display:flex;gap:7px;margin-top:13px">
-      <button class="d-btn" onclick="openEdit('${i.id}')"><svg viewBox="0 0 24 24"><use href="#i-edit"/></svg>Edit</button>
-      <button class="d-btn d-btn-del" onclick="delInf('${i.id}','${i.name.replace(/'/g,"\\'")}')"><svg viewBox="0 0 24 24"><use href="#i-del"/></svg>Delete</button>
+    <div class="kpi-card">
+      <div class="kpi-lbl">Paid</div>
+      <div class="kpi-val green">${frs(totalPaid)}</div>
+      <div class="kpi-sub">disbursed</div>
+    </div>
+    <div class="kpi-card">
+      <div class="kpi-lbl">Pending</div>
+      <div class="kpi-val red">${frs(totalPend)}</div>
+      <div class="kpi-sub">remaining</div>
+    </div>
+    <div class="kpi-card">
+      <div class="kpi-lbl">Total Views</div>
+      <div class="kpi-val maroon">${fn(totalReach)}</div>
+      <div class="kpi-sub">across all reels</div>
+    </div>
+  </div>
+
+  <div class="sec-label">Recent</div>`;
+
+  DATA.slice(0, 5).forEach((inf, i) => { html += infCardHTML(inf, i); });
+  html += `<div class="page-footer">Developed by <a href="https://www.linkedin.com/in/usmankhan07/" target="_blank" rel="noopener">Usman Khan</a></div>`;
+
+  const c = document.getElementById('dash-content');
+  c.innerHTML = html; c.style.display = 'flex';
+}
+
+/* ── ROSTER ── */
+function renderRoster() {
+  let html = `<div class="sec-label">Tamam Influencers</div>`;
+  DATA.forEach((inf, i) => { html += infCardHTML(inf, i); });
+  html += `<div class="page-footer">Developed by <a href="https://www.linkedin.com/in/usmankhan07/" target="_blank" rel="noopener">Usman Khan</a></div>`;
+  document.getElementById('roster-content').innerHTML = html;
+}
+
+/* ── DETAIL VIEW ── */
+function openDetail(idx) {
+  const inf = DATA[idx];
+  if (!inf) return;
+  const views = totalViews(inf);
+  const posted = postedCount(inf);
+  const paid   = paidAmt(inf);
+  const pend   = pendingAmt(inf);
+
+  let reelsHTML = '';
+  const reelData = [
+    { num:1, link:inf.reel1, pay:inf.pay1, views:inf.views1 },
+    { num:2, link:inf.reel2, pay:inf.pay2, views:inf.views2 },
+    { num:3, link:inf.reel3, pay:inf.pay3, views:null },
+  ];
+  for (let r = 0; r < inf.totalReels; r++) {
+    const rd = reelData[r];
+    reelsHTML += `
+    <div class="reel-card">
+      <div class="reel-head">
+        <span class="reel-num">REEL ${rd.num}</span>
+        ${payBadge(rd.pay)}
+      </div>
+      ${rd.link
+        ? `<a href="${rd.link}" target="_blank" rel="noopener" class="reel-link-btn"><svg viewBox="0 0 24 24" style="width:13px;height:13px;fill:var(--m)"><use href="#i-link"/></svg>Link Kholein</a>`
+        : `<div style="font-size:12px;color:var(--text3);font-style:italic;margin-bottom:6px;">Link nahi diya</div>`
+      }
+      ${rd.views !== null ? `<div class="reel-views">${fn(rd.views)} views</div>` : ''}
+    </div>`;
+  }
+
+  const shortStatus = inf.status.length > 18 ? inf.status.slice(0,18) + '…' : inf.status;
+
+  const html = `
+  <button class="back-btn" onclick="closeDetail()">
+    <svg viewBox="0 0 24 24"><use href="#i-back"/></svg> Back
+  </button>
+  <div class="detail-hero">
+    <div class="detail-avatar">${inf.name.charAt(0).toUpperCase()}</div>
+    <div>
+      <div class="detail-name">${inf.name}</div>
+      <div class="detail-meta">${inf.followers || '—'} followers · ${inf.totalReels} reel${inf.totalReels>1?'s':''}</div>
     </div>
   </div>
   <div class="kpi-grid">
-    <div class="kpi-card" style="--kc:var(--m)"><div class="kpi-lbl">Total Views</div><div class="kpi-val">${fn(v)}</div></div>
-    <div class="kpi-card" style="--kc:var(--m)"><div class="kpi-lbl">Engagement</div><div class="kpi-val">${fn(eng)}</div></div>
-    <div class="kpi-card" style="--kc:var(--green)"><div class="kpi-lbl">Paid</div><div class="kpi-val" style="color:var(--green);font-size:20px">Rs.${fn(paidAmt(i))}</div></div>
-    <div class="kpi-card" style="--kc:var(--red)"><div class="kpi-lbl">Pending</div><div class="kpi-val" style="color:var(--red);font-size:20px">Rs.${fn(pendAmt(i))}</div></div>
+    <div class="kpi-card"><div class="kpi-lbl">Total Views</div><div class="kpi-val maroon">${fn(views)}</div></div>
+    <div class="kpi-card"><div class="kpi-lbl">Paid</div><div class="kpi-val green">${frs(paid)}</div></div>
+    <div class="kpi-card"><div class="kpi-lbl">Pending</div><div class="kpi-val red">${frs(pend)}</div></div>
+    <div class="kpi-card"><div class="kpi-lbl">Reels Posted</div><div class="kpi-val maroon">${posted}/${inf.totalReels}</div></div>
   </div>
   <div class="sec-label">Reels</div>
-  ${reelBlock(1,i.r1l,i.r1p,i.r1v,i.r1lk,i.r1c,i.r1sh)}
-  ${(i.reels||0)>=2?reelBlock(2,i.r2l,i.r2p,i.r2v,i.r2lk,i.r2c,i.r2sh):''}
-  ${(i.reels||0)>=3?reelBlock(3,i.r3l,i.r3p,i.r3v,i.r3lk,i.r3c,i.r3sh):''}
+  ${reelsHTML}
+  <div class="sec-label">Info</div>
   <div class="info-card">
-    <div class="info-row"><div class="info-lbl">Email</div><div class="info-val">${i.email||'—'}</div></div>
-    <div class="info-row"><div class="info-lbl">Contact</div><div class="info-val">${i.contact||'—'}</div></div>
-    <div class="info-row"><div class="info-lbl">Status</div><div class="info-val">${i.collaborationStatus||'—'}</div></div>
-    <div class="info-row"><div class="info-lbl">Notes</div><div class="info-val">${i.notes||'—'}</div></div>
-    <div class="info-row"><div class="info-lbl">Bank Details</div><div class="bank-box">${i.bank||'Not provided'}</div></div>
+    ${inf.email    ? `<div class="info-row"><span class="info-lbl">Email</span><span class="info-val">${inf.email}</span></div>` : ''}
+    ${inf.contact  ? `<div class="info-row"><span class="info-lbl">Contact</span><span class="info-val">${inf.contact}</span></div>` : ''}
+    ${inf.status   ? `<div class="info-row"><span class="info-lbl">Status</span><span class="info-val"><span class="status-badge ${/locked|✅/i.test(inf.status)?'green-b':'amber-b'}" style="cursor:pointer" onclick="showModal(${JSON.stringify(inf.status)})">${shortStatus||'—'}</span></span></div>` : ''}
+    ${inf.notes    ? `<div class="info-row"><span class="info-lbl">Notes</span><span class="info-val">${inf.notes}</span></div>` : ''}
+    ${inf.bankDetails ? `<div class="info-row"><span class="info-lbl">Bank</span><span class="info-val"><div class="bank-box">${inf.bankDetails}</div></span></div>` : ''}
   </div>
-  <div class="page-footer">Developed by <a href="https://www.linkedin.com/in/usmankhan07/" target="_blank">Usman Khan</a></div>`
+  <div class="page-footer">Developed by <a href="https://www.linkedin.com/in/usmankhan07/" target="_blank" rel="noopener">Usman Khan</a></div>`;
+
+  const dv = document.getElementById('detail-view');
+  dv.innerHTML = html;
+  dv.style.display = 'flex';
+  // Hide roster page, keep nav visible
+  document.getElementById('page-roster').classList.remove('active');
+  window.scrollTo(0, 0);
 }
 
-// ─── PAYMENTS ───
-function renderPayments(){
-  const tb=ALL.reduce((s,i)=>s+(i.totalPKR||0),0);
-  const tp=ALL.reduce((s,i)=>s+paidAmt(i),0);
-  const tn=ALL.reduce((s,i)=>s+pendAmt(i),0);
-  document.getElementById('pay-c').innerHTML=`
+function closeDetail() {
+  document.getElementById('detail-view').style.display = 'none';
+  document.getElementById('page-roster').classList.add('active');
+  window.scrollTo(0, 0);
+}
+
+/* ── PAYMENTS ── */
+function renderPayments() {
+  const totalBudget = DATA.reduce((s, i) => s + (i.totalAmt || 0), 0);
+  const totalPaid   = DATA.reduce((s, i) => s + paidAmt(i), 0);
+  const totalPend   = DATA.reduce((s, i) => s + pendingAmt(i), 0);
+
+  let html = `
   <div class="kpi-grid">
-    <div class="kpi-card" style="--kc:var(--m)"><div class="kpi-lbl">Total Budget</div><div class="kpi-val" style="font-size:20px">Rs.${fn(tb)}</div></div>
-    <div class="kpi-card" style="--kc:var(--green)"><div class="kpi-lbl">Paid</div><div class="kpi-val" style="color:var(--green);font-size:20px">Rs.${fn(tp)}</div></div>
-    <div class="kpi-card" style="--kc:var(--red);grid-column:span 2"><div class="kpi-lbl">Remaining</div><div class="kpi-val" style="color:var(--red);font-size:20px">Rs.${fn(tn)}</div><div class="kpi-sub">outstanding</div></div>
+    <div class="kpi-card"><div class="kpi-lbl">Total Budget</div><div class="kpi-val maroon">${frs(totalBudget)}</div></div>
+    <div class="kpi-card"><div class="kpi-lbl">Paid</div><div class="kpi-val green">${frs(totalPaid)}</div></div>
+    <div class="kpi-card full"><div class="kpi-lbl">Remaining</div><div class="kpi-val red">${frs(totalPend)}</div></div>
   </div>
-  <div class="sec-label">Per Influencer</div>
-  ${ALL.length===0?`<div class="empty"><div class="empty-icon">💳</div>Koi influencer nahi.</div>`:''}
-  ${ALL.map(i=>`
-  <div class="pay-card">
-    <div class="pay-name">${i.name}</div>
-    <div class="pay-contact">${i.contact||'no contact'} · Rs.${fn(i.totalPKR)}</div>
-    <div class="pay-toggles">
-      ${payTogBtn(i.id,'r1p',i.r1p,'Reel 1')}
-      ${(i.reels||0)>=2?payTogBtn(i.id,'r2p',i.r2p,'Reel 2'):''}
-      ${(i.reels||0)>=3?payTogBtn(i.id,'r3p',i.r3p,'Reel 3'):''}
-    </div>
-    <div class="pay-summary">
-      <span style="color:var(--green)">Paid: Rs.${fn(paidAmt(i))}</span>
-      <span style="color:var(--red)">Pending: Rs.${fn(pendAmt(i))}</span>
-    </div>
-  </div>`).join('')}
-  <div class="page-footer">Developed by <a href="https://www.linkedin.com/in/usmankhan07/" target="_blank">Usman Khan</a></div>`
+  <div class="sec-label">Per Influencer</div>`;
+
+  DATA.forEach(inf => {
+    const paid = paidAmt(inf);
+    const pend = pendingAmt(inf);
+    const chips = [];
+    if (inf.totalReels >= 1) chips.push(payChip('Reel 1', inf.pay1));
+    if (inf.totalReels >= 2) chips.push(payChip('Reel 2', inf.pay2));
+    if (inf.totalReels >= 3) chips.push(payChip('Reel 3', inf.pay3));
+
+    html += `
+    <div class="pay-card">
+      <div class="pay-card-top">
+        <div class="avatar" style="width:34px;height:34px;font-size:14px;">${inf.name.charAt(0).toUpperCase()}</div>
+        <div>
+          <div style="font-size:13px;font-weight:700;color:var(--text);">${inf.name}</div>
+          ${inf.contact ? `<div style="font-size:11px;color:var(--text3);">${inf.contact}</div>` : ''}
+        </div>
+      </div>
+      <div class="pay-chips">${chips.join('')}</div>
+      <div class="pay-summary">Paid: <span>${frs(paid)}</span> &nbsp;·&nbsp; Pending: <span style="color:var(--red);">${frs(pend)}</span></div>
+    </div>`;
+  });
+
+  html += `<div class="page-footer">Developed by <a href="https://www.linkedin.com/in/usmankhan07/" target="_blank" rel="noopener">Usman Khan</a></div>`;
+  document.getElementById('payments-content').innerHTML = html;
 }
 
-function payTogBtn(id,field,cur,label){
-  const sl=(cur||'unpaid').toLowerCase();
-  const cls=sl==='paid'?'is-paid':sl==='pending'?'is-pending':'is-unpaid';
-  return`<button class="pay-tog ${cls}" onclick="togglePay('${id}','${field}','${cur||'Unpaid'}')">${sl==='paid'?'✓ ':''} ${label}: ${cur||'Unpaid'}</button>`
-}
+/* ── REPORTS ── */
+function renderReports() {
+  const totalReach  = DATA.reduce((s, i) => s + totalViews(i), 0);
+  const totalBudget = DATA.reduce((s, i) => s + (i.totalAmt || 0), 0);
+  const totalPaid   = DATA.reduce((s, i) => s + paidAmt(i), 0);
+  const totalPend   = DATA.reduce((s, i) => s + pendingAmt(i), 0);
+  const totalPosted = DATA.reduce((s, i) => s + postedCount(i), 0);
+  const totalPossible = DATA.reduce((s, i) => s + (i.totalReels || 0), 0);
 
-window.togglePay=async(id,field,cur)=>{
-  const next=cur.toLowerCase()==='paid'?'Unpaid':'Paid';
-  await updateDoc(doc(db,COL,id),{[field]:next});
-  showToast(next==='Paid'?'✓ Paid ho gaya':'Unpaid ho gaya');
-};
-
-// ─── SYNC ───
-function renderSync(){
-  document.getElementById('sync-c').innerHTML=`
-  <div class="sec-label">Data Import</div>
-  <div class="import-box">
-    <div style="font-size:11px;color:var(--text3)">Google Sheet se data copy karo (Tab-separated TSV) aur paste karo</div>
-    <textarea id="csv-in" placeholder="Name&#9;Email&#9;Contact&#9;Followers&#9;Profile&#9;Demand&#9;Deal&#9;Reels&#9;Total PKR&#9;Notes&#9;Status&#9;Bank&#9;Reel1 Link&#9;Reel1 Pay&#9;Reel2 Link&#9;Reel2 Pay&#9;Reel3 Link&#9;Reel3 Pay"></textarea>
-    <div class="btn-row">
-      <button class="btn-primary" onclick="parsePreview()">Preview</button>
-      <button class="btn-secondary" onclick="clearImport()">Clear</button>
-    </div>
-  </div>
-  <div id="preview-area"></div>
-  <div class="page-footer">Developed by <a href="https://www.linkedin.com/in/usmankhan07/" target="_blank">Usman Khan</a></div>`
-}
-
-window.parsePreview=()=>{
-  const raw=document.getElementById('csv-in')?.value?.trim();
-  if(!raw){showToast('Pehle data paste karein');return}
-  const rows=raw.split('\n').map(r=>r.split('\t').map(c=>c.replace(/^"|"$/g,'').trim()));
-  const start=rows[0]&&(rows[0][0].toLowerCase().includes('name')||rows[0][0].toLowerCase().includes('naam'))?1:0;
-  const parsed=rows.slice(start).filter(r=>r[0]&&r[0].length>0&&r[0].length<80&&!r[0].toLowerCase().startsWith('http')).map(r=>({
-    name:r[0]||'',email:r[1]||'',contact:r[2]||'',followers:r[3]||'',profileLink:r[4]||'',
-    demand:r[5]||'',deal:Number(r[6])||0,reels:Number(r[7])||3,totalPKR:Number(r[8])||0,
-    notes:r[9]||'',collaborationStatus:r[10]||'',bank:r[11]||'',
-    r1l:r[12]||'',r1p:r[13]||'Unpaid',r2l:r[14]||'',r2p:r[15]||'Unpaid',r3l:r[16]||'',r3p:r[17]||'Unpaid'
-  })).filter(r=>r.name);
-
-  if(!parsed.length){showToast('Koi valid row nahi mili');return}
-
-  document.getElementById('preview-area').innerHTML=`
-  <div class="preview-wrap">
-    <div style="overflow-x:auto">
-      <table class="preview-table">
-        <thead><tr><th>Naam</th><th>Followers</th><th>Amount</th><th>Reels</th></tr></thead>
-        <tbody>${parsed.map(r=>`<tr><td>${r.name}</td><td>${r.followers}</td><td>Rs.${fn(r.totalPKR)}</td><td>${r.reels}</td></tr>`).join('')}</tbody>
-      </table>
-    </div>
-    <div class="preview-foot">
-      <button class="btn-primary" onclick='commitImport(${JSON.stringify(parsed).replace(/'/g,"&#39;")})'>Save ${parsed.length} Influencers</button>
-    </div>
-  </div>`
-};
-
-window.commitImport=async parsed=>{
-  showToast(`Saving ${parsed.length}...`);
-  for(const p of parsed)await addDoc(collection(db,COL),{...p,createdAt:serverTimestamp()});
-  showToast(`✓ ${parsed.length} save ho gaye!`);
-  document.getElementById('preview-area').innerHTML='';
-  document.getElementById('csv-in').value='';
-};
-
-window.clearImport=()=>{const el=document.getElementById('csv-in');if(el)el.value='';document.getElementById('preview-area').innerHTML=''};
-
-// ─── REPORTS ───
-function renderReports(){
-  const tv=ALL.reduce((s,i)=>s+totalViews(i),0);
-  const tb=ALL.reduce((s,i)=>s+(i.totalPKR||0),0);
-  const tp=ALL.reduce((s,i)=>s+paidAmt(i),0);
-  const tn=ALL.reduce((s,i)=>s+pendAmt(i),0);
-  const tpo=ALL.reduce((s,i)=>s+posted(i),0);
-  const tr=ALL.reduce((s,i)=>s+(i.reels||0),0);
-
-  document.getElementById('rep-c').innerHTML=`
+  let html = `
   <div class="hero-card">
     <div class="hero-label">Campaign Summary</div>
-    <div class="hero-num">${fn(tv)}</div>
-    <div class="hero-sub">${ALL.length} creators · ${tpo}/${tr} reels · Rs.${fn(tb)} budget</div>
+    <div class="hero-num">${fn(totalReach)}</div>
+    <div class="hero-sub">${DATA.length} influencers · ${totalPosted}/${totalPossible} reels · ${frs(totalBudget)} budget</div>
   </div>
   <div class="kpi-grid">
-    <div class="kpi-card" style="--kc:var(--green)"><div class="kpi-lbl">Paid Out</div><div class="kpi-val" style="color:var(--green);font-size:20px">Rs.${fn(tp)}</div></div>
-    <div class="kpi-card" style="--kc:var(--red)"><div class="kpi-lbl">Pending</div><div class="kpi-val" style="color:var(--red);font-size:20px">Rs.${fn(tn)}</div></div>
+    <div class="kpi-card"><div class="kpi-lbl">Paid</div><div class="kpi-val green">${frs(totalPaid)}</div></div>
+    <div class="kpi-card"><div class="kpi-lbl">Pending</div><div class="kpi-val red">${frs(totalPend)}</div></div>
   </div>
-  <div class="sec-label">Creator Summary</div>
-  <div class="report-list">
-    ${ALL.length===0?`<div class="empty" style="padding:20px">Koi data nahi.</div>`:''}
-    ${ALL.map(i=>{
-      const v=totalViews(i),pn=pendAmt(i);
-      return`<div class="report-row">
-        <div><div class="report-name">${i.name}</div><div class="report-meta">${i.followers||'—'} · ${posted(i)}/${i.reels||0} reels · ${fn(v)} views</div></div>
-        <div><div class="report-pkr">Rs.${fn(i.totalPKR)}</div>${pn>0?`<div class="report-pend">Pending: Rs.${fn(pn)}</div>`:''}</div>
-      </div>`}).join('')}
-  </div>
-  <button class="btn-primary" onclick="exportCSV()" style="width:100%">📥 CSV Download</button>
-  <div class="page-footer">Developed by <a href="https://www.linkedin.com/in/usmankhan07/" target="_blank">Usman Khan</a></div>`
+  <div class="sec-label">Influencer Breakdown</div>`;
+
+  DATA.forEach(inf => {
+    const pend = pendingAmt(inf);
+    const posted = postedCount(inf);
+    html += `
+    <div class="report-row">
+      <div class="avatar" style="width:36px;height:36px;font-size:15px;flex-shrink:0;">${inf.name.charAt(0).toUpperCase()}</div>
+      <div class="report-info">
+        <div class="report-name">${inf.name}</div>
+        <div class="report-meta">${inf.followers||'—'} followers · ${posted}/${inf.totalReels} reels · ${fn(totalViews(inf))} views</div>
+      </div>
+      <div class="report-amt">
+        <div class="report-total">${inf.totalAmt ? 'Rs.'+Number(inf.totalAmt).toLocaleString() : '—'}</div>
+        ${pend > 0 ? `<div class="report-pend">-Rs.${pend.toLocaleString()} pending</div>` : ''}
+      </div>
+    </div>`;
+  });
+
+  html += `<div class="page-footer">Developed by <a href="https://www.linkedin.com/in/usmankhan07/" target="_blank" rel="noopener">Usman Khan</a></div>`;
+  document.getElementById('reports-content').innerHTML = html;
 }
 
-window.exportCSV=()=>{
-  const h='Name,Followers,Total Reels,Posted,Views,Likes,Budget PKR,Paid PKR,Pending PKR,Status';
-  const rows=ALL.map(i=>[
-    i.name,i.followers||'',i.reels||0,posted(i),
-    totalViews(i),totalLikes(i),i.totalPKR||0,paidAmt(i),pendAmt(i),i.collaborationStatus||''
-  ].map(v=>`"${v}"`).join(','));
-  const a=document.createElement('a');
-  a.href='data:text/csv;charset=utf-8,'+encodeURIComponent([h,...rows].join('\n'));
-  a.download='influencer_report.csv';a.click();
-};
-
-// ─── MODAL ───
-window.openModal=()=>{editId=null;resetForm();document.getElementById('modal-title').textContent='Add Influencer';document.getElementById('modal').style.display='flex'};
-window.openEdit=id=>{
-  const i=ALL.find(x=>x.id===id);if(!i)return;
-  editId=id;document.getElementById('modal-title').textContent='Edit: '+i.name;
-  const set=(fid,val)=>{const el=document.getElementById(fid);if(el)el.value=val??''};
-  set('f-name',i.name);set('f-email',i.email);set('f-contact',i.contact);set('f-followers',i.followers);set('f-profile',i.profileLink);
-  set('f-demand',i.demand);set('f-deal',i.deal);set('f-reels',i.reels||3);set('f-total',i.totalPKR);set('f-bank',i.bank);
-  set('f-status',i.collaborationStatus);set('f-notes',i.notes);
-  set('f-r1l',i.r1l);set('f-r1p',i.r1p||'Unpaid');set('f-r1v',i.r1v||0);set('f-r1lk',i.r1lk||0);set('f-r1c',i.r1c||0);set('f-r1sh',i.r1sh||0);
-  set('f-r2l',i.r2l);set('f-r2p',i.r2p||'Unpaid');set('f-r2v',i.r2v||0);set('f-r2lk',i.r2lk||0);set('f-r2c',i.r2c||0);set('f-r2sh',i.r2sh||0);
-  set('f-r3l',i.r3l);set('f-r3p',i.r3p||'Unpaid');set('f-r3v',i.r3v||0);set('f-r3lk',i.r3lk||0);set('f-r3c',i.r3c||0);set('f-r3sh',i.r3sh||0);
-  document.getElementById('modal').style.display='flex';
-};
-window.closeModal=()=>{document.getElementById('modal').style.display='none';editId=null};
-
-function resetForm(){
-  ['f-name','f-email','f-contact','f-followers','f-profile','f-demand','f-bank','f-status','f-notes','f-r1l','f-r2l','f-r3l'].forEach(id=>{const el=document.getElementById(id);if(el)el.value=''});
-  ['f-r1v','f-r1lk','f-r1c','f-r1sh','f-r2v','f-r2lk','f-r2c','f-r2sh','f-r3v','f-r3lk','f-r3c','f-r3sh'].forEach(id=>{const el=document.getElementById(id);if(el)el.value=0});
-  ['f-r1p','f-r2p','f-r3p'].forEach(id=>{const el=document.getElementById(id);if(el)el.value='Unpaid'});
-  document.getElementById('f-reels').value=3;
-  document.getElementById('f-deal').value=0;
-  document.getElementById('f-total').value=0;
+/* ── TOAST ── */
+function showToast(msg) {
+  const t = document.getElementById('toast');
+  t.textContent = msg; t.classList.add('show');
+  setTimeout(() => t.classList.remove('show'), 2500);
 }
 
-window.saveInf=async()=>{
-  const name=gs('f-name');if(!name){showToast('Naam zaroor likhein');return}
-  const data={
-    name,email:gs('f-email'),contact:gs('f-contact'),followers:gs('f-followers'),profileLink:gs('f-profile'),
-    demand:gs('f-demand'),deal:gv('f-deal'),reels:gv('f-reels'),totalPKR:gv('f-total'),
-    bank:gs('f-bank'),collaborationStatus:gs('f-status'),notes:gs('f-notes'),
-    r1l:gs('f-r1l'),r1p:gs('f-r1p'),r1v:gv('f-r1v'),r1lk:gv('f-r1lk'),r1c:gv('f-r1c'),r1sh:gv('f-r1sh'),
-    r2l:gs('f-r2l'),r2p:gs('f-r2p'),r2v:gv('f-r2v'),r2lk:gv('f-r2lk'),r2c:gv('f-r2c'),r2sh:gv('f-r2sh'),
-    r3l:gs('f-r3l'),r3p:gs('f-r3p'),r3v:gv('f-r3v'),r3lk:gv('f-r3lk'),r3c:gv('f-r3c'),r3sh:gv('f-r3sh'),
-  };
-  if(editId){await updateDoc(doc(db,COL,editId),data);showToast('✓ Update ho gaya')}
-  else{await addDoc(collection(db,COL),{...data,createdAt:serverTimestamp()});showToast('✓ Add ho gaya')}
-  closeModal();
-};
-
-window.delInf=async(id,name)=>{
-  if(!confirm(`"${name}" ko delete karein?`))return;
-  await deleteDoc(doc(db,COL,id));
-  selId=null;renderRoster();showToast('Delete ho gaya');
-};
-
-function showToast(msg){const t=document.getElementById('toast');t.textContent=msg;t.classList.add('show');setTimeout(()=>t.classList.remove('show'),2500)}
+/* ── INIT ── */
+window.addEventListener('load', fetchSheet);
 </script>
 </body>
 </html>
